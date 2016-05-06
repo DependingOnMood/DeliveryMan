@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="Address.cs" />
     <Compile Include="Contact.cs" />
+    <Compile Include="Deliveryman.cs" />
     <Compile Include="DeliverymanContext.cs" />
     <Compile Include="Order.cs" />
     <Compile Include="OrderContext.cs" />
