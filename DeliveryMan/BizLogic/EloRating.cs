@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 /// </summary>
 namespace BizLogic
 {
+
     public class EloRating
     {
         public double Point1 { get; set; }
