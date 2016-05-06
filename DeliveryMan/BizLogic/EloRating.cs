@@ -13,8 +13,6 @@ namespace BizLogic
     public class EloRating
     {
         public double Point1 { get; set; }
-
-
         public double Point2 { get; set; }
         public double FinalResult1 { get; set; }
         public double FinalResult2 { get; set; }
