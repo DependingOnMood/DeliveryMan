@@ -42,7 +42,6 @@
   <ItemGroup>
     <Compile Include="AccountViewModels.cs" />
     <Compile Include="Address.cs" />
-    <Compile Include="Class1.cs" />
     <Compile Include="Contact.cs" />
     <Compile Include="IdentityModels.cs" />
     <Compile Include="ManageViewModels.cs" />
