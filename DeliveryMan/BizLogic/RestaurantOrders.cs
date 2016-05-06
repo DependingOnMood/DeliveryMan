@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataLayer;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,33 +12,33 @@ namespace BizLogic
     /// </summary>
     public static class RestaurantOrders
     {
-        public static bool waiting(this RestaurantOrder order)
+        public static bool waiting(this Order order)
         {
-            if (order.status == "Waiting")
+            if (order.Status == Status.WAITING)
                 return true;
             else
                 return false;
         }
 
-        public static bool pending(this RestaurantOrder order)
+        public static bool pending(this Order order)
         {
-            if (order.status == "Pending")
+            if (order.Status == Status.PENDING)
                 return true;
             else
                 return false;
         }
 
-        public static bool inProgress(this RestaurantOrder order)
+        public static bool inProgress(this Order order)
         {
-            if (order.status == "InProgress")
+            if (order.Status == Status.INPROGRESS)
                 return true;
             else
                 return false;
         }
 
-        public static bool delivered(this RestaurantOrder order)
+        public static bool delivered(this Order order)
         {
-            if (order.status == "Delivered")
+            if (order.Status == Status.DELIVERED)
                 return true;
             else
                 return false;

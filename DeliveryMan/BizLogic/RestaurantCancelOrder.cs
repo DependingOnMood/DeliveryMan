@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DataLayer;
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +10,7 @@ namespace BizLogic
 {
     public static class RestaurantCancelOrder
     {
-        public static void isWaiting(this RestaurantOrder order)
+        public static void isWaiting(this Order order)
         {
             if (order.status == "Waiting")
                 isWaiting = true;
