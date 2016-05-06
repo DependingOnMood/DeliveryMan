@@ -52,6 +52,8 @@
     <Compile Include="Deliveryman.cs" />
     <Compile Include="DeliverymanContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Restaurant.cs" />
+    <Compile Include="RestaurantContext.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
