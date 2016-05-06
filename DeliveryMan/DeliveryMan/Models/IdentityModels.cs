@@ -26,13 +26,13 @@ namespace DeliveryMan.Models
             : base("DefaultConnection", throwIfV1Schema: false)
         {
         }
-        public System.Data.Entity.DbSet<Contact> contact { get; set; }
-        public System.Data.Entity.DbSet<Deliveryman> deliveryman { get; set; }
-        public System.Data.Entity.DbSet<Destination> destination { get; set; }
-        public System.Data.Entity.DbSet<Order> order { get; set; }
-        public System.Data.Entity.DbSet<Restaurant> restaurant { get; set; }
-        public System.Data.Entity.DbSet<Review> contacts { get; set; }
-        public System.Data.Entity.DbSet<Address> address { get; set; }
+        public System.Data.Entity.DbSet<Contact> contacts { get; set; }
+        public System.Data.Entity.DbSet<Deliveryman> deliverymen { get; set; }
+        public System.Data.Entity.DbSet<Destination> destinations { get; set; }
+        public System.Data.Entity.DbSet<Order> orders { get; set; }
+        public System.Data.Entity.DbSet<Restaurant> restaurants { get; set; }
+        public System.Data.Entity.DbSet<Review> reviews { get; set; }
+        public System.Data.Entity.DbSet<Address> addresses { get; set; }
 
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

@@ -11,112 +11,112 @@ using DeliveryMan.Models;
 
 namespace DeliveryMan.Controllers
 {
-    public class RestaurantController : Controller
+    public class DeliverymanController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: Restaurant
+        // GET: Deliveryman
         public ActionResult Index()
         {
-            var restaurant = db.restaurant.Include(r => r.Contact);
-            return View(restaurant.ToList());
+            var deliveryman = db.deliveryman.Include(d => d.Contact);
+            return View(deliveryman.ToList());
         }
 
-        // GET: Restaurant/OrderDetails/5
+        // GET: Deliveryman/OrderDetails/5
         public ActionResult OrderDetails(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Order order = db.db.restaurant.Find(id);
-            if (restaurant == null)
+            Deliveryman deliveryman = db.deliveryman.Find(id);
+            if (deliveryman == null)
             {
                 return HttpNotFound();
             }
-            return View(restaurant);
+            return View(deliveryman);
         }
 
-        // GET: Restaurant/Create
+        // GET: Deliveryman/Create
         public ActionResult Create()
         {
             ViewBag.CId = new SelectList(db.contact, "CId", "Name");
             return View();
         }
 
-        // POST: Restaurant/Create
+        // POST: Deliveryman/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,CId,IconImageUrl,Latitude,Longitude,Balance")] Restaurant restaurant)
+        public ActionResult Create([Bind(Include = "Id,CId,IconImageUrl,TotalDeliveryCount,TotalStarsEarned,Rating,Ranking,Balance")] Deliveryman deliveryman)
         {
             if (ModelState.IsValid)
             {
-                db.restaurant.Add(restaurant);
+                db.deliveryman.Add(deliveryman);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.CId = new SelectList(db.contact, "CId", "Name", restaurant.CId);
-            return View(restaurant);
+            ViewBag.CId = new SelectList(db.contact, "CId", "Name", deliveryman.CId);
+            return View(deliveryman);
         }
 
-        // GET: Restaurant/Edit/5
+        // GET: Deliveryman/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Restaurant restaurant = db.restaurant.Find(id);
-            if (restaurant == null)
+            Deliveryman deliveryman = db.deliveryman.Find(id);
+            if (deliveryman == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.CId = new SelectList(db.contact, "CId", "Name", restaurant.CId);
-            return View(restaurant);
+            ViewBag.CId = new SelectList(db.contact, "CId", "Name", deliveryman.CId);
+            return View(deliveryman);
         }
 
-        // POST: Restaurant/Edit/5
+        // POST: Deliveryman/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,CId,IconImageUrl,Latitude,Longitude,Balance")] Restaurant restaurant)
+        public ActionResult Edit([Bind(Include = "Id,CId,IconImageUrl,TotalDeliveryCount,TotalStarsEarned,Rating,Ranking,Balance")] Deliveryman deliveryman)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(restaurant).State = EntityState.Modified;
+                db.Entry(deliveryman).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.CId = new SelectList(db.contact, "CId", "Name", restaurant.CId);
-            return View(restaurant);
+            ViewBag.CId = new SelectList(db.contact, "CId", "Name", deliveryman.CId);
+            return View(deliveryman);
         }
 
-        // GET: Restaurant/Delete/5
+        // GET: Deliveryman/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Restaurant restaurant = db.restaurant.Find(id);
-            if (restaurant == null)
+            Deliveryman deliveryman = db.deliveryman.Find(id);
+            if (deliveryman == null)
             {
                 return HttpNotFound();
             }
-            return View(restaurant);
+            return View(deliveryman);
         }
 
-        // POST: Restaurant/Delete/5
+        // POST: Deliveryman/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Restaurant restaurant = db.restaurant.Find(id);
-            db.restaurant.Remove(restaurant);
+            Deliveryman deliveryman = db.deliveryman.Find(id);
+            db.deliveryman.Remove(deliveryman);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
