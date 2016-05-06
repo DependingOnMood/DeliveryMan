@@ -23,7 +23,10 @@ namespace DataLayer
         [Phone]
         public string PhoneNumber { get; set; }
 
-        public Address Address { get; set; }
+        public int AddressId { get; set; }
+
+        [ForeignKey("AddressId")]
+        public virtual Address address { get; set; }
     }
 
     public enum Role
