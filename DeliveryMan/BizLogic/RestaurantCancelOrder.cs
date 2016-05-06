@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataLayer;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,68 +9,33 @@ namespace BizLogic
 {
     public static class RestaurantCancelOrder
     {
-        public static void isWaiting(this RestaurantOrder order)
+        public static decimal cancellationFee(this Order order)
         {
-            if (order.status == "Waiting")
-                isWaiting = true;
-            else
-                isWaiting = false;
-        }
-
-        public static void isPending(this RestaurantOrder order)
-        {
-            if (order.status == "Pending")
-                isPending = true;
-            else
-                isPending = false;
-        }
-
-        public static void isInProgress(this RestaurantOrder order)
-        {
-            if (order.status == "InProgress")
-                isInProgress = true;
-            else
-                isInProgress = false;
-        }
-        public static void isDelivered(this RestaurantOrder order)
-        {
-            if (order.status == "Delivered")
-                isDelivered = true;
-            else
-                isDelivered = false;
-        }
-
-        public static void cancelLock(this RestaurantOrder order)
-        {
-            if (order.status == "InProgress")
-                cancelLock = true;
-            else
-                cancelLock = false;
-        }
-
-        public static double cancellationFee(this RestaurantOrder order)
-        {
-            if (isWaiting(order))
+            switch (order.Status)
             {
-                return 0;
-            }
-
-            if (isPending(order)
-            {
-                if (order.PlacedTime.AddMinutes(5) <= DateTime.Now)
-                {
-                    return 0;
-                }
-                else
-                {
-                    return feeCalculation(distance, order.DeliveryFee);
-                }
+                case Status.WAITING:
+                    return 0M;
+                case Status.PENDING:
+                    if (order.PlacedTime.AddMinutes(5) <= DateTime.Now)
+                    {
+                        return 0M;
+                    }
+                    else
+                    {
+                        return feeCalculation(order.DeliveryFee);
+                    }
+                case Status.INPROGRESS:
+                    return 0M;
+                case Status.DELIVERED:
+                    return 0M;
+                default:
+                    return 0M;
             }
         }
 
-        public void feeCalculation(double distance, double deliveryFee)
+        private static decimal feeCalculation(decimal deliveryFee)
         {
-
+            return deliveryFee / 2;
         }
     }
 }
