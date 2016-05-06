@@ -12,7 +12,6 @@ namespace BizLogic
         //Given address information returns latitude and longitude
         public String getLatandLngByAddr(String addr)
         {
-
             var address = addr;
             //var address = "110 Riverdrive south";
             var requestUri = string.Format("http://maps.googleapis.com/maps/api/geocode/xml?address={0}&sensor=false", Uri.EscapeDataString(address));
