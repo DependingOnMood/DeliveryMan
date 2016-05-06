@@ -50,7 +50,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CreateOrderLogic.cs" />
-    <Compile Include="EloRating.cs" />
     <Compile Include="FindOrders.cs" />
     <Compile Include="GoogleMapHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
