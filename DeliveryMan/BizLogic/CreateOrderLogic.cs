@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace BizLogic
 {
     class CreateOrderLogic
-    {
+    {   
         public decimal computePrice(double distance, decimal orderFee) {
             decimal price = 0;
             if (distance >= 0 && distance < 5)

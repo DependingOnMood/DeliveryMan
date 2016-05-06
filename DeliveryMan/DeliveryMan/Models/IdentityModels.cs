@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using DataLayer;
 
 namespace DeliveryMan.Models
 {
@@ -24,6 +25,13 @@ namespace DeliveryMan.Models
             : base("DefaultConnection", throwIfV1Schema: false)
         {
         }
+        public System.Data.Entity.DbSet<Contact> contact { get; set; }
+        public System.Data.Entity.DbSet<Deliveryman> deliveryman { get; set; }
+        public System.Data.Entity.DbSet<Destination> destination { get; set; }
+        public System.Data.Entity.DbSet<Order> order { get; set; }
+        public System.Data.Entity.DbSet<Restaurant> restaurant { get; set; }
+        public System.Data.Entity.DbSet<Review> contacts { get; set; }
+        public System.Data.Entity.DbSet<Address> address { get; set; }
 
         public static ApplicationDbContext Create()
         {

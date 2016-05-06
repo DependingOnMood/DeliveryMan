@@ -18,8 +18,10 @@ namespace DataLayer
         [ForeignKey("OrderId")]
         public virtual Order order { get; set; }
 
+        //if req
         public string ReviewText { get; set; }
 
+        [Required]
         public int Rating { get; set; }
     }
 }

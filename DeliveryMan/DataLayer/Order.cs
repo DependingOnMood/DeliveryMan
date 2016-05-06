@@ -23,25 +23,28 @@ namespace DataLayer
         public int DeliverymanId { get; set; }
 
         [ForeignKey("DeliverymanId")]
-        public virtual Restaurant Deliveryman { get; set; }
+        public virtual Deliveryman Deliveryman { get; set; }
 
         public int DestinationId { get; set; }
 
         [ForeignKey("DestinationId")]
-        public virtual Restaurant Destination { get; set; }
+        public virtual Destination Destination { get; set; }
 
         public Status Status { get; set; }
 
         public string Note { get; set; }
 
+        [Required]
         public DateTime PlacedTime { get; set; }
+
 
         public DateTime PickUpTime { get; set; }
 
         public DateTime DeliveredTime { get; set; }
-
+        //if required
         public TimeSpan ETA { get; set; }
 
+        [Required]
         public decimal DeliveryFee { get; set; }
     }
 
