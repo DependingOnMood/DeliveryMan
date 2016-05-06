@@ -15,6 +15,9 @@ namespace DataLayer
 
         public int OrderId {get; set;}
 
+        [ForeignKey("OrderId")]
+        public virtual Order order { get; set; }
+
         public string ReviewText { get; set; }
 
         public int Rating { get; set; }
