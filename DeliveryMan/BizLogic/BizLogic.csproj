@@ -40,7 +40,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
     <Compile Include="CreateOrderLogic.cs" />
     <Compile Include="EloRating.cs" />
     <Compile Include="FindOrders.cs" />
