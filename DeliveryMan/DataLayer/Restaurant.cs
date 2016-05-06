@@ -14,9 +14,7 @@ namespace DataLayer
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        public int ContactId { get; set; }
-
-        [ForeignKey("ContactId")]
+        public int CId { get; set; }
         public virtual Contact Contact { get; set; }
 
         [Url]
