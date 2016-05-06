@@ -5,7 +5,7 @@ using System.Net;
 using System.Web;
 using System.Xml.Linq;
 
-namespace ConsoleApplication1
+namespace BizLogic
 {
     public class GoogleMapHelper
     {

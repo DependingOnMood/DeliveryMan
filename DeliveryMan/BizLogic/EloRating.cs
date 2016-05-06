@@ -8,11 +8,12 @@ using System.Threading.Tasks;
 /// This is the Elo Rating Class we are currently using, the final algoirhtm that we will 
 /// implement to calculate deliveryman ratings might vary.
 /// </summary>
-namespace BusinessLogic
+namespace BizLogic
 {
     public class EloRating
     {
         public double Point1 { get; set; }
+
 
         public double Point2 { get; set; }
         public double FinalResult1 { get; set; }
