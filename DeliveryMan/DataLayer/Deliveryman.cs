@@ -14,9 +14,8 @@ namespace DataLayer
             [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
             public int Id { get; set; }
 
-            public int ContactId { get; set; }
+            public int CId { get; set; }
 
-            [ForeignKey("ContactId")]
             public virtual Contact Contact { get; set; }
 
             [Url]
@@ -34,4 +33,3 @@ namespace DataLayer
             public decimal Balance { get; set; }
         }
     }
-}

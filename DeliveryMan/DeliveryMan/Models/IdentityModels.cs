@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using DataLayer;
+using System.Data.Entity.ModelConfiguration.Conventions;
 
 namespace DeliveryMan.Models
 {
@@ -32,6 +33,16 @@ namespace DeliveryMan.Models
         public System.Data.Entity.DbSet<Restaurant> restaurant { get; set; }
         public System.Data.Entity.DbSet<Review> contacts { get; set; }
         public System.Data.Entity.DbSet<Address> address { get; set; }
+
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
+            //modelBuilder.Conventions.Remove<ManyToManyCascadeDeleteConvention>();
+
+        }
 
         public static ApplicationDbContext Create()
         {

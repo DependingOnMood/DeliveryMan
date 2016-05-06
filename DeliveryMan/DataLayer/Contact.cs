@@ -11,7 +11,7 @@ namespace DataLayer
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public int CId { get; set; }
 
         [Required]
         public Role Role { get; set; }
