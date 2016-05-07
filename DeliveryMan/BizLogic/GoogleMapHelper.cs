@@ -12,6 +12,7 @@ namespace BizLogic
         //Given address information returns latitude and longitude
         public String getLatandLngByAddr(String addr)
         {
+
             var address = addr;
             //var address = "110 Riverdrive south";
             var requestUri = string.Format("http://maps.googleapis.com/maps/api/geocode/xml?address={0}&sensor=false", Uri.EscapeDataString(address));
@@ -28,14 +29,13 @@ namespace BizLogic
             String[] res2 = lng.ToString().Split('<');
             String _lat = res1[1].Substring(4);
             String _lng = res2[1].Substring(4);
-            return _lat +" "+ _lng;
-            
+            return _lat + " " + _lng;
         }
 
         public String getRoute(String addr1, String addr2)
         {
-            var requestUri = string.Format("https://maps.googleapis.com/maps/api/directions/xml?origin={0}&destination={1}",addr1,addr2);
-            //var requestUri = "https://maps.googleapis.com/maps/api/directions/xml?origin=110%20riverdrive%20south&destination=washiton%20square";
+            var requestUri = string.Format("https://maps.googleapis.com/maps/api/directions/xml?origin={0}&destination={1}", addr1, addr2);
+            //var requestUri = "https://maps.googleapis.com/maps/api/directions/xml?origin=110%20riverdrive%20south&destination=New%20York%20University";
 
             var request = WebRequest.Create(requestUri);
             var response = request.GetResponse();
@@ -48,12 +48,14 @@ namespace BizLogic
             String duText = duration.Element("text").ToString().Split('<')[1].Substring(5);
             String disValue = distance.Element("value").ToString().Split('<')[1].Substring(6);
             String disText = distance.Element("text").ToString().Split('<')[1].Substring(5);
-            String res = duValue + " " + duText + " " + disValue + " " + disText;
+            String res = duValue + "#" + duText + "#" + disValue + "#" + disText;
+            //String res = 
             return res;
         }
 
         //Compute distance between two locations by given latitude and longitude pairs
-        public double computeDistanceByLocation(String loc1, String loc2) {
+        public double computeDistanceByLocation(String loc1, String loc2)
+        {
 
             double lat1 = Double.Parse(loc1.Split(' ')[0]);
             double lon1 = Double.Parse(loc1.Split(' ')[1]);
@@ -83,17 +85,6 @@ namespace BizLogic
         {
             return (rad / Math.PI * 180.0);
         }
-
-
-
-        static void Main(string[] args)
-        {
-            GoogleMapHelper helper = new GoogleMapHelper();
-            //String res = helper.getLatandLngByAddr("110 Riverdrive south");         
-            String res =  helper.getRoute("110 riverdrive south", "New York University");
-            Console.WriteLine(res);
-        }
-
-
+     
     }
 }
