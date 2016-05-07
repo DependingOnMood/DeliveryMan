@@ -26,5 +26,10 @@ namespace DataLayer
 
         [Required]
         public string ZipCode { get; set; }
+
+        public override string ToString()
+        {
+            return Line1 + Line2 + City + State;
+        }
     }
 }
