@@ -35,5 +35,9 @@ namespace DeliveryMan.Models
         [Required]
         [DataType(DataType.PostalCode)]
         public string ZipCode { get; set; }
+
+        [Required]
+        [Phone]
+        public string PhoneNumber { get; set; }
     }
 }

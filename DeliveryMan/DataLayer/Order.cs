@@ -25,7 +25,7 @@ namespace DataLayer
         [ForeignKey("DeliverymanId")]
         public virtual Deliveryman Deliveryman { get; set; }
 
-        public int ContactId { get; set; }
+        public string ContactId { get; set; }
 
         [ForeignKey("ContactId")]
         public virtual Contact Contact { get; set; }
