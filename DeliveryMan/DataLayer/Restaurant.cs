@@ -25,10 +25,5 @@ namespace DataLayer
         public string IconImageUrl { get; set; }
 
         public decimal Balance { get; set; }
-
-        public int BlacklistId { get; set; }
-
-        [ForeignKey("BlacklistId")]
-        public virtual Blacklist Blacklist { get; set; }
     }
 }
