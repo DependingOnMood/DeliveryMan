@@ -157,7 +157,6 @@ namespace DeliveryMan.Controllers
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
                 var result = await UserManager.CreateAsync(user, model.Password);
 
-
                 if (result.Succeeded)
                 {
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
@@ -166,28 +165,37 @@ namespace DeliveryMan.Controllers
                     Contact newContact = new Contact();
 
                     // add to contact table
-                    newContact.Name = model.FirstName + " " + model.LastName;
-                    newContact.Email = model.Email;
                     newContact.PhoneNumber = model.PhoneNumber;
-                    newContact.AddressId = newAddr.Id;
+                    newContact.Email = model.Email;
+                    newContact.AddressLine1 = model.AddressLine1;
+                    newContact.AddressLine2 = model.AddressLine2;
+                    newContact.City = model.AddressCity;
+                    newContact.State = model.AddressState;
+                    newContact.ZipCode = model.AddressZipCode;
 
-                    if (model.Role.ToLower() == "deliveryman")
+                    if (button == "Register_Deliveryman")
                     {
                         newContact.Role = Role.DELIVERYMAN;
                         // add to deliveryman table 
                         Deliveryman newDeliveryman = new Deliveryman();
-                        newDeliveryman.Name = newContact.Name;
-                        newDeliveryman.CId = newContact.CId;
+
+                        newDeliveryman.FirstName = model.FirstName;
+                        newDeliveryman.LastName = model.LastName;
+
+                        newDeliveryman.ContactId = newContact.PhoneNumber;
 
                         db.deliverymen.Add(newDeliveryman);
                     }
-                    else if (model.Role.ToLower() == "restaurant")
+                    else if (button == "Register_Restaurant")
                     {
                         newContact.Role = Role.RESTAUTANT;
                         // add to restaurant table 
+
                         Restaurant newRestaurant = new Restaurant();
-                        newRestaurant.Name = newContact.Name;
-                        newRestaurant.CId = newContact.CId;
+
+                        newRestaurant.Name = model.RestaurantName;
+
+                        newRestaurant.ContactId = newContact.PhoneNumber;
 
                         db.restaurants.Add(newRestaurant);
                     }
@@ -195,16 +203,7 @@ namespace DeliveryMan.Controllers
                         newContact.Role = Role.CUSTOMER;
                     }
 
-                    // add to address table
-                    newAddr.Line1 = model.AddressLine1;
-                    newAddr.Line2 = model.AddressLine2;
-                    newAddr.City = model.AddressCity;
-                    newAddr.State = model.AddressState;
-                    newAddr.ZipCode = model.AddressZipCode;
-
-
                     db.contacts.Add(newContact);
-                    db.addresses.Add(newAddr);
 
                     db.SaveChanges();
 
