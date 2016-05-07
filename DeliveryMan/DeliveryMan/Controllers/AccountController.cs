@@ -173,7 +173,7 @@ namespace DeliveryMan.Controllers
                     newContact.State = model.AddressState;
                     newContact.ZipCode = model.AddressZipCode;
 
-                    if (button == "Register_Deliveryman")
+                    if (button == "Register Deliveryman")
                     {
                         newContact.Role = Role.DELIVERYMAN;
                         // add to deliveryman table 
@@ -186,13 +186,12 @@ namespace DeliveryMan.Controllers
 
                         db.deliverymen.Add(newDeliveryman);
                     }
-                    else if (button == "Register_Restaurant")
+                    else if (button == "Register Restaurant")
                     {
                         newContact.Role = Role.RESTAUTANT;
                         // add to restaurant table 
 
                         Restaurant newRestaurant = new Restaurant();
-
 
                         newRestaurant.Name = model.RestaurantName;
 
