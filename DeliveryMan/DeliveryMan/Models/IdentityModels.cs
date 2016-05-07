@@ -31,7 +31,7 @@ namespace DeliveryMan.Models
         public System.Data.Entity.DbSet<Order> orders { get; set; }
         public System.Data.Entity.DbSet<Restaurant> restaurants { get; set; }
         public System.Data.Entity.DbSet<Review> reviews { get; set; }
-
+        public System.Data.Entity.DbSet<Blacklist> blacklists { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
