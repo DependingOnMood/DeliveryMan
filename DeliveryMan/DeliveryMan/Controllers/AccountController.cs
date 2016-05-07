@@ -178,6 +178,7 @@ namespace DeliveryMan.Controllers
                     else
                         newContact.Role = Role.CUSTOMER;
 
+
                     newAddr.Line1 = model.AddressLine1;
                     newAddr.Line2 = model.AddressLine2;
                     newAddr.City = model.AddressCity;
