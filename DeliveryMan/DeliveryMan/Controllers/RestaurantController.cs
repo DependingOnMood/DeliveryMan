@@ -64,31 +64,6 @@ namespace DeliveryMan.Controllers
             return View(order);
         }
 
-        // GET: Restaurant/Create
-        public ActionResult Create()
-        {
-            ViewBag.CId = new SelectList(db.contact, "CId", "Name");
-            return View();
-        }
-
-        // POST: Restaurant/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,CId,IconImageUrl,Latitude,Longitude,Balance")] Restaurant restaurant)
-        {
-            if (ModelState.IsValid)
-            {
-                db.restaurant.Add(restaurant);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            ViewBag.CId = new SelectList(db.contact, "CId", "Name", restaurant.CId);
-            return View(restaurant);
-        }
-
         // GET: Restaurant/EditOrder/5
         public ActionResult EditOrder(int? id)
         {
@@ -243,14 +218,14 @@ namespace DeliveryMan.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Deliveryman dm = (from dm in db.deliverymen
+            Deliveryman deliveryman = (from dm in db.deliverymen
                               where dm.Id == id
                               select dm).FirstOrDefault();
-            if (dm == null)
+            if (deliveryman == null)
             {
                 return HttpNotFound();
             }
-            return View(dm);
+            return View(deliveryman);
         }
 
         // GET: Restaurant/AddToBlacklist/5

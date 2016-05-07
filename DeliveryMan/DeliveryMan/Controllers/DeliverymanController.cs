@@ -16,10 +16,9 @@ namespace DeliveryMan.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Deliveryman
-        public ActionResult Index()
+        public ActionResult Orders()
         {
-            var deliveryman = db.deliveryman.Include(d => d.Contact);
-            return View(deliveryman.ToList());
+            return View();
         }
 
         // GET: Deliveryman/OrderDetails/5
@@ -29,96 +28,82 @@ namespace DeliveryMan.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Deliveryman deliveryman = db.deliveryman.Find(id);
+            Order order = (from o in db.orders
+                           where o.Id == id
+                           select o).FirstOrDefault();
+
+            if (order == null)
+            {
+                return HttpNotFound();
+            }
+            return View(order);
+        }
+
+        // GET: Deliveryman/MyOrders
+        public ActionResult MyOrders()
+        {
+            Deliveryman deli = (from dm in db.deliverymen
+                                where dm.Name.Equals(User.Identity.Name)
+                                select dm).FirstOrDefault();
+            if (deli == null)
+            {
+                return HttpNotFound();
+            }
+            IEnumerable<Order> orders = from o in db.orders
+                                        where o.DeliverymanId == deli.Id
+                                        select o;
+            return View(orders);
+        }
+
+        // POST: Deliveryman/CancelPickup/5
+        public ActionResult CancelPickup(int id)
+        {
+            Deliveryman deliveryman = (from dm in db.deliverymen
+                                       where dm.Name.Equals(User.Identity.Name)
+                                       select dm).FirstOrDefault();
             if (deliveryman == null)
             {
                 return HttpNotFound();
             }
-            return View(deliveryman);
-        }
-
-        // GET: Deliveryman/Create
-        public ActionResult Create()
-        {
-            ViewBag.CId = new SelectList(db.contact, "CId", "Name");
-            return View();
-        }
-
-        // POST: Deliveryman/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,CId,IconImageUrl,TotalDeliveryCount,TotalStarsEarned,Rating,Ranking,Balance")] Deliveryman deliveryman)
-        {
-            if (ModelState.IsValid)
+            Order order = (from o in db.orders
+                           where o.Id == id
+                           where o.Status == Status.PENDING
+                           where o.DeliverymanId == deliveryman.Id
+                           select o).FirstOrDefault();
+            if (order == null)
             {
-                db.deliveryman.Add(deliveryman);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                return HttpNotFound();
             }
+            //order.Status = Status.WAITING;
+            //order.DeliverymanId = 0;
+            //db.SaveChanges();
+            return RedirectToAction("Orders");
 
-            ViewBag.CId = new SelectList(db.contact, "CId", "Name", deliveryman.CId);
-            return View(deliveryman);
         }
 
-        // GET: Deliveryman/Edit/5
-        public ActionResult Edit(int? id)
+        // POST: Deliveryman/CompleteOrder/5
+        public ActionResult CompleteOrder(int id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Deliveryman deliveryman = db.deliveryman.Find(id);
+            Deliveryman deliveryman = (from dm in db.deliverymen
+                                       where dm.Name.Equals(User.Identity.Name)
+                                       select dm).FirstOrDefault();
             if (deliveryman == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.CId = new SelectList(db.contact, "CId", "Name", deliveryman.CId);
-            return View(deliveryman);
-        }
-
-        // POST: Deliveryman/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,CId,IconImageUrl,TotalDeliveryCount,TotalStarsEarned,Rating,Ranking,Balance")] Deliveryman deliveryman)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(deliveryman).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            ViewBag.CId = new SelectList(db.contact, "CId", "Name", deliveryman.CId);
-            return View(deliveryman);
-        }
-
-        // GET: Deliveryman/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Deliveryman deliveryman = db.deliveryman.Find(id);
-            if (deliveryman == null)
+            Order order = (from o in db.orders
+                           where o.Id == id
+                           where o.Status == Status.INPROGRESS
+                           where o.DeliverymanId == deliveryman.Id
+                           select o).FirstOrDefault();
+            if (order == null)
             {
                 return HttpNotFound();
             }
-            return View(deliveryman);
-        }
-
-        // POST: Deliveryman/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Deliveryman deliveryman = db.deliveryman.Find(id);
-            db.deliveryman.Remove(deliveryman);
+            order.Status = Status.DELIVERED;
+            order.DeliveredTime = DateTime.Now;
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Orders");
         }
 
         protected override void Dispose(bool disposing)
