@@ -14,7 +14,8 @@ namespace DataLayer
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        public int CId { get; set; }
+        public string ContactId { get; set; }
+
         public virtual Contact Contact { get; set; }
 
         public string Name { get; set; }
@@ -23,12 +24,11 @@ namespace DataLayer
         [Display(Name = "Insert your icon image URL.")]
         public string IconImageUrl { get; set; }
 
-        public decimal Latitude { get; set; }
-
-        public decimal Longitude { get; set; }
-
         public decimal Balance { get; set; }
 
-        public virtual ICollection<Deliveryman> BadDeliverymen { get; set; }
+        public int BlacklistId { get; set; }
+
+        [ForeignKey("BlacklistId")]
+        public virtual Blacklist Blacklist { get; set; }
     }
 }

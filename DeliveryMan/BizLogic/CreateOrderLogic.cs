@@ -10,11 +10,11 @@ namespace BizLogic
     {   
         public decimal computePrice(double distance, decimal orderFee) {
             decimal price = 0;
-            if (distance >= 0 && distance < 5)
+            if (distance >= 0 && distance < 1)
             {
                 price = 0.15M * orderFee;
             }
-            else if (distance >= 5 && distance < 10)
+            else if (distance >= 1 && distance < 3)
             {
                 price = 0.20M * orderFee;
             }
@@ -33,13 +33,11 @@ namespace BizLogic
             return res;
         }
 
-        public DateTime getETA(String addr1, String addr2) {
-            DateTime res = new DateTime();
+        public String getETA(String addr1, String addr2) {
             GoogleMapHelper helper = new GoogleMapHelper();
             String str = helper.getRoute(addr1, addr2);
-            TimeSpan span = TimeSpan.Parse(str.Split(' ')[1]);
-            res.Add(span);
-            return res;
+            String span = str.Split(' ')[1];
+            return span;
         }
 
     }

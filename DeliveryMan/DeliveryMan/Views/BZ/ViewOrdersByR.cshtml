@@ -1,0 +1,50 @@
+﻿@using DataLayer
+@{
+    ViewBag.Title = "ViewOrdersByR";
+}
+
+<h2>ViewOrdersByR</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Restaurant
+        </th>
+        <th>
+            Destination
+        </th>
+        <th>
+            Delivery Fee
+        </th>
+        <th>
+            ETA
+        </th>
+    </tr>
+
+@foreach (Order item in (List<Order>)ViewBag.res) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Restaurant.Contact.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Destination.Contact.Address.ToString())
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DeliveryFee)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ETA)
+        </td>
+      
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>

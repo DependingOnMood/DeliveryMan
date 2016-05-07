@@ -25,10 +25,10 @@ namespace DataLayer
         [ForeignKey("DeliverymanId")]
         public virtual Deliveryman Deliveryman { get; set; }
 
-        public int DestinationId { get; set; }
+        public string ContactId { get; set; }
 
-        [ForeignKey("DestinationId")]
-        public virtual Destination Destination { get; set; }
+        [ForeignKey("ContactId")]
+        public virtual Contact Contact { get; set; }
 
         public Status Status { get; set; }
 
@@ -37,10 +37,10 @@ namespace DataLayer
         [Required]
         public DateTime PlacedTime { get; set; }
 
-
         public DateTime PickUpTime { get; set; }
 
         public DateTime DeliveredTime { get; set; }
+
         //if required
         public TimeSpan ETA { get; set; }
 

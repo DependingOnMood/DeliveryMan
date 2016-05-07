@@ -150,13 +150,12 @@ namespace DeliveryMan.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterViewModel model)
+        public async Task<ActionResult> Register(RegisterViewModel model, string button)
         {
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
                 var result = await UserManager.CreateAsync(user, model.Password);
-
 
                 if (result.Succeeded)
                 {
@@ -164,29 +163,47 @@ namespace DeliveryMan.Controllers
 
                     // add user to database
                     Contact newContact = new Contact();
-                    Address newAddr = new Address();
 
-                    newContact.Name = model.FirstName + " " + model.LastName;
-                    newContact.Email = model.Email;
+                    // add to contact table
                     newContact.PhoneNumber = model.PhoneNumber;
-                    newContact.AddressId = newAddr.Id;
+                    newContact.Email = model.Email;
+                    newContact.AddressLine1 = model.AddressLine1;
+                    newContact.AddressLine2 = model.AddressLine2;
+                    newContact.City = model.AddressCity;
+                    newContact.State = model.AddressState;
+                    newContact.ZipCode = model.AddressZipCode;
 
-                    if (model.Role.ToLower() == "deliveryman")
+                    if (button == "Register Deliveryman")
+                    {
                         newContact.Role = Role.DELIVERYMAN;
-                    else if (model.Role.ToLower() == "restaurant")
+                        // add to deliveryman table 
+                        Deliveryman newDeliveryman = new Deliveryman();
+
+                        newDeliveryman.FirstName = model.FirstName;
+                        newDeliveryman.LastName = model.LastName;
+
+                        newDeliveryman.ContactId = newContact.PhoneNumber;
+
+                        db.deliverymen.Add(newDeliveryman);
+                    }
+                    else if (button == "Register Restaurant")
+                    {
                         newContact.Role = Role.RESTAUTANT;
-                    else
+                        // add to restaurant table 
+
+                        Restaurant newRestaurant = new Restaurant();
+
+                        newRestaurant.Name = model.RestaurantName;
+
+                        newRestaurant.ContactId = newContact.PhoneNumber;
+
+                        db.restaurants.Add(newRestaurant);
+                    }
+                    else {
                         newContact.Role = Role.CUSTOMER;
-
-
-                    newAddr.Line1 = model.AddressLine1;
-                    newAddr.Line2 = model.AddressLine2;
-                    newAddr.City = model.AddressCity;
-                    newAddr.State = model.AddressState;
-                    newAddr.ZipCode = model.AddressZipCode;
+                    }
 
                     db.contacts.Add(newContact);
-                    db.addresses.Add(newAddr);
 
                     db.SaveChanges();
 

@@ -26,6 +26,8 @@ namespace DeliveryMan.Models
         [DataType(DataType.PostalCode)]
         public string zipCode { get; set; }
 
+        [Required]
+        public double distance { get; set; }
 
 
 

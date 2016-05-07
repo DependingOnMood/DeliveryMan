@@ -7,6 +7,8 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 
+    <link href="~/Content/RegisterTabs.css" rel="stylesheet" />
+
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -17,7 +19,8 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a herf ="~/Home/Index" class= "logoclass"></a>
+                @Html.ActionLink("Application name", "Index", "Home", new { @class = "logoclass"})
+                <a href="~/Home/Index" class="logoclass"></a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
