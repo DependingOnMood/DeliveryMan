@@ -150,7 +150,7 @@ namespace DeliveryMan.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterViewModel model)
+        public async Task<ActionResult> Register(RegisterViewModel model, string button)
         {
             if (ModelState.IsValid)
             {
@@ -164,29 +164,47 @@ namespace DeliveryMan.Controllers
 
                     // add user to database
                     Contact newContact = new Contact();
-                //    Address newAddr = new Address();
 
-                //    newContact.Name = model.FirstName + " " + model.LastName;
-                  //  newContact.Email = model.Email;
-                   // newContact.PhoneNumber = model.PhoneNumber;
-                   // newContact.AddressId = newAddr.Id;
+                    // add to contact table
+                    newContact.Name = model.FirstName + " " + model.LastName;
+                    newContact.Email = model.Email;
+                    newContact.PhoneNumber = model.PhoneNumber;
+                    newContact.AddressId = newAddr.Id;
 
                     if (model.Role.ToLower() == "deliveryman")
+                    {
                         newContact.Role = Role.DELIVERYMAN;
+                        // add to deliveryman table 
+                        Deliveryman newDeliveryman = new Deliveryman();
+                        newDeliveryman.Name = newContact.Name;
+                        newDeliveryman.CId = newContact.CId;
+
+                        db.deliverymen.Add(newDeliveryman);
+                    }
                     else if (model.Role.ToLower() == "restaurant")
+                    {
                         newContact.Role = Role.RESTAUTANT;
-                    else
+                        // add to restaurant table 
+                        Restaurant newRestaurant = new Restaurant();
+                        newRestaurant.Name = newContact.Name;
+                        newRestaurant.CId = newContact.CId;
+
+                        db.restaurants.Add(newRestaurant);
+                    }
+                    else {
                         newContact.Role = Role.CUSTOMER;
+                    }
 
+                    // add to address table
+                    newAddr.Line1 = model.AddressLine1;
+                    newAddr.Line2 = model.AddressLine2;
+                    newAddr.City = model.AddressCity;
+                    newAddr.State = model.AddressState;
+                    newAddr.ZipCode = model.AddressZipCode;
 
-              //      newAddr.Line1 = model.AddressLine1;
-               //     newAddr.Line2 = model.AddressLine2;
-                //    newAddr.City = model.AddressCity;
-                  //  newAddr.State = model.AddressState;
-                   // newAddr.ZipCode = model.AddressZipCode;
 
                     db.contacts.Add(newContact);
-              ///      db.addresses.Add(newAddr);
+                    db.addresses.Add(newAddr);
 
                     db.SaveChanges();
 
