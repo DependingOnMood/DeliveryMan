@@ -13,11 +13,11 @@ namespace DeliveryMan
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-            routes.MapRoute(
-                name: "Restaurant",
-                url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Restaurant", action = "Orders", id = UrlParameter.Optional }
-            );
+            //routes.MapRoute(
+            //    name: "Restaurant",
+            //    url: "{controller}/{action}/{id}",
+            //    defaults: new { controller = "Restaurant", action = "Orders", id = UrlParameter.Optional }
+            //);
 
             routes.MapRoute(
                 name: "Default",
