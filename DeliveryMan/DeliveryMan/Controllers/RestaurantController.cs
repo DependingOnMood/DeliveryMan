@@ -51,27 +51,41 @@ namespace DeliveryMan.Controllers
                     City = model.City,
                     State = model.State,
                     ZipCode = model.ZipCode,
-                    //calc latitude
-                    //calc longitude
                 };
+                String totalAddress = model.AddressLine1 + " " + model.AddressLine2 + " " + model.City + " " + model.State + " " + model.ZipCode;
+                GoogleMapHelper helper = new GoogleMapHelper();
+                String latAndLong = helper.getLatandLngByAddr(totalAddress);
+                contact.Latitude = Decimal.Parse(latAndLong.Split(' ')[0]);
+                contact.Longitude = Decimal.Parse(latAndLong.Split(' ')[1]);
                 db.contacts.Add(contact);
             }
             else
             {
+                bool changed = false;
                 if (!contact.AddressLine1.Equals(model.AddressLine1))
                 {
                     contact.AddressLine1 = model.AddressLine1;
-                    
+                    changed = true;
                 }
                 if (model.AddressLine2 != null && contact.AddressLine2 != null && !contact.AddressLine2.Equals(model.AddressLine2))
                 {
                     contact.AddressLine2 = model.AddressLine2;
+                    changed = true;
                 }
                 if (!contact.City.Equals(model.City) || !contact.State.Equals(model.State) || !contact.ZipCode.Equals(model.ZipCode))
                 {
                     contact.City = model.City;
                     contact.State = model.State;
                     contact.ZipCode = model.ZipCode;
+                    changed = true;
+                }
+                if (changed)
+                {
+                    String totalAddress = model.AddressLine1 + " " + model.AddressLine2 + " " + model.City + " " + model.State + " " + model.ZipCode;
+                    GoogleMapHelper helper = new GoogleMapHelper();
+                    String latAndLong = helper.getLatandLngByAddr(totalAddress);
+                    contact.Latitude = Decimal.Parse(latAndLong.Split(' ')[0]);
+                    contact.Longitude = Decimal.Parse(latAndLong.Split(' ')[1]);
                 }
             }
             db.SaveChanges();
