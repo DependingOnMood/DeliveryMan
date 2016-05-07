@@ -1,6 +1,4 @@
-﻿@using DeliveryMan.Models
-
-@model RegisterViewModel
+﻿@model DeliveryMan.Models.RegisterViewModel
 
 @{
     ViewBag.Title = "Register";
@@ -16,7 +14,7 @@
     @Html.ValidationSummary("", new { @class = "text-danger" })
 
     <div class="form-group">
-        @Html.LabelFor(m => m.Fir, new { @class = "col-md-2 control-label" })
+        @Html.LabelFor(m => m.FirstName, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
             @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
         </div>
