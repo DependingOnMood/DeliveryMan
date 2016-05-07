@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BizLogic
 {
-    class CreateOrderLogic
+    public class CreateOrderLogic
     {   
         public decimal computePrice(double distance, decimal orderFee) {
             decimal price = 0;
