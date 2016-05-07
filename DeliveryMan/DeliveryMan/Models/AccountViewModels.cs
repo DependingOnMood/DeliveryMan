@@ -110,6 +110,7 @@ namespace DeliveryMan.Models
 
         [Required]
         [Display(Name = "Zip Code")]
+        [DataType(DataType.PostalCode)]
         public string AddressZipCode { get; set; }
     }
 
