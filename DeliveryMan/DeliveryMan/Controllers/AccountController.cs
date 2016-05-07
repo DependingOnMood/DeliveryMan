@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using DeliveryMan.Models;
+using DataLayer;
 
 namespace DeliveryMan.Controllers
 {
@@ -18,11 +19,13 @@ namespace DeliveryMan.Controllers
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
+        private ApplicationDbContext db = new ApplicationDbContext();
+
         public AccountController()
         {
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
@@ -34,9 +37,9 @@ namespace DeliveryMan.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -120,7 +123,7 @@ namespace DeliveryMan.Controllers
             // If a user enters incorrect codes for a specified amount of time then the user account 
             // will be locked out for a specified amount of time. 
             // You can configure the account lockout settings in IdentityConfig
-            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent:  model.RememberMe, rememberBrowser: model.RememberBrowser);
+            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent: model.RememberMe, rememberBrowser: model.RememberBrowser);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -153,18 +156,36 @@ namespace DeliveryMan.Controllers
             {
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
                 var result = await UserManager.CreateAsync(user, model.Password);
+
+
                 if (result.Succeeded)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
-                    // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-                    // Send an email with this link
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+
+                    // add user to database
+                    Contact newContact = new Contact();
+                    Address newAddr = new Address();
+
+                    newContact.Name = model.FirstName + " " + model.LastName;
+                    newContact.Email = model.Email;
+                    newContact.PhoneNumber = model.PhoneNumber;
+                    newContact.AddressId = 1;
+                    newContact.Role = Role.DELIVERYMAN;
+
+                    newAddr.Line1 = model.AddressLine1;
+                    newAddr.Line2 = model.AddressLine2;
+                    newAddr.City = model.AddressCity;
+                    newAddr.State = model.AddressState;
+                    newAddr.ZipCode = model.AddressZipCode;
+
+                    db.contacts.Add(newContact);
+                    db.addresses.Add(newAddr);
+
+                    db.SaveChanges();
 
                     return RedirectToAction("Index", "Home");
                 }
+
                 AddErrors(result);
             }
 
