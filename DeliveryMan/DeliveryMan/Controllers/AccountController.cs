@@ -193,6 +193,7 @@ namespace DeliveryMan.Controllers
 
                         Restaurant newRestaurant = new Restaurant();
 
+
                         newRestaurant.Name = model.RestaurantName;
 
                         newRestaurant.ContactId = newContact.PhoneNumber;
