@@ -4,7 +4,14 @@ h1{
     margin-left: 20px;
    color:white;}
 
-p{
-    margin: 5px;
-    margin-left: 20px;
-   color:white;}
+.feed{
+    font-size:200%;
+    text-align:center;
+    color:white;
+}
+
+.center-button{
+    margin-top:20px;
+    text-align:center;
+    color:white;
+}
