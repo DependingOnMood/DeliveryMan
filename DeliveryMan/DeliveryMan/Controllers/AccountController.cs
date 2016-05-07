@@ -164,12 +164,12 @@ namespace DeliveryMan.Controllers
 
                     // add user to database
                     Contact newContact = new Contact();
-                    Address newAddr = new Address();
+                //    Address newAddr = new Address();
 
-                    newContact.Name = model.FirstName + " " + model.LastName;
-                    newContact.Email = model.Email;
-                    newContact.PhoneNumber = model.PhoneNumber;
-                    newContact.AddressId = newAddr.Id;
+                //    newContact.Name = model.FirstName + " " + model.LastName;
+                  //  newContact.Email = model.Email;
+                   // newContact.PhoneNumber = model.PhoneNumber;
+                   // newContact.AddressId = newAddr.Id;
 
                     if (model.Role.ToLower() == "deliveryman")
                         newContact.Role = Role.DELIVERYMAN;
@@ -179,14 +179,14 @@ namespace DeliveryMan.Controllers
                         newContact.Role = Role.CUSTOMER;
 
 
-                    newAddr.Line1 = model.AddressLine1;
-                    newAddr.Line2 = model.AddressLine2;
-                    newAddr.City = model.AddressCity;
-                    newAddr.State = model.AddressState;
-                    newAddr.ZipCode = model.AddressZipCode;
+              //      newAddr.Line1 = model.AddressLine1;
+               //     newAddr.Line2 = model.AddressLine2;
+                //    newAddr.City = model.AddressCity;
+                  //  newAddr.State = model.AddressState;
+                   // newAddr.ZipCode = model.AddressZipCode;
 
                     db.contacts.Add(newContact);
-                    db.addresses.Add(newAddr);
+              ///      db.addresses.Add(newAddr);
 
                     db.SaveChanges();
 

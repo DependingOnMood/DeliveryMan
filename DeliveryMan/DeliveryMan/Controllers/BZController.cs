@@ -37,13 +37,13 @@ namespace DeliveryMan.Controllers
             using (var context = new ApplicationDbContext())
             {
                 var q = (from o in context.orders
-                         where o.Destination.Contact.Address.City.Equals(model.city)
+                         where o.Contact.City.Equals(model.city)
                          select o
                          );
                 if (q != null) {
                     foreach (Order o in q) {
-                        Address addr = o.Destination.Contact.Address;
-                        string addr2 = addr.ToString();
+                        Contact c = o.Contact;
+                        String addr2 = c.AddressLine1 + " " + c.AddressLine2 + " " + c.City + " " + c.State + " " + c.ZipCode;
                         double dis = helper.ComputeDistanceBetweenAandB(add1, addr2);
                         if (helper.selectOrderByDistance(distance, dis)) {
                             orders.Add(o);

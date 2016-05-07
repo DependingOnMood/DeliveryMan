@@ -43,7 +43,7 @@ namespace DeliveryMan.Controllers
         public ActionResult MyOrders()
         {
             Deliveryman deli = (from dm in db.deliverymen
-                                where dm.Name.Equals(User.Identity.Name)
+                                where dm.Contact.Email.Equals(User.Identity.Name)
                                 select dm).FirstOrDefault();
             if (deli == null)
             {
@@ -59,7 +59,7 @@ namespace DeliveryMan.Controllers
         public ActionResult CancelPickup(int id)
         {
             Deliveryman deliveryman = (from dm in db.deliverymen
-                                       where dm.Name.Equals(User.Identity.Name)
+                                       where dm.Contact.Email.Equals(User.Identity.Name)
                                        select dm).FirstOrDefault();
             if (deliveryman == null)
             {
@@ -85,7 +85,7 @@ namespace DeliveryMan.Controllers
         public ActionResult CompleteOrder(int id)
         {
             Deliveryman deliveryman = (from dm in db.deliverymen
-                                       where dm.Name.Equals(User.Identity.Name)
+                                       where dm.Contact.Email.Equals(User.Identity.Name)
                                        select dm).FirstOrDefault();
             if (deliveryman == null)
             {
