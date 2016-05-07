@@ -15,32 +15,9 @@ namespace DeliveryMan.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: Restaurant
-        public ActionResult Index()
+        // GET: Restaurant/CreateOrder
+        public ActionResult CreateOrder()
         {
-            var restaurant = db.restaurant.Include(r => r.Contact);
-            return View(restaurant.ToList());
-        }
-
-        // GET: Restaurant/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Restaurant restaurant = db.restaurant.Find(id);
-            if (restaurant == null)
-            {
-                return HttpNotFound();
-            }
-            return View(restaurant);
-        }
-
-        // GET: Restaurant/Create
-        public ActionResult Create()
-        {
-            ViewBag.CId = new SelectList(db.contact, "CId", "Name");
             return View();
         }
 
@@ -49,76 +26,240 @@ namespace DeliveryMan.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,CId,IconImageUrl,Latitude,Longitude,Balance")] Restaurant restaurant)
+        public ActionResult CreateOrder([Bind(Include = "")] Order order)
         {
-            if (ModelState.IsValid)
-            {
-                db.restaurant.Add(restaurant);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            ViewBag.CId = new SelectList(db.contact, "CId", "Name", restaurant.CId);
-            return View(restaurant);
+            return RedirectToAction("Orders");
         }
 
-        // GET: Restaurant/Edit/5
-        public ActionResult Edit(int? id)
+        // GET: Restaurant
+        public ActionResult Orders()
+        {
+            //var orders = db.restaurant.Include(r => r.Contact);
+            //return View(restaurant.ToList());
+            return View();
+        }
+
+        // GET: Restaurant/OrderDetails/5
+        public ActionResult OrderDetails(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Restaurant restaurant = db.restaurant.Find(id);
-            if (restaurant == null)
+            Restaurant res = (from r in db.restaurants
+                       where r.Name.Equals(User.Identity.Name)
+                       select r).FirstOrDefault();
+            if (res == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.CId = new SelectList(db.contact, "CId", "Name", restaurant.CId);
-            return View(restaurant);
+            Order order = (from o in db.orders
+                           where o.RestaurantId == res.Id
+                           select o).FirstOrDefault();
+            
+            if (order == null)
+            {
+                return HttpNotFound();
+            }
+            return View(order);
         }
 
-        // POST: Restaurant/Edit/5
+        // GET: Restaurant/EditOrder/5
+        public ActionResult EditOrder(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Restaurant res = (from r in db.restaurants
+                              where r.Name.Equals(User.Identity.Name)
+                              select r).FirstOrDefault();
+            if (res == null)
+            {
+                return HttpNotFound();
+            }
+            Order order = (from o in db.orders
+                           where o.RestaurantId == res.Id
+                           select o).FirstOrDefault();
+
+            if (order == null)
+            {
+                return HttpNotFound();
+            }
+
+            //ViewBag.CId = new SelectList(db.contact, "CId", "Name", restaurant.CId);
+            return View(order);
+        }
+
+        // POST: Restaurant/EditOrder/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,CId,IconImageUrl,Latitude,Longitude,Balance")] Restaurant restaurant)
+        public ActionResult EditOrder([Bind(Include = "")] Order order)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(restaurant).State = EntityState.Modified;
+                db.Entry(order).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Orders");
             }
-            ViewBag.CId = new SelectList(db.contact, "CId", "Name", restaurant.CId);
-            return View(restaurant);
+            //ViewBag.CId = new SelectList(db.contact, "CId", "Name", restaurant.CId);
+            return View(order);
         }
 
-        // GET: Restaurant/Delete/5
-        public ActionResult Delete(int? id)
+        // GET: Restaurant/CancelOrder/5
+        public ActionResult CancelOrder(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Restaurant restaurant = db.restaurant.Find(id);
-            if (restaurant == null)
+            Restaurant res = (from r in db.restaurants
+                              where r.Name.Equals(User.Identity.Name)
+                              select r).FirstOrDefault();
+            if (res == null)
             {
                 return HttpNotFound();
             }
-            return View(restaurant);
+            Order order = (from o in db.orders
+                           where o.RestaurantId == res.Id
+                           select o).FirstOrDefault();
+
+            if (order == null)
+            {
+                return HttpNotFound();
+            }
+            return View(order);
         }
 
-        // POST: Restaurant/Delete/5
+        // POST: Restaurant/CancelOrder/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult CancelOrder(int id)
         {
-            Restaurant restaurant = db.restaurant.Find(id);
-            db.restaurant.Remove(restaurant);
+            Restaurant res = (from r in db.restaurants
+                              where r.Name.Equals(User.Identity.Name)
+                              select r).FirstOrDefault();
+            if (res == null)
+            {
+                return HttpNotFound();
+            }
+            Order order = (from o in db.orders
+                           where o.RestaurantId == res.Id
+                           select o).FirstOrDefault();
+
+            if (order == null)
+            {
+                return HttpNotFound();
+            }
+            db.orders.Remove(order);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Orders");
+        }
+
+        // GET: Restaurant/ReviewOrder/5
+        public ActionResult ReviewOrder()
+        {
+            return View();
+        }
+        
+        // POST: Restaurant/ReviewOrder/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ReviewOrder([Bind(Include = "")] Review review)
+        {
+            if (ModelState.IsValid)
+            {
+                db.reviews.Add(review);
+                db.SaveChanges();
+                return RedirectToAction("Orders");
+            }
+
+            //ViewBag.CId = new SelectList(db.contact, "CId", "Name", restaurant.CId);
+            return View(review);
+        }
+
+        // GET: Restaurant/OrdersHistory
+        public ActionResult OrdersHistory()
+        {
+            Restaurant res = (from r in db.restaurants
+                              where r.Name.Equals(User.Identity.Name)
+                              select r).FirstOrDefault();
+            if (res == null)
+            {
+                return HttpNotFound();
+            }
+            IEnumerable<Order> orders = from o in db.orders
+                                        where o.RestaurantId == res.Id
+                                        where o.Status == Status.DELIVERED
+                                        select o;
+            return View(orders);
+        }
+
+        // GET: Restaurant/Blacklist
+        public ActionResult Blacklist()
+        {
+            Restaurant res = (from r in db.restaurants
+                              where r.Name.Equals(User.Identity.Name)
+                              select r).FirstOrDefault();
+            if (res == null)
+            {
+                return HttpNotFound();
+            }
+            IEnumerable<Deliveryman> blacklist = res.BadDeliverymen;
+            return View(blacklist);
+        }
+
+        // GET: Restaurant/DeliverymanDetails/5
+        public ActionResult DeliverymanDetails(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Deliveryman deliveryman = (from dm in db.deliverymen
+                              where dm.Id == id
+                              select dm).FirstOrDefault();
+            if (deliveryman == null)
+            {
+                return HttpNotFound();
+            }
+            return View(deliveryman);
+        }
+
+        // GET: Restaurant/AddToBlacklist/5
+        public ActionResult AddToBlacklist(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            return View();
+        }
+
+        // POST: Restaurant/AddToBlacklist/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AddToBlacklist(int id)
+        {
+            Restaurant res = (from r in db.restaurants
+                              where r.Name.Equals(User.Identity.Name)
+                              select r).FirstOrDefault();
+            if (res == null)
+            {
+                return HttpNotFound();
+            }
+            if (ModelState.IsValid)
+            {
+                Deliveryman badGuy = db.deliverymen.Find(id);
+                res.BadDeliverymen.Add(badGuy);
+                db.SaveChanges();
+                return RedirectToAction("Orders");
+            }
+
+            //ViewBag.CId = new SelectList(db.contact, "CId", "Name", restaurant.CId);
+            return View();
         }
 
         protected override void Dispose(bool disposing)
