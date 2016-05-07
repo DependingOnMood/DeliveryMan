@@ -29,7 +29,7 @@ namespace DataLayer
 
         public override string ToString()
         {
-            return Line1 + Line2 + City + State;
+            return Line1 + ", " + Line2 + ", " + City + ", " + State;
         }
     }
 }
