@@ -112,6 +112,10 @@ namespace DeliveryMan.Models
         [Display(Name = "Zip Code")]
         [DataType(DataType.PostalCode)]
         public string AddressZipCode { get; set; }
+
+        [Required]
+        [Display(Name = "Role")]
+        public string Role { get; set; }
     }
 
     public class ResetPasswordViewModel
