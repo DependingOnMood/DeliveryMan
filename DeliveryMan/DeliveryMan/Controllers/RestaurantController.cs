@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using DataLayer;
+using BizLogic;
 using DeliveryMan.Models;
 
 namespace DeliveryMan.Controllers
@@ -53,23 +54,27 @@ namespace DeliveryMan.Controllers
                     //calc latitude
                     //calc longitude
                 };
+                db.contacts.Add(contact);
             }
             else
             {
                 if (!contact.AddressLine1.Equals(model.AddressLine1))
                 {
                     contact.AddressLine1 = model.AddressLine1;
+                    
                 }
                 if (model.AddressLine2 != null && contact.AddressLine2 != null && !contact.AddressLine2.Equals(model.AddressLine2))
                 {
                     contact.AddressLine2 = model.AddressLine2;
                 }
+                if (!contact.City.Equals(model.City) || !contact.State.Equals(model.State) || !contact.ZipCode.Equals(model.ZipCode))
+                {
+                    contact.City = model.City;
+                    contact.State = model.State;
+                    contact.ZipCode = model.ZipCode;
+                }
             }
-            
-            
-
-            
-
+            db.SaveChanges();
             Order order = new Order()
             {
                 RestaurantId = res.Id,
@@ -80,7 +85,8 @@ namespace DeliveryMan.Controllers
                 //calc ETA
                 //calc DeliveryFee
             };
-
+            db.orders.Add(order);
+            db.SaveChanges();
             return RedirectToAction("Orders");
         }
 
@@ -126,7 +132,7 @@ namespace DeliveryMan.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Restaurant res = (from r in db.restaurants
-                              where r.Name.Equals(User.Identity.Name)
+                              where r.Contact.Email.Equals(User.Identity.Name)
                               select r).FirstOrDefault();
             if (res == null)
             {
@@ -134,6 +140,7 @@ namespace DeliveryMan.Controllers
             }
             Order order = (from o in db.orders
                            where o.RestaurantId == res.Id
+                           where o.Id == id
                            select o).FirstOrDefault();
 
             if (order == null)
@@ -151,7 +158,7 @@ namespace DeliveryMan.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Restaurant res = (from r in db.restaurants
-                              where r.Name.Equals(User.Identity.Name)
+                              where r.Contact.Email.Equals(User.Identity.Name)
                               select r).FirstOrDefault();
             if (res == null)
             {
@@ -159,6 +166,7 @@ namespace DeliveryMan.Controllers
             }
             Order order = (from o in db.orders
                            where o.RestaurantId == res.Id
+                           where o.Id == id
                            select o).FirstOrDefault();
 
             if (order == null)
@@ -195,7 +203,7 @@ namespace DeliveryMan.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Restaurant res = (from r in db.restaurants
-                              where r.Name.Equals(User.Identity.Name)
+                              where r.Contact.Email.Equals(User.Identity.Name)
                               select r).FirstOrDefault();
             if (res == null)
             {
@@ -203,6 +211,8 @@ namespace DeliveryMan.Controllers
             }
             Order order = (from o in db.orders
                            where o.RestaurantId == res.Id
+                           where o.Id == id
+                           where o.Status != Status.DELIVERED
                            select o).FirstOrDefault();
 
             if (order == null)
@@ -218,7 +228,7 @@ namespace DeliveryMan.Controllers
         public ActionResult CancelOrder(int id)
         {
             Restaurant res = (from r in db.restaurants
-                              where r.Name.Equals(User.Identity.Name)
+                              where r.Contact.Email.Equals(User.Identity.Name)
                               select r).FirstOrDefault();
             if (res == null)
             {
@@ -226,6 +236,7 @@ namespace DeliveryMan.Controllers
             }
             Order order = (from o in db.orders
                            where o.RestaurantId == res.Id
+                           where o.Id == id
                            select o).FirstOrDefault();
 
             if (order == null)
@@ -263,7 +274,7 @@ namespace DeliveryMan.Controllers
         public ActionResult OrdersHistory()
         {
             Restaurant res = (from r in db.restaurants
-                              where r.Name.Equals(User.Identity.Name)
+                              where r.Contact.Email.Equals(User.Identity.Name)
                               select r).FirstOrDefault();
             if (res == null)
             {
@@ -280,14 +291,16 @@ namespace DeliveryMan.Controllers
         public ActionResult Blacklist()
         {
             Restaurant res = (from r in db.restaurants
-                              where r.Name.Equals(User.Identity.Name)
+                              where r.Contact.Email.Equals(User.Identity.Name)
                               select r).FirstOrDefault();
             if (res == null)
             {
                 return HttpNotFound();
             }
-            IEnumerable<Deliveryman> blacklist = res.BadDeliverymen;
-            return View(blacklist);
+            IEnumerable<Deliveryman> badGuys = from bl in db.blacklists
+                                               where bl.RestaurantId == res.Id
+                                               select bl.Deliveryman;
+            return View(badGuys);
         }
 
         // GET: Restaurant/DeliverymanDetails/5
@@ -297,6 +310,13 @@ namespace DeliveryMan.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+            Restaurant res = (from r in db.restaurants
+                              where r.Contact.Email.Equals(User.Identity.Name)
+                              select r).FirstOrDefault();
+            if (res == null)
+            {
+                return HttpNotFound();
+            }
             Deliveryman deliveryman = (from dm in db.deliverymen
                                        where dm.Id == id
                                        select dm).FirstOrDefault();
@@ -304,7 +324,17 @@ namespace DeliveryMan.Controllers
             {
                 return HttpNotFound();
             }
-            return View(deliveryman);
+            Order order = (from o in db.orders
+                           where o.DeliverymanId == deliveryman.Id
+                           where o.RestaurantId == res.Id
+                           select o).FirstOrDefault();
+            if (order != null)
+            {
+                return View(deliveryman);
+            } else
+            {
+                return HttpNotFound();
+            }
         }
 
         // GET: Restaurant/AddToBlacklist/5
@@ -332,11 +362,21 @@ namespace DeliveryMan.Controllers
             if (ModelState.IsValid)
             {
                 Deliveryman badGuy = db.deliverymen.Find(id);
-                res.BadDeliverymen.Add(badGuy);
-                db.SaveChanges();
-                return RedirectToAction("Orders");
+                if (badGuy == null)
+                {
+                    return HttpNotFound();
+                } else
+                {
+                    Blacklist bl = new Blacklist()
+                    {
+                        RestaurantId = res.Id,
+                        DeliverymanId = badGuy.Id,
+                    };
+                    db.blacklists.Add(bl);
+                    db.SaveChanges();
+                }
+                return RedirectToAction("Blacklist");
             }
-
             //ViewBag.CId = new SelectList(db.contact, "CId", "Name", restaurant.CId);
             return View();
         }
