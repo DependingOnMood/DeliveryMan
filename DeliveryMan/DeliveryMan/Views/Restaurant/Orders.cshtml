@@ -1,0 +1,52 @@
+﻿@using DataLayer
+@model DeliveryMan.Models.RestaurantOrdersViewModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Orders</title>
+</head>
+<body>
+    <div> 
+        <table>
+            <tr>
+                <th>
+                    Note
+                </th>
+                <th>
+                    Deliveryman
+                </th>
+                <th>
+                    ETA
+                </th>
+                <th>
+                    Fee
+                </th>
+            </tr>
+            @foreach (Order order in Model.WaitingOrders)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => order.Note)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => order.Deliveryman)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => order.ETA)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => order.DeliveryFee)
+                    </td>
+                </tr>
+            }
+        </table>
+
+    </div>
+</body>
+</html>

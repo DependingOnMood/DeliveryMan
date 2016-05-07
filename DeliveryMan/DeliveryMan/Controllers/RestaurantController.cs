@@ -34,9 +34,35 @@ namespace DeliveryMan.Controllers
         // GET: Restaurant
         public ActionResult Orders()
         {
-            //var orders = db.restaurant.Include(r => r.Contact);
-            //return View(restaurant.ToList());
-            return View();
+            Restaurant res = (from r in db.restaurants
+                              where r.Name.Equals(User.Identity.Name)
+                              select r).FirstOrDefault();
+            if (res == null)
+            {
+                return HttpNotFound();
+            }
+            IEnumerable<Order> wo = from o in db.orders
+                                               where o.RestaurantId == res.Id
+                                               where o.Status == Status.WAITING
+                                               orderby o.PlacedTime descending
+                                               select o;
+            IEnumerable<Order> po = from o in db.orders
+                                               where o.RestaurantId == res.Id
+                                               where o.Status == Status.PENDING
+                                               orderby o.PlacedTime descending
+                                               select o;
+            IEnumerable<Order> io = from o in db.orders
+                                                  where o.RestaurantId == res.Id
+                                                  where o.Status == Status.INPROGRESS
+                                                  orderby o.PlacedTime descending
+                                                  select o;
+            RestaurantOrdersViewModel rovm = new RestaurantOrdersViewModel()
+            {
+                WaitingOrders = wo,
+                PendingOrders = po,
+                InProgressOrders = io,          
+            };
+            return View(rovm);
         }
 
         // GET: Restaurant/OrderDetails/5
@@ -47,8 +73,8 @@ namespace DeliveryMan.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Restaurant res = (from r in db.restaurants
-                       where r.Name.Equals(User.Identity.Name)
-                       select r).FirstOrDefault();
+                              where r.Name.Equals(User.Identity.Name)
+                              select r).FirstOrDefault();
             if (res == null)
             {
                 return HttpNotFound();
@@ -56,7 +82,7 @@ namespace DeliveryMan.Controllers
             Order order = (from o in db.orders
                            where o.RestaurantId == res.Id
                            select o).FirstOrDefault();
-            
+
             if (order == null)
             {
                 return HttpNotFound();
@@ -163,7 +189,7 @@ namespace DeliveryMan.Controllers
         {
             return View();
         }
-        
+
         // POST: Restaurant/ReviewOrder/5
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -219,8 +245,8 @@ namespace DeliveryMan.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Deliveryman deliveryman = (from dm in db.deliverymen
-                              where dm.Id == id
-                              select dm).FirstOrDefault();
+                                       where dm.Id == id
+                                       select dm).FirstOrDefault();
             if (deliveryman == null)
             {
                 return HttpNotFound();

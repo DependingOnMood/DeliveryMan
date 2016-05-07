@@ -31,7 +31,7 @@ namespace DataLayer
         public int AddressId { get; set; }
 
         [ForeignKey("AddressId")]
-        public virtual Address address { get; set; }
+        public virtual Address Address { get; set; }
     }
 
     public enum Role
