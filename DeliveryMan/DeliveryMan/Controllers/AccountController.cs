@@ -169,8 +169,15 @@ namespace DeliveryMan.Controllers
                     newContact.Name = model.FirstName + " " + model.LastName;
                     newContact.Email = model.Email;
                     newContact.PhoneNumber = model.PhoneNumber;
-                    newContact.AddressId = 1;
-                    newContact.Role = Role.DELIVERYMAN;
+                    newContact.AddressId = newAddr.Id;
+
+                    if (model.Role.ToLower() == "deliveryman")
+                        newContact.Role = Role.DELIVERYMAN;
+                    else if (model.Role.ToLower() == "restaurant")
+                        newContact.Role = Role.RESTAUTANT;
+                    else
+                        newContact.Role = Role.CUSTOMER;
+
 
                     newAddr.Line1 = model.AddressLine1;
                     newAddr.Line2 = model.AddressLine2;
