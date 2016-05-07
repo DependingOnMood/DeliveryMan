@@ -64,13 +64,14 @@ namespace DeliveryMan.Models
 
     public class RegisterViewModel
     {
-        [Required]
         [Display(Name = "First Name")]
         public string FirstName { get; set; }
 
-        [Required]
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
+
+        [Display(Name = "Restaurant Name")]
+        public string RestaurantName { get; set; }
 
         [Required]
         [EmailAddress]
@@ -96,7 +97,6 @@ namespace DeliveryMan.Models
         [Display(Name = "Address Line 1")]
         public string AddressLine1 { get; set; }
 
-        [Required]
         [Display(Name = "Address Line 2")]
         public string AddressLine2 { get; set; }
 
