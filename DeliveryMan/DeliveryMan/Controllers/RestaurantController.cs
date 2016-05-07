@@ -21,13 +21,30 @@ namespace DeliveryMan.Controllers
             return View();
         }
 
-        // POST: Restaurant/Create
+        // POST: Restaurant/CreateOrder
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateOrder([Bind(Include = "")] Order order)
+        public ActionResult CreateOrder([Bind(Include = "Note, AddressLine1, AddressLine2, City, State, ZipCode")]
+            RestaurantCreateOrderViewModel model)
         {
+            Restaurant res = (from r in db.restaurants
+                              where r.Name.Equals(User.Identity.Name)
+                              select r).FirstOrDefault();
+            if (res == null)
+            {
+                return HttpNotFound();
+            }
+
+            Order order = new Order()
+            {
+                RestaurantId = res.Id,
+                Status = Status.WAITING,
+                Note = model.Note,
+                PlacedTime = DateTime.Now,
+
+            };
             return RedirectToAction("Orders");
         }
 
@@ -42,25 +59,25 @@ namespace DeliveryMan.Controllers
                 return HttpNotFound();
             }
             IEnumerable<Order> wo = from o in db.orders
-                                               where o.RestaurantId == res.Id
-                                               where o.Status == Status.WAITING
-                                               orderby o.PlacedTime descending
-                                               select o;
+                                    where o.RestaurantId == res.Id
+                                    where o.Status == Status.WAITING
+                                    orderby o.PlacedTime descending
+                                    select o;
             IEnumerable<Order> po = from o in db.orders
-                                               where o.RestaurantId == res.Id
-                                               where o.Status == Status.PENDING
-                                               orderby o.PlacedTime descending
-                                               select o;
+                                    where o.RestaurantId == res.Id
+                                    where o.Status == Status.PENDING
+                                    orderby o.PlacedTime descending
+                                    select o;
             IEnumerable<Order> io = from o in db.orders
-                                                  where o.RestaurantId == res.Id
-                                                  where o.Status == Status.INPROGRESS
-                                                  orderby o.PlacedTime descending
-                                                  select o;
+                                    where o.RestaurantId == res.Id
+                                    where o.Status == Status.INPROGRESS
+                                    orderby o.PlacedTime descending
+                                    select o;
             RestaurantOrdersViewModel rovm = new RestaurantOrdersViewModel()
             {
                 WaitingOrders = wo,
                 PendingOrders = po,
-                InProgressOrders = io,          
+                InProgressOrders = io,
             };
             return View(rovm);
         }
