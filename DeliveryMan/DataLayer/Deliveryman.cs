@@ -14,11 +14,14 @@ namespace DataLayer
             [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
             public int Id { get; set; }
 
-            public int CId { get; set; }
+            public string ContactId { get; set; }
 
+            [ForeignKey("ContactId")]
             public virtual Contact Contact { get; set; }
 
-            public string Name { get; set; }
+            public string FirstName { get; set; }
+
+            public string LastName { get; set; }
 
             [Url]
             [Display(Name = "Insert your icon image URL.")]
@@ -28,7 +31,7 @@ namespace DataLayer
 
             public int TotalStarsEarned { get; set; }
 
-            public int Rating { get; set; }
+            public decimal Rating { get; set; }
 
             public int Ranking { get; set; }
 

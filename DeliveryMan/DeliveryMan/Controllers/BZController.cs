@@ -1,4 +1,6 @@
-﻿using DeliveryMan.Models;
+﻿using BizLogic;
+using DataLayer;
+using DeliveryMan.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +15,6 @@ namespace DeliveryMan.Controllers
         // GET: BZ
         public ActionResult FindOrder()
         {
-
-
-            ViewBag.Find = 0;
-    
             return View();
         }
 
@@ -24,13 +22,37 @@ namespace DeliveryMan.Controllers
         [HttpPost]
         public  ActionResult FindOrder(FindOrderViewModel model)
         {
-         //   String location = model;
-            
+            //   String location = model;
+            List<Order> orders = new List<Order>();
+            String add1 = model.line1 + " " + model.line2 + " " + model.city + " " + model.state + " " + model.zipCode;
+            FindOrderLogic helper = new FindOrderLogic();
 
-            ViewBag.Find = 1;
+            double distance = 1;
+            if (model.distance != 0)
+            {
+               distance = model.distance;
+            }
+       
 
-
-            return View();
+            using (var context = new ApplicationDbContext())
+            {
+                var q = (from o in context.orders
+                         where o.Contact.City.Equals(model.city)
+                         select o
+                         );
+                if (q != null) {
+                    foreach (Order o in q) {
+                        Contact c = o.Contact;
+                        String addr2 = c.AddressLine1 + " " + c.AddressLine2 + " " + c.City + " " + c.State + " " + c.ZipCode;
+                        double dis = helper.ComputeDistanceBetweenAandB(add1, addr2);
+                        if (helper.selectOrderByDistance(distance, dis)) {
+                            orders.Add(o);
+                        }
+                    }
+                }              
+            }
+            ViewBag.res = orders;
+            return View("ViewOrdersByR");
         }
 
 
