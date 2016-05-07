@@ -25,7 +25,7 @@ namespace DeliveryMan.Controllers
         public  ActionResult FindOrder(FindOrderViewModel model)
         {
          //   String location = model;
-
+            
 
             ViewBag.Find = 1;
 
