@@ -22,7 +22,7 @@ namespace DeliveryMan.Controllers
 
         public ActionResult Contact()
         {
-            ViewBag.Message = "Your contact page.";
+            ViewBag.Message = "Contact us with emails below:";
 
             return View();
         }
