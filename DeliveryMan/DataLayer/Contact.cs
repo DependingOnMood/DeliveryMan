@@ -10,28 +10,35 @@ namespace DataLayer
     public class Contact
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int CId { get; set; }
+        [Required]
+        [Phone]
+        public string PhoneNumber { get; set; }
 
         [Required]
         public Role Role { get; set; }
-
-        [Required]
-        public string Name { get; set; }
 
         [Required]
         [EmailAddress]
         public string Email { get; set; }
 
         [Required]
-        [Phone]
-        public string PhoneNumber { get; set; }
+        public string AddressLine1 { get; set; }
 
+        public string AddressLine2 { get; set; }
 
-        public int AddressId { get; set; }
+        [Required]
+        public string City { get; set; }
 
-        [ForeignKey("AddressId")]
-        public virtual Address Address { get; set; }
+        [Required]
+        public string State { get; set; }
+
+        [Required]
+        [DataType(DataType.PostalCode)]
+        public string ZipCode { get; set; }
+
+        public decimal Latitude { get; set; }
+
+        public decimal Longitude { get; set; }
     }
 
     public enum Role

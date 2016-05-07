@@ -8,18 +8,20 @@ using System.Threading.Tasks;
 
 namespace DataLayer
 {
-    public class Destination
+    public class Blacklist
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        public int CId { get; set; }
+        public int RestaurantId { get; set; }
 
-        public virtual Contact Contact { get; set; }
+        [ForeignKey("RestaurantId")]
+        public virtual Restaurant Restaurant { get; set; }
 
-        public decimal Latitude { get; set; }
+        public int DeliverymanId { get; set; }
 
-        public decimal Longitude { get; set; }
+        [ForeignKey("DeliverymanId")]
+        public virtual Deliveryman Deliveryman { get; set; }
     }
 }
