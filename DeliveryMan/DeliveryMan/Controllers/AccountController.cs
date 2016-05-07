@@ -150,7 +150,7 @@ namespace DeliveryMan.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterViewModel model)
+        public async Task<ActionResult> Register(RegisterViewModel model, string button)
         {
             if (ModelState.IsValid)
             {
@@ -164,7 +164,6 @@ namespace DeliveryMan.Controllers
 
                     // add user to database
                     Contact newContact = new Contact();
-                    Address newAddr = new Address();
 
                     // add to contact table
                     newContact.Name = model.FirstName + " " + model.LastName;
