@@ -7,9 +7,16 @@ using System.Threading.Tasks;
 
 namespace BizLogic
 {
-    class FindOrders
+    public class FindOrderLogic
     {
-        public void selectOrderByDistance(int distance ) {
+        public Boolean selectOrderByDistance(double distance, double res) {
+            if (res <= distance)
+            {
+                return true;
+            }
+            else {
+                return false;
+            }
             //need database connection
         }
 

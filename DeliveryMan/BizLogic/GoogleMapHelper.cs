@@ -28,7 +28,7 @@ namespace BizLogic
             String[] res2 = lng.ToString().Split('<');
             String _lat = res1[1].Substring(4);
             String _lng = res2[1].Substring(4);
-            return _lat + _lng;
+            return _lat +" "+ _lng;
             
         }
 
