@@ -17,7 +17,7 @@ namespace BizLogic
                 fee = 0;
             else if (order.Status == Status.PENDING)
                 fee = order.DeliveryFee * Convert.ToDecimal(0.8);
-            else if (order.Status == Status.PENDING)
+            else if (order.Status == Status.INPROGRESS)
                 fee = order.DeliveryFee * Convert.ToDecimal(1.5);
 
             return fee;
