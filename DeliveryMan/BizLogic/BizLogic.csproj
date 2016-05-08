@@ -52,9 +52,8 @@
     <Compile Include="CreateOrderLogic.cs" />
     <Compile Include="FindOrderLogic.cs" />
     <Compile Include="GoogleMapHelper.cs" />
-    <Compile Include="OrderAddress.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RestaurantAddress.cs" />
+    <Compile Include="ContactAddress.cs" />
     <Compile Include="RestaurantCancelOrder.cs" />
     <Compile Include="RestaurantOrders.cs" />
     <Compile Include="ReviewOrder.cs" />
