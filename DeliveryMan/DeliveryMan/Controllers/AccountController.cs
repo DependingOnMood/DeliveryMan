@@ -185,6 +185,8 @@ namespace DeliveryMan.Controllers
 
                         newDeliveryman.ContactId = newContact.PhoneNumber;
 
+                        newDeliveryman.Contact = newContact;
+
                         db.deliverymen.Add(newDeliveryman);
                     }
                     else if (command == "Register Restaurant")
@@ -197,6 +199,8 @@ namespace DeliveryMan.Controllers
                         newRestaurant.Name = model.RestaurantName;
 
                         newRestaurant.ContactId = newContact.PhoneNumber;
+
+                        newRestaurant.Contact = newContact;
 
                         db.restaurants.Add(newRestaurant);
                     }

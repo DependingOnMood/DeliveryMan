@@ -8,12 +8,68 @@ using System.Web;
 using System.Web.Mvc;
 using DataLayer;
 using DeliveryMan.Models;
+using BizLogic;
 
 namespace DeliveryMan.Controllers
 {
     public class DeliverymanController : Controller
     {
+
+
         private ApplicationDbContext db = new ApplicationDbContext();
+
+        // GET: BZ
+        public ActionResult FindOrder()
+        {
+            return View();
+        }
+
+        // POST: BZ
+        [HttpPost]
+        public ActionResult FindOrder(FindOrderViewModel model)
+        {
+            //   String location = model;
+            List<Order> orders = new List<Order>();
+            String add1 = model.line1 + " " + model.line2 + " " + model.city + " " + model.state + " " + model.zipCode;
+            FindOrderLogic helper = new FindOrderLogic();
+
+            double distance = 1;
+            if (model.distance != 0)
+            {
+                distance = model.distance;
+            }
+
+
+                var q = (from o in db.orders
+                         from c in db.contacts
+                         where o.ContactId.Equals(c.PhoneNumber)
+                         where c.Email.Equals(User.Identity.Name)
+                         select o
+                         );
+                if (q != null)
+                {
+                    foreach (Order o in q)
+                    {
+                        Contact c = o.Contact;
+                        String addr2 = c.AddressLine1 + " " + c.AddressLine2 + " " + c.City + " " + c.State + " " + c.ZipCode;
+                        double dis = helper.ComputeDistanceBetweenAandB(add1, addr2);
+                        if (helper.selectOrderByDistance(distance, dis))
+                        {
+                            orders.Add(o);
+                        }
+                    }
+                }
+            
+            ViewBag.res = orders;
+            return View("ViewOrdersByR");
+        }
+
+
+
+
+
+
+
 
         // GET: Deliveryman
         public ActionResult Orders()

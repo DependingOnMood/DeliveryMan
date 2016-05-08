@@ -7,12 +7,11 @@ using System.Threading.Tasks;
 
 namespace BizLogic
 {
-    public static class RestaurantAddress
+    public static class ContactAddress
     {
-        public static string getAddress(this Restaurant restaurant)
+        public static string getAddress(this Contact contact)
         {
             StringBuilder builder = new StringBuilder();
-            Contact contact = restaurant.Contact;
             builder.Append(contact.AddressLine1);
             builder.Append(" ");
             builder.Append(contact.AddressLine2);
