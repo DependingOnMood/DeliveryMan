@@ -39,13 +39,19 @@ namespace DataLayer
 
         public decimal Longitude { get; set; }
 
-        public String addressToString()
+        public string AddressToString()
         {
-            string res = this.AddressLine1 + " " + this.AddressLine2 + " " + this.City + " " + this.State + " " + this.ZipCode;
-            return res;
+            if (AddressLine2 != null)
+            {
+                return AddressLine1 + ", " + AddressLine2 + ", " + City + ", " + State + ", " + ZipCode;
+            }
+            else {
+                return AddressLine1 + ", " + City + ", " + State + ", " + ZipCode;
+            }
+           
         }
     }
-  
+
     public enum Role
     {
         DELIVERYMAN,

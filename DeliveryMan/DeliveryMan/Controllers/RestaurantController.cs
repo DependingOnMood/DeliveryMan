@@ -30,15 +30,10 @@ namespace DeliveryMan.Controllers
         public ActionResult CreateOrder([Bind(Include = "Note, AddressLine1, AddressLine2, City, State, ZipCode, PhoneNumber, OrderFee")]
             RestaurantCreateOrderViewModel model)
         {
-            
             GoogleMapHelper helper = null;
             Restaurant res = (from r in db.restaurants
                               where r.Contact.Email.Equals(User.Identity.Name)
-                              //from c in db.contacts
-                              //where r.ContactId.Equals(c.PhoneNumber)
-                              //where c.Email.Equals(User.Identity.Name)
                               select r).FirstOrDefault();
-
             if (res == null)
             {
                 return HttpNotFound();
@@ -93,7 +88,7 @@ namespace DeliveryMan.Controllers
                     contact.Longitude = Decimal.Parse(latAndLong.Split(' ')[1]);
                 }
             }
-            //db.SaveChanges();
+            db.SaveChanges();
             helper = new GoogleMapHelper();
             string loc1 = res.Contact.getAddress();
             string loc2 = totalAddress;
@@ -101,7 +96,7 @@ namespace DeliveryMan.Controllers
             Order order = new Order()
             {
                 RestaurantId = res.Id,
-                Restaurant =res,
+                Restaurant = res,
                 Status = Status.WAITING,
                 Note = model.Note,
                 PlacedTime = DateTime.Now,
@@ -119,8 +114,7 @@ namespace DeliveryMan.Controllers
         public ActionResult Orders()
         {
             Restaurant res = (from r in db.restaurants
-                              from c in db.contacts
-                              where r.ContactId.Equals(c.PhoneNumber)
+                              where r.Contact.Email.Equals(User.Identity.Name)
                               select r).FirstOrDefault();
             if (res == null)
             {
@@ -288,7 +282,14 @@ namespace DeliveryMan.Controllers
                                && t.Id == intId
                                select t).FirstOrDefault();
 
-            return View("ReviewOrder", orderDetails);
+            ReviewOrderViewModel reviewOrderVM = new ReviewOrderViewModel();
+
+            reviewOrderVM.PlacedTime = orderDetails.PlacedTime;
+            reviewOrderVM.PickUpTime = orderDetails.PickUpTime;
+            reviewOrderVM.DeliveredTime = orderDetails.DeliveredTime;
+            reviewOrderVM.OrderId = orderDetails.Id;
+
+            return View("ReviewOrder", reviewOrderVM);
         }
 
         // POST: Restaurant/ReviewOrder/5
