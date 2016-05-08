@@ -23,7 +23,7 @@ namespace DeliveryMan.Models
         public DateTime PlacedTime { get; set; }
 
         [Display(Name = "Picked-up Time")]
-        public DateTime PickUpTime { get; set; }
+        public DateTime? PickUpTime { get; set; }
 
         [Display(Name = "Delivery Fee")]
         public decimal DeliveryFee { get; set; }
