@@ -41,7 +41,14 @@ namespace DataLayer
 
         public string AddressToString()
         {
-            return AddressLine1 + ", " + AddressLine2;
+            if (AddressLine2 != null)
+            {
+                return AddressLine1 + ", " + AddressLine2 + ", " + City + ", " + State + ", " + ZipCode;
+            }
+            else {
+                return AddressLine1 + ", " + City + ", " + State + ", " + ZipCode;
+            }
+           
         }
     }
 

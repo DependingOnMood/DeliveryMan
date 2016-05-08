@@ -42,11 +42,23 @@
         </div>
     </div>
     <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" class="btn btn-default" value="Find" />
+        @Html.Label("Distance", new { @class = "col-md-2 control-label" })
+        <div class="radio-inline">
+            @Html.RadioButtonFor(m => m.distance, 1.0) < 1 mile
+        </div>
+        <div class="radio-inline">
+            @Html.RadioButtonFor(m => m.distance, 3.0) < 3 miles
+        </div>
+        <div class="radio-inline">
+            @Html.RadioButtonFor(m => m.distance, 3.01) > 3 miles
         </div>
     </div>
-}
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" class="btn btn-default" value="Find" />
+            </div>
+        </div>
+        }
+        @section Scripts {
+            @Scripts.Render("~/bundles/jqueryval")
+        }
