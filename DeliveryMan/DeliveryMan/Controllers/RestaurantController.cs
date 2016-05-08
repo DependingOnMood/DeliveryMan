@@ -225,7 +225,7 @@ namespace DeliveryMan.Controllers
         // GET: Restaurant/CancelOrder/5
         public ActionResult CancelOrder(int? id)
         {
-            var orderDetails = (from o in db.orders
+            Order orderDetails = (from o in db.orders
                                 where o.Contact.Email == User.Identity.Name
                                 && o.Id == id
                                 select o).FirstOrDefault();
@@ -249,7 +249,7 @@ namespace DeliveryMan.Controllers
         // POST: Restaurant/CancelOrder/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CancelOrder(CancelOrderViewModel model, int id)
+        public ActionResult CancelOrder(CancelOrderViewModel model, int? id)
         {
             Order curOrder = (from o in db.orders
                               where o.Contact.Email == User.Identity.Name
