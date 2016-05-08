@@ -22,6 +22,9 @@
         <th>
             ETA
         </th>
+        <th>
+            
+        </th>
     </tr>
     @{
 
@@ -43,7 +46,7 @@
                 </td>
 
                 <td>
-                    @Html.ActionLink("PickUpOrder", "Deliveryman", new { id = item.Id }) |
+                    @Html.ActionLink("PickUp","PickUpOrder", new { id = item.Id })
 
                 </td>
             </tr>

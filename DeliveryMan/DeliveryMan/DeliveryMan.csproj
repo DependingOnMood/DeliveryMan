@@ -310,6 +310,7 @@
     <Content Include="Views\Restaurant\ReviewOrder.cshtml" />
     <Content Include="Views\Deliveryman\FindOrder.cshtml" />
     <Content Include="Views\Deliveryman\FindOrderResults.cshtml" />
+    <Content Include="Views\Deliveryman\PickUpOrder.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
