@@ -102,7 +102,8 @@ namespace DeliveryMan.Controllers
                      from c in db.contacts
                      where c.Email.Equals(User.Identity.Name)
                      select c).FirstOrDefault();
-            Session["UserType"] = q.Role;
+            Session["UserType"] = q.Role.ToString();
+           
         }
 
         //
