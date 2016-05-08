@@ -298,9 +298,8 @@ namespace DeliveryMan.Controllers
             else
             {
                 ModelState.AddModelError("", "A Delivered Order can not be cancelled");
+                return View(model);
             }
-
-            return View();
         }
 
         // GET: Restaurant/ReviewOrder/5

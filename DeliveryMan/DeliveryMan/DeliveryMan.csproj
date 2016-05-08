@@ -219,6 +219,7 @@
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\CancelOrderViewModel.cs" />
+    <Compile Include="Models\DeliverymanOrdersViewModel.cs" />
     <Compile Include="Models\ReviewOrderViewModel.cs" />
     <Compile Include="Models\FindOrderViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -299,11 +300,9 @@
     <Content Include="Views\Restaurant\CreateOrder.cshtml" />
     <Content Include="Views\Restaurant\Delete.cshtml" />
     <Content Include="Views\Restaurant\Details.cshtml" />
+    <Content Include="Views\Restaurant\Edit.cshtml" />
     <Content Include="Views\Restaurant\Index.cshtml" />
-    <Content Include="Views\Deliveryman\Create.cshtml" />
-    <Content Include="Views\Deliveryman\Delete.cshtml" />
     <Content Include="Views\Deliveryman\OrderDetails.cshtml" />
-    <Content Include="Views\Deliveryman\Edit.cshtml" />
     <Content Include="Views\Deliveryman\Index.cshtml" />
     <Content Include="Views\Restaurant\Orders.cshtml" />
     <Content Include="Views\Restaurant\OrderDetails.cshtml" />
@@ -312,7 +311,7 @@
     <Content Include="Views\Deliveryman\FindOrderResults.cshtml" />
     <Content Include="Views\Restaurant\CancelOrder.cshtml" />
     <Content Include="Views\Deliveryman\PickUpOrder.cshtml" />
-    <Content Include="Views\Restaurant\EditOrder.cshtml" />
+    <Content Include="Views\Deliveryman\Orders.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
