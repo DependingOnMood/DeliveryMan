@@ -35,6 +35,7 @@ namespace DeliveryMan.Controllers
                               from c in db.contacts
                               where r.ContactId.Equals(c.PhoneNumber)
                               select r).FirstOrDefault();
+        
             if (res == null)
             {
                 return HttpNotFound();
@@ -115,24 +116,28 @@ namespace DeliveryMan.Controllers
         public ActionResult Orders()
         {
             Restaurant res = (from r in db.restaurants
-                              where r.Contact.Email.Equals(User.Identity.Name)
+                              from c in db.contacts
+                              where r.ContactId.Equals(c.PhoneNumber)
                               select r).FirstOrDefault();
             if (res == null)
             {
                 return HttpNotFound();
             }
             IEnumerable<Order> wo = from o in db.orders
-                                    where o.RestaurantId == res.Id
+                                    from r in db.restaurants
+                                    where o.RestaurantId == r.Id
                                     where o.Status == Status.WAITING
                                     orderby o.PlacedTime descending
                                     select o;
             IEnumerable<Order> po = from o in db.orders
-                                    where o.RestaurantId == res.Id
+                                    from r in db.restaurants
+                                    where o.RestaurantId == r.Id
                                     where o.Status == Status.PENDING
                                     orderby o.PlacedTime descending
                                     select o;
             IEnumerable<Order> io = from o in db.orders
-                                    where o.RestaurantId == res.Id
+                                    from r in db.restaurants
+                                    where o.RestaurantId == r.Id
                                     where o.Status == Status.INPROGRESS
                                     orderby o.PlacedTime descending
                                     select o;
@@ -153,6 +158,7 @@ namespace DeliveryMan.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Restaurant res = (from r in db.restaurants
+                              from c in db.contacts
                               where r.Contact.Email.Equals(User.Identity.Name)
                               select r).FirstOrDefault();
             if (res == null)
