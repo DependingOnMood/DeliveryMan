@@ -10,6 +10,9 @@ namespace DeliveryMan.Models
         [Display(Name = "Order ID")]
         public int OrderId { get; set; }
 
+        [Display(Name = "Order Name")]
+        public string OrderName { get; set; }
+
         [Required]
         [Display(Name = "Placed Time")]
         public DateTime PlacedTime { get; set; }

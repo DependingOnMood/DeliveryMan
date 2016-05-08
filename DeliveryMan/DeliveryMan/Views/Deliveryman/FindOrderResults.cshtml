@@ -27,7 +27,7 @@
 
         foreach (Order item in (List<Order>)ViewBag.res)
         {
-            string address = item.Contact.AddressLine1 + "," +item.Contact.AddressLine2+"," + item.Contact.City + "," + item.Contact.State+ ","+item.Contact.ZipCode;
+            string address = item.Contact.AddressToString();
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.Restaurant.Name)
