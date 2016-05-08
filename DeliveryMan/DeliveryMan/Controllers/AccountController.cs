@@ -173,7 +173,7 @@ namespace DeliveryMan.Controllers
                     newContact.State = model.AddressState;
                     newContact.ZipCode = model.AddressZipCode;
 
-                    if (command == "Register_Deliveryman")
+                    if (command == "Register Deliveryman")
                     {
                         newContact.Role = Role.DELIVERYMAN;
 
@@ -187,7 +187,7 @@ namespace DeliveryMan.Controllers
 
                         db.deliverymen.Add(newDeliveryman);
                     }
-                    else if (command == "Register_Restaurant")
+                    else if (command == "Register Restaurant")
                     {
                         newContact.Role = Role.RESTAUTANT;
 

@@ -24,4 +24,3 @@ namespace DeliveryMan.Models
         public DateTime DeliveredTime { get; set; }
     }
 }
-}
