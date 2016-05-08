@@ -1,9 +1,5 @@
 ﻿@model DataLayer.Order
 
-@{
-    Layout = null;
-}
-
 <!DOCTYPE html>
 
 <html>
@@ -17,27 +13,35 @@
         <hr />
         <dl class="dl-horizontal">
             <dt>
-                @Html.DisplayNameFor(model => model.Contact.Email)
+                @Html.DisplayNameFor(model => model.Note)
             </dt>
-    
+
             <dd>
-                @Html.DisplayFor(model => model.Contact.Email)
+                @Html.DisplayFor(model => model.Note)
             </dd>
-    
+
             <dt>
-                @Html.DisplayNameFor(model => model.Deliveryman.ContactId)
+                @Html.DisplayNameFor(model => model.PlacedTime)
             </dt>
-    
+
             <dd>
-                @Html.DisplayFor(model => model.Deliveryman.ContactId)
+                @Html.DisplayFor(model => model.PlacedTime)
             </dd>
-    
+
             <dt>
-                @Html.DisplayNameFor(model => model.Restaurant.ContactId)
+                @Html.DisplayNameFor(model => model.PickUpTime)
             </dt>
-    
+
             <dd>
-                @Html.DisplayFor(model => model.Restaurant.ContactId)
+                @Html.DisplayFor(model => model.PickUpTime)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.DeliveredTime)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.DeliveredTime)
             </dd>
     
             <dt>
@@ -46,39 +50,7 @@
     
             <dd>
                 @Html.DisplayFor(model => model.Status)
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.Note)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.Note)
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.PlacedTime)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.PlacedTime)
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.PickUpTime)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.PickUpTime)
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.DeliveredTime)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.DeliveredTime)
-            </dd>
+            </dd>           
     
             <dt>
                 @Html.DisplayNameFor(model => model.ETA)
@@ -96,11 +68,22 @@
                 @Html.DisplayFor(model => model.DeliveryFee)
             </dd>
     
+            <dt>
+                @Html.DisplayNameFor(model => model.Deliveryman)
+            </dt>
+
+            <dd>
+                @if (Model.Deliveryman != null)
+                {
+                    string name = Model.Deliveryman.getName();
+                    @name
+                }
+            </dd>
         </dl>
     </div>
     <p>
-        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-        @Html.ActionLink("Back to List", "Index")
+        @Html.ActionLink("Edit", "EditOrder", new { id = Model.Id }) |
+        @Html.ActionLink("Back to orders", "Orders")
     </p>
 </body>
 </html>
