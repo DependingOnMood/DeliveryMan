@@ -59,8 +59,10 @@
         </dl>
     </div>
     <p>
-        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-        @Html.ActionLink("Back to List", "Index")
+        <input type="button" value="Edit" class="btn btn-danger"
+               onclick="location.href = '@(Url.Action("Edit", "Restaurant", new { id = Model.Id }))'" />
+        <input type="button" value="Back to List" class="btn btn-danger"
+               onclick="location.href = '@(Url.Action("Index", "Restaurant"))'" />
     </p>
 </body>
 </html>
