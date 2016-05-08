@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BizLogic
 {
-    public static class ReviewOrder
+    public static class ReviewRating
     {
         public static double calculateScore(this Review review)
         {
