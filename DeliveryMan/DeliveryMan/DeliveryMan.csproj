@@ -236,6 +236,7 @@
     <Content Include="Content\Img\banner.jpg" />
     <Content Include="Content\Img\logo.png" />
     <Content Include="Content\Index.css" />
+    <Content Include="Content\StarsRating.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />

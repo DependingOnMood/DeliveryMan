@@ -35,7 +35,7 @@ namespace DeliveryMan.Controllers
                               from c in db.contacts
                               where r.ContactId.Equals(c.PhoneNumber)
                               select r).FirstOrDefault();
-        
+
             if (res == null)
             {
                 return HttpNotFound();
@@ -275,25 +275,38 @@ namespace DeliveryMan.Controllers
         }
 
         // GET: Restaurant/ReviewOrder/5
-        public ActionResult ReviewOrder()
+        public ActionResult ReviewOrder(string id)
         {
-            return View();
+            int intId = int.Parse(id);
+
+            var orderDetails = (from t in db.orders
+                               where t.Contact.Email == User.Identity.Name
+                               && t.Id == intId
+                               select t).FirstOrDefault();
+
+            return View("ReviewOrder", orderDetails);
         }
 
         // POST: Restaurant/ReviewOrder/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ReviewOrder([Bind(Include = "")] Review review)
+        public ActionResult ReviewOrder(ReviewOrderViewModel model, string id)
         {
             if (ModelState.IsValid)
             {
-                db.reviews.Add(review);
+                Review newReview = new Review();
+                newReview.OrderId = int.Parse(id);
+                newReview.ReviewText = model.ReviewText;
+                newReview.Rating = model.Rating;
+
+                db.reviews.Add(newReview);
                 db.SaveChanges();
+
                 return RedirectToAction("Orders");
             }
 
             //ViewBag.CId = new SelectList(db.contact, "CId", "Name", restaurant.CId);
-            return View(review);
+            return View();
         }
 
         // GET: Restaurant/OrdersHistory
@@ -357,7 +370,8 @@ namespace DeliveryMan.Controllers
             if (order != null)
             {
                 return View(deliveryman);
-            } else
+            }
+            else
             {
                 return HttpNotFound();
             }
@@ -391,7 +405,8 @@ namespace DeliveryMan.Controllers
                 if (badGuy == null)
                 {
                     return HttpNotFound();
-                } else
+                }
+                else
                 {
                     Blacklist bl = new Blacklist()
                     {
