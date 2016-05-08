@@ -226,8 +226,8 @@ namespace DeliveryMan.Controllers
         public ActionResult CancelOrder(int? id)
         {
             var orderDetails = (from o in db.orders
-                                where o.Contact.Email == User.Identity.Name
-                                && o.Id == id
+                                where o.Contact.Email.Equals(User.Identity.Name)
+                                where o.Id == id
                                 select o).FirstOrDefault();
 
             CancelOrderViewModel cancelOrderVM = new CancelOrderViewModel();
