@@ -27,11 +27,13 @@ namespace DeliveryMan.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateOrder([Bind(Include = "Note, AddressLine1, AddressLine2, City, State, ZipCode, PhoneNumber")]
+        public ActionResult CreateOrder([Bind(Include = "Note, AddressLine1, AddressLine2, City, State, ZipCode, PhoneNumber, OrderFee")]
             RestaurantCreateOrderViewModel model)
         {
+            GoogleMapHelper helper = null;
             Restaurant res = (from r in db.restaurants
-                              where r.Contact.Email.Equals(User.Identity.Name)
+                              from c in db.contacts
+                              where r.ContactId.Equals(c.PhoneNumber)
                               select r).FirstOrDefault();
             if (res == null)
             {
@@ -53,7 +55,7 @@ namespace DeliveryMan.Controllers
                     ZipCode = model.ZipCode,
                 };
                 String totalAddress = model.AddressLine1 + " " + model.AddressLine2 + " " + model.City + " " + model.State + " " + model.ZipCode;
-                GoogleMapHelper helper = new GoogleMapHelper();
+                helper = new GoogleMapHelper();
                 String latAndLong = helper.getLatandLngByAddr(totalAddress);
                 contact.Latitude = Decimal.Parse(latAndLong.Split(' ')[0]);
                 contact.Longitude = Decimal.Parse(latAndLong.Split(' ')[1]);
@@ -82,7 +84,7 @@ namespace DeliveryMan.Controllers
                 if (changed)
                 {
                     String totalAddress = model.AddressLine1 + " " + model.AddressLine2 + " " + model.City + " " + model.State + " " + model.ZipCode;
-                    GoogleMapHelper helper = new GoogleMapHelper();
+                    helper = new GoogleMapHelper();
                     String latAndLong = helper.getLatandLngByAddr(totalAddress);
                     contact.Latitude = Decimal.Parse(latAndLong.Split(' ')[0]);
                     contact.Longitude = Decimal.Parse(latAndLong.Split(' ')[1]);
@@ -99,6 +101,11 @@ namespace DeliveryMan.Controllers
                 //calc ETA
                 //calc DeliveryFee
             };
+            helper = new GoogleMapHelper();
+            string loc1 = res.getAddress();
+            string loc2 = order.getAddress();
+            double distance = helper.computeDistanceByLocation(loc1, loc2);
+            
             db.orders.Add(order);
             db.SaveChanges();
             return RedirectToAction("Orders");

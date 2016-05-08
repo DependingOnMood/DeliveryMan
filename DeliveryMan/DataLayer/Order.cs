@@ -41,8 +41,8 @@ namespace DataLayer
 
         public DateTime DeliveredTime { get; set; }
 
-        //if required
-        public TimeSpan ETA { get; set; }
+        [Required]
+        public string ETA { get; set; }
 
         [Required]
         public decimal DeliveryFee { get; set; }

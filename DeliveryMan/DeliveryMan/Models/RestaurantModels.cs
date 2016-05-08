@@ -39,5 +39,8 @@ namespace DeliveryMan.Models
         [Required]
         [Phone]
         public string PhoneNumber { get; set; }
+
+        [Required]
+        public decimal OrderFee { get; set; }
     }
 }
