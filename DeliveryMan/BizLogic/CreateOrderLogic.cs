@@ -39,7 +39,7 @@ namespace BizLogic
         {
             GoogleMapHelper helper = new GoogleMapHelper();
             String str = helper.getRoute(addr1, addr2);
-            str = str.Split(',')[1];           
+            str = str.Split('#')[1];           
             return str;
         }
 
