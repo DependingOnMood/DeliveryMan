@@ -253,8 +253,8 @@ namespace DeliveryMan.Controllers
         public ActionResult CancelOrder(int? id)
         {
             var orderDetails = (from o in db.orders
-                                where o.Contact.Email == User.Identity.Name
-                                && o.Id == id
+                                where o.Restaurant.Contact.Email.Equals(User.Identity.Name)
+                                where o.Id == id
                                 select o).FirstOrDefault();
 
             CancelOrderViewModel cancelOrderVM = new CancelOrderViewModel();
@@ -308,7 +308,7 @@ namespace DeliveryMan.Controllers
             int intId = int.Parse(id);
 
             var orderDetails = (from t in db.orders
-                                where t.Contact.Email == User.Identity.Name
+                                where t.Restaurant.Contact.Email == User.Identity.Name
                                 && t.Id == intId
                                 select t).FirstOrDefault();
 
