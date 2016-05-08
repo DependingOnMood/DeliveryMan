@@ -284,6 +284,7 @@ namespace DeliveryMan.Controllers
 
             ReviewOrderViewModel reviewOrderVM = new ReviewOrderViewModel();
 
+            reviewOrderVM.OrderName = orderDetails.Note;
             reviewOrderVM.PlacedTime = orderDetails.PlacedTime;
             reviewOrderVM.PickUpTime = orderDetails.PickUpTime;
             reviewOrderVM.DeliveredTime = orderDetails.DeliveredTime;
