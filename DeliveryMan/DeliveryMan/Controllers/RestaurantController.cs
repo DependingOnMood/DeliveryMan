@@ -99,14 +99,13 @@ namespace DeliveryMan.Controllers
                 Note = model.Note,
                 PlacedTime = DateTime.Now,
                 ContactId = contact.PhoneNumber,
-                //calc ETA
-                //calc DeliveryFee
             };
             helper = new GoogleMapHelper();
             string loc1 = res.getAddress();
             string loc2 = order.getAddress();
-            double distance = helper.computeDistanceByLocation(loc1, loc2);
-            
+            double distance = CreateOrderLogic.getRealDistance(loc1, loc2);
+            order.DeliveryFee = CreateOrderLogic.computePrice(distance, model.OrderFee);
+            order.ETA = CreateOrderLogic.getETA(loc1, loc2);
             db.orders.Add(order);
             db.SaveChanges();
             return RedirectToAction("Orders");
