@@ -41,7 +41,7 @@ namespace DataLayer
 
         public string AddressToString()
         {
-            return AddressLine1 + AddressLine2;
+            return AddressLine1 + ", " + AddressLine2;
         }
     }
 
