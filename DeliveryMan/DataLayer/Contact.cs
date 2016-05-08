@@ -39,13 +39,12 @@ namespace DataLayer
 
         public decimal Longitude { get; set; }
 
-        public String addressToString()
+        public string AddressToString()
         {
-            string res = this.AddressLine1 + " " + this.AddressLine2 + " " + this.City + " " + this.State + " " + this.ZipCode;
-            return res;
+            return AddressLine1 + ", " + AddressLine2;
         }
     }
-  
+
     public enum Role
     {
         DELIVERYMAN,

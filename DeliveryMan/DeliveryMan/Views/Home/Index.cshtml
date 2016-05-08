@@ -13,17 +13,34 @@
     <br />
     <br />
 @if (User.Identity.IsAuthenticated) {
-    <p class="feed">Welcome to DeliveryMan!</p>
+    if (Session["UserType"].ToString() == "0")
+    {
+    <p class="feed">Welcome to DeliveryMan Web Application, DeliveryMan!</p>
     <div class="row">
         <div>
-            <p class="center-button"><a href="@(Url.Action("Register", "Account"))" class="btn btn-danger">Find Orders</a></p>
+            <p class="center-button"><a href="@(Url.Action("FindOrder", "Deliveryman"))" class="btn btn-danger">Find Orders</a></p>
         </div>
         <div>
-            <p class="center-button"><a href="@(Url.Action("Login", "Account"))" class="btn btn-danger">Log In</a></p>
+            <p class="center-button"><a href="@(Url.Action("MyOrders", "Deliveryman"))" class="btn btn-danger">View My Orders</a></p>
         </div>
         <br />
         <br />
     </div>
+    }
+    else
+    {
+        <p class="feed">Welcome to DeliveryMan Web Application, Restaurant!</p>
+        <div class="row">
+            <div>
+                <p class="center-button"><a href="@(Url.Action("CreateOrder", "Restaurant"))" class="btn btn-danger">Create Order</a></p>
+            </div>
+            <div>
+                <p class="center-button"><a href="@(Url.Action("Orders", "Restaurant"))" class="btn btn-danger">View Orders</a></p>
+            </div>
+            <br />
+            <br />
+        </div>
+    }
 }
 else {
     <p class="feed">Your local food delivery solution!</p>
