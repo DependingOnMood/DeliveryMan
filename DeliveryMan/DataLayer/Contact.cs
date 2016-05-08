@@ -38,8 +38,14 @@ namespace DataLayer
         public decimal Latitude { get; set; }
 
         public decimal Longitude { get; set; }
-    }
 
+        public String addressToString()
+        {
+            string res = this.AddressLine1 + " " + this.AddressLine2 + " " + this.City + " " + this.State + " " + this.ZipCode;
+            return res;
+        }
+    }
+  
     public enum Role
     {
         DELIVERYMAN,

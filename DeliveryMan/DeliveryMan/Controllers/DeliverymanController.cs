@@ -41,14 +41,12 @@ namespace DeliveryMan.Controllers
 
 
                 var q = (from o in db.orders
-                         from c in db.contacts
-                         where o.ContactId.Equals(c.PhoneNumber)
-                         where c.Email.Equals(User.Identity.Name)
+                         where o.Contact.City.Equals(model.city)
                          select o
                          );
                 if (q != null)
                 {
-                    foreach (Order o in q)
+                    foreach (Order o in q.ToList())
                     {
                         Contact c = o.Contact;
                         String addr2 = c.AddressLine1 + " " + c.AddressLine2 + " " + c.City + " " + c.State + " " + c.ZipCode;
@@ -61,7 +59,7 @@ namespace DeliveryMan.Controllers
                 }
             
             ViewBag.res = orders;
-            return View("ViewOrdersByR");
+            return View("FindOrderResults");
         }
 
 

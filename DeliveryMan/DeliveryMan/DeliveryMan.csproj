@@ -306,10 +306,10 @@
     <Content Include="Views\Deliveryman\Edit.cshtml" />
     <Content Include="Views\Deliveryman\Index.cshtml" />
     <Content Include="Views\Restaurant\Orders.cshtml" />
-    <Content Include="Views\BZ\ViewOrdersByR.cshtml" />
     <Content Include="Views\Restaurant\OrderDetails.cshtml" />
     <Content Include="Views\Restaurant\ReviewOrder.cshtml" />
     <Content Include="Views\Deliveryman\FindOrder.cshtml" />
+    <Content Include="Views\Deliveryman\FindOrderResults.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
