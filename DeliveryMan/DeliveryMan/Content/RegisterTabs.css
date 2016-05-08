@@ -1,7 +1,7 @@
 ﻿#tab-nav {
-    width: 600px;
+        margin-top:30px;
+    width: 500px;
     text-align: center;
-    margin-top:30px;
     margin-bottom: 10px;
 }
 
@@ -9,7 +9,6 @@
         margin-left: 25px;
         margin-right: 25px;
         padding: 10px;
-        text-decoration: none;
         color:#37dbdb;
     }
 

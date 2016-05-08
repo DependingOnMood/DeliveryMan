@@ -1,8 +1,9 @@
-﻿.member-info {
-margin-left:10px;
+﻿body {
 }
-.my-notice {
-margin-top: 20px;
+.about-text{
+    margin:10px;
+    font-size:16px;
+
 }
 .background-banner {
     background-image: url(../Content/Img/about_banner.jpg);

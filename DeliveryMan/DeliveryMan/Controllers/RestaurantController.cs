@@ -30,10 +30,13 @@ namespace DeliveryMan.Controllers
         public ActionResult CreateOrder([Bind(Include = "Note, AddressLine1, AddressLine2, City, State, ZipCode, PhoneNumber, OrderFee")]
             RestaurantCreateOrderViewModel model)
         {
+            
             GoogleMapHelper helper = null;
             Restaurant res = (from r in db.restaurants
-                              from c in db.contacts
-                              where r.ContactId.Equals(c.PhoneNumber)
+                              where r.Contact.Email.Equals(User.Identity.Name)
+                              //from c in db.contacts
+                              //where r.ContactId.Equals(c.PhoneNumber)
+                              //where c.Email.Equals(User.Identity.Name)
                               select r).FirstOrDefault();
 
             if (res == null)
@@ -43,6 +46,7 @@ namespace DeliveryMan.Controllers
             Contact contact = (from c in db.contacts
                                where c.PhoneNumber.Equals(model.PhoneNumber)
                                select c).FirstOrDefault();
+            String totalAddress = model.AddressLine1 + " " + model.AddressLine2 + " " + model.City + " " + model.State + " " + model.ZipCode;
             if (contact == null)
             {
                 contact = new Contact()
@@ -55,7 +59,6 @@ namespace DeliveryMan.Controllers
                     State = model.State,
                     ZipCode = model.ZipCode,
                 };
-                String totalAddress = model.AddressLine1 + " " + model.AddressLine2 + " " + model.City + " " + model.State + " " + model.ZipCode;
                 helper = new GoogleMapHelper();
                 String latAndLong = helper.getLatandLngByAddr(totalAddress);
                 contact.Latitude = Decimal.Parse(latAndLong.Split(' ')[0]);
@@ -84,28 +87,29 @@ namespace DeliveryMan.Controllers
                 }
                 if (changed)
                 {
-                    String totalAddress = model.AddressLine1 + " " + model.AddressLine2 + " " + model.City + " " + model.State + " " + model.ZipCode;
                     helper = new GoogleMapHelper();
                     String latAndLong = helper.getLatandLngByAddr(totalAddress);
                     contact.Latitude = Decimal.Parse(latAndLong.Split(' ')[0]);
                     contact.Longitude = Decimal.Parse(latAndLong.Split(' ')[1]);
                 }
             }
-            db.SaveChanges();
+            //db.SaveChanges();
+            helper = new GoogleMapHelper();
+            string loc1 = res.Contact.getAddress();
+            string loc2 = totalAddress;
+            double distance = CreateOrderLogic.getRealDistance(loc1, loc2);
             Order order = new Order()
             {
                 RestaurantId = res.Id,
+                Restaurant =res,
                 Status = Status.WAITING,
                 Note = model.Note,
                 PlacedTime = DateTime.Now,
                 ContactId = contact.PhoneNumber,
+                Contact = contact,
+                DeliveryFee = CreateOrderLogic.computePrice(distance, model.OrderFee),
+                ETA = CreateOrderLogic.getETA(loc1, loc2),
             };
-            helper = new GoogleMapHelper();
-            string loc1 = res.getAddress();
-            string loc2 = order.getAddress();
-            double distance = CreateOrderLogic.getRealDistance(loc1, loc2);
-            order.DeliveryFee = CreateOrderLogic.computePrice(distance, model.OrderFee);
-            order.ETA = CreateOrderLogic.getETA(loc1, loc2);
             db.orders.Add(order);
             db.SaveChanges();
             return RedirectToAction("Orders");

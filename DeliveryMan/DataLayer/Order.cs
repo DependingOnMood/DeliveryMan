@@ -20,7 +20,7 @@ namespace DataLayer
         [ForeignKey("RestaurantId")]
         public virtual Restaurant Restaurant { get; set; }
 
-        public int DeliverymanId { get; set; }
+        public int? DeliverymanId { get; set; }
 
         [ForeignKey("DeliverymanId")]
         public virtual Deliveryman Deliveryman { get; set; }
@@ -35,10 +35,16 @@ namespace DataLayer
         public string Note { get; set; }
 
         [Required]
+        [Column(TypeName = "DateTime2")]//xue dao le
+        [DataType(DataType.DateTime)]
         public DateTime PlacedTime { get; set; }
 
+        [Column(TypeName = "DateTime2")]
+        [DataType(DataType.DateTime)]
         public DateTime PickUpTime { get; set; }
 
+        [Column(TypeName = "DateTime2")]
+        [DataType(DataType.DateTime)]
         public DateTime DeliveredTime { get; set; }
 
         [Required]
