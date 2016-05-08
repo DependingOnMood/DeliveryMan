@@ -35,14 +35,12 @@ namespace BizLogic
             return res;
         }
 
-        public static TimeSpan getETA( String addr1, String addr2)
+        public static String getETA( String addr1, String addr2)
         {
             GoogleMapHelper helper = new GoogleMapHelper();
             String str = helper.getRoute(addr1, addr2);
-            str = str.Split(',')[1];
-            Console.WriteLine(str);
-            TimeSpan span = TimeSpan.Parse(str);
-            return span;
+            str = str.Split(',')[1];           
+            return str;
         }
 
     }
