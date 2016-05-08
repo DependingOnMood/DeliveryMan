@@ -30,7 +30,7 @@ namespace DeliveryMan.Controllers
         public ActionResult CreateOrder([Bind(Include = "Note, AddressLine1, AddressLine2, City, State, ZipCode, PhoneNumber, OrderFee")]
             RestaurantCreateOrderViewModel model)
         {
-            
+
             GoogleMapHelper helper = null;
             Restaurant res = (from r in db.restaurants
                               where r.Contact.Email.Equals(User.Identity.Name)
@@ -101,7 +101,7 @@ namespace DeliveryMan.Controllers
             Order order = new Order()
             {
                 RestaurantId = res.Id,
-                Restaurant =res,
+                Restaurant = res,
                 Status = Status.WAITING,
                 Note = model.Note,
                 PlacedTime = DateTime.Now,
@@ -284,11 +284,18 @@ namespace DeliveryMan.Controllers
             int intId = int.Parse(id);
 
             var orderDetails = (from t in db.orders
-                               where t.Contact.Email == User.Identity.Name
-                               && t.Id == intId
-                               select t).FirstOrDefault();
+                                where t.Contact.Email == User.Identity.Name
+                                && t.Id == intId
+                                select t).FirstOrDefault();
 
-            return View("ReviewOrder", orderDetails);
+            ReviewOrderViewModel reviewOrderVM = new ReviewOrderViewModel();
+
+            reviewOrderVM.PlacedTime = orderDetails.PlacedTime;
+            reviewOrderVM.PickUpTime = orderDetails.PickUpTime;
+            reviewOrderVM.DeliveredTime = orderDetails.DeliveredTime;
+            reviewOrderVM.OrderId = orderDetails.Id;
+
+            return View("ReviewOrder", reviewOrderVM);
         }
 
         // POST: Restaurant/ReviewOrder/5
