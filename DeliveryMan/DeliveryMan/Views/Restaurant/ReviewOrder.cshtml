@@ -15,66 +15,73 @@
     @Html.ValidationSummary("", new { @class = "text-danger" })
 
     <div class="form-group">
-        <dl class="dl-horizontal">
-            <dt>
-                @Html.DisplayNameFor(model => model.OrderId)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.OrderId)
-            </dd>
-
-            <dt>
-                @Html.DisplayNameFor(model => model.PlacedTime)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.PlacedTime)
-            </dd>
-
-            <dt>
-                @Html.DisplayNameFor(model => model.PickUpTime)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.PickUpTime)
-            </dd>
-
-            <dt>
-                @Html.DisplayNameFor(model => model.DeliveredTime)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.DeliveredTime)
-            </dd>
-        </dl>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(m => m.ReviewText, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
-            @Html.TextAreaFor(m => m.ReviewText, new { cols = "50", rows = "10" })
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.OrderName)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.OrderName)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.OrderId)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.OrderId)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.PlacedTime)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.PlacedTime)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.PickUpTime)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.PickUpTime)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.DeliveredTime)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.DeliveredTime)
+                </dd>
+            </dl>
         </div>
     </div>
-
-    <div class="rating">
-        <span>&#9734</span>
-        <span>&#9734</span>
-        <span>&#9734</span>
-        <span>&#9734</span>
-        <span>&#9734</span> 
-    </div>
-
-    <strong class="choice">Choose a rating</strong>
-    @Html.RadioButtonFor(model => model.Rating, 1, new { id = 1 })
-    @Html.RadioButtonFor(model => model.Rating, 2, new { id = 2 })
-    @Html.RadioButtonFor(model => model.Rating, 3, new { id = 3 })
-    @Html.RadioButtonFor(model => model.Rating, 4, new { id = 4 })
-    @Html.RadioButtonFor(model => model.Rating, 5, new { id = 5 })
 
     <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" name="command" class="btn btn-default" value="Submit" />
-            <input type="button" value="Cancel" class="btn btn-default"
-                   onclick="location.href = '@(Url.Action("Index", "Home"))'" />
+        <div class="col-md-10">
+            @Html.LabelFor(m => m.ReviewText, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(m => m.ReviewText, new { cols = "50", rows = "10" })
+            </div>
         </div>
     </div>
+
+        <div class="form-group">
+            <div class="col-md-10">
+                <strong class="choice">Choose a rating</strong>
+                @Html.RadioButtonFor(model => model.Rating, 1, new { id = 1 })
+                @Html.RadioButtonFor(model => model.Rating, 2, new { id = 2 })
+                @Html.RadioButtonFor(model => model.Rating, 3, new { id = 3 })
+                @Html.RadioButtonFor(model => model.Rating, 4, new { id = 4 })
+                @Html.RadioButtonFor(model => model.Rating, 5, new { id = 5 })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" name="command" class="btn btn-default" value="Submit" />
+                <input type="button" value="Cancel" class="btn btn-default"
+                       onclick="location.href = '@(Url.Action("Index", "Home"))'" />
+            </div>
+        </div>
 }
 
 @section Scripts {

@@ -30,8 +30,10 @@ namespace DataLayer
         [ForeignKey("ContactId")]
         public virtual Contact Contact { get; set; }
 
+        [Required]
         public Status Status { get; set; }
 
+        [Required]
         public string Note { get; set; }
 
         [Required]
@@ -41,11 +43,11 @@ namespace DataLayer
 
         [Column(TypeName = "DateTime2")]
         [DataType(DataType.DateTime)]
-        public DateTime PickUpTime { get; set; }
+        public DateTime? PickUpTime { get; set; }
 
         [Column(TypeName = "DateTime2")]
         [DataType(DataType.DateTime)]
-        public DateTime DeliveredTime { get; set; }
+        public DateTime? DeliveredTime { get; set; }
 
         [Required]
         public string ETA { get; set; }
