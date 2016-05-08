@@ -13,8 +13,8 @@
     <br />
     <br />
 @if (User.Identity.IsAuthenticated) {
-
-
+    if (ViewBag.UserType == 0)
+    {
     <p class="feed">Welcome to DeliveryMan Web Application, DeliveryMan!</p>
     <div class="row">
         <div>
@@ -26,7 +26,21 @@
         <br />
         <br />
     </div>
-
+    }
+    else
+    {
+        <p class="feed">Welcome to DeliveryMan Web Application, Restaurant!</p>
+        <div class="row">
+            <div>
+                <p class="center-button"><a href="@(Url.Action("CreateOrder", "Restaurant"))" class="btn btn-danger">Create Order</a></p>
+            </div>
+            <div>
+                <p class="center-button"><a href="@(Url.Action("Orders", "Restaurant"))" class="btn btn-danger">View Orders</a></p>
+            </div>
+            <br />
+            <br />
+        </div>
+    }
 }
 else {
     <p class="feed">Your local food delivery solution!</p>

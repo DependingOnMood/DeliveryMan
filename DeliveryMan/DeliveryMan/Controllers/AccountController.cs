@@ -82,7 +82,6 @@ namespace DeliveryMan.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    saveUserTypeInSession();
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
@@ -93,17 +92,6 @@ namespace DeliveryMan.Controllers
                     ModelState.AddModelError("", "Invalid login attempt.");
                     return View(model);
             }
-        }
-
-        //save User Type In Session for UI use
-        public void saveUserTypeInSession()
-        {
-            var q = (
-                     from c in db.contacts
-                     where c.Email.Equals(User.Identity.Name)
-                     select c).FirstOrDefault();
-            Session["UserType"] = q.Role.ToString();
-           
         }
 
         //
@@ -223,8 +211,6 @@ namespace DeliveryMan.Controllers
                     db.contacts.Add(newContact);
 
                     db.SaveChanges();
-
-                    saveUserTypeInSession();
 
                     return RedirectToAction("Index", "Home");
                 }
