@@ -1,8 +1,4 @@
-﻿@using DataLayer
-@model DeliveryMan.Models.RestaurantOrdersViewModel
-@{
-    Layout = null;
-}
+﻿@model DeliveryMan.Models.RestaurantOrdersViewModel
 
 <!DOCTYPE html>
 
@@ -12,32 +8,191 @@
     <title>Orders</title>
 </head>
 <body>
-    <div> 
-        <table>
+    <p>
+        @Html.ActionLink("Create New Order", "CreateOrder")
+    </p>
+    <table class="table">
+        <tr>
+            <th>
+                Note
+            </th>
+            <th>
+                Destination
+            </th>
+            <th>
+                Deliveryman
+            </th>
+            <th>
+                ETA
+            </th>
+            <th>
+                DeliveryFee
+            </th>
+            @*<th>
+                    @Html.DisplayNameFor(model => model.Note)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PlacedTime)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PickUpTime)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DeliveredTime)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ETA)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DeliveryFee)
+                </th>*@
+            <th></th>
+        </tr>
+
+        Waiting Orders
+        @foreach (var item in Model.WaitingOrders.ToList())
+        {
+            string destination = item.Contact.AddressToString();
             <tr>
-                <th>Note</th>
-                <th>Deliveryman</th>
-                <th>ETA</th>
-                <th>Fee</th>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Note)
+                </td>
+                <td>
+                    @destination
+                </td>
+                <td>
+                    @if (item.Deliveryman != null)
+                    {
+                        @Html.DisplayFor(modelItem => item.Deliveryman.FirstName + " " + item.Deliveryman.LastName)
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ETA)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DeliveryFee)
+                </td>
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.Note)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PlacedTime)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PickUpTime)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DeliveredTime)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ETA)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DeliveryFee)
+                    </td>*@
+                <td>
+                    @Html.ActionLink("Edit", "EditOrder", new { id = item.Id }) |
+                    @Html.ActionLink("Details", "OrderDetails", new { id = item.Id }) |
+                    @Html.ActionLink("Cancel", "CancelOrder", new { id = item.Id })
+                </td>
             </tr>
-            @foreach (Order order in Model.WaitingOrders)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => order.Note)
+        }
+        Pending Orders
+        @foreach (var item in Model.PendingOrders.ToList())
+        {
+            string destination = item.Contact.AddressToString();
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Note)
+                </td>
+                <td>
+                    @destination
+                </td>
+                <td>
+                    @if (item.Deliveryman != null)
+                    {
+                        @Html.DisplayFor(modelItem => item.Deliveryman.FirstName + " " + item.Deliveryman.LastName)
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ETA)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DeliveryFee)
+                </td>
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.Note)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => order.Deliveryman.FirstName + " " + order.Deliveryman.LastName)
+                        @Html.DisplayFor(modelItem => item.PlacedTime)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => order.ETA)
+                        @Html.DisplayFor(modelItem => item.PickUpTime)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => order.DeliveryFee)
+                        @Html.DisplayFor(modelItem => item.DeliveredTime)
                     </td>
-                </tr>
-            }
-        </table>
-    </div>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ETA)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DeliveryFee)
+                    </td>*@
+                <td>
+                    @Html.ActionLink("Edit", "EditOrder", new { id = item.Id }) |
+                    @Html.ActionLink("Details", "OrderDetails", new { id = item.Id }) |
+                    @Html.ActionLink("Cancel", "CancelOrder", new { id = item.Id })
+                </td>
+            </tr>
+        }
+        InProgress Orders
+        @foreach (var item in Model.InProgressOrders.ToList())
+        {
+            string destination = item.Contact.AddressToString();
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Note)
+                </td>
+                <td>
+                    @destination
+                </td>
+                <td>
+                    @if (item.Deliveryman != null)
+                    {
+                        @Html.DisplayFor(modelItem => item.Deliveryman.FirstName + " " + item.Deliveryman.LastName)
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ETA)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DeliveryFee)
+                </td>
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.Note)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PlacedTime)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PickUpTime)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DeliveredTime)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ETA)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DeliveryFee)
+                    </td>*@
+                <td>
+                    @Html.ActionLink("Edit", "EditOrder", new { id = item.Id }) |
+                    @Html.ActionLink("Details", "OrderDetails", new { id = item.Id }) |
+                    @Html.ActionLink("Cancel", "CancelOrder", new { id = item.Id })
+                </td>
+            </tr>
+        }
+    </table>
 </body>
 </html>
