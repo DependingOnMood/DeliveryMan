@@ -36,5 +36,10 @@ namespace DataLayer
             public int Ranking { get; set; }
 
             public decimal Balance { get; set; }
+
+            public string getName()
+            {
+                return FirstName + " " + LastName;
+            }
         }
     }
