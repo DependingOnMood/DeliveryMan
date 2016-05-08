@@ -189,20 +189,36 @@ namespace DeliveryMan.Controllers
             {
                 return HttpNotFound();
             }
-            var orderTmp = from o in db.orders
-                           where o.RestaurantId == res.Id
-                           where o.Id == id
-                           select o;
-            Order order = orderTmp.FirstOrDefault();
-            if (order == null)
+            Order order = (from o in db.orders
+                               where o.RestaurantId == res.Id
+                               where o.Id == id
+                               select o).FirstOrDefault();
+            RestaurantEditOrderViewModel model = new RestaurantEditOrderViewModel()
             {
-                return HttpNotFound();
-            }
-            var con = (from o in orderTmp
-                       select o.Contact).AsEnumerable();
-            ViewBag.AddressLine1 = new SelectList(con, "AddressLine1", "AddressLine1", order.Contact.AddressLine1);
-            ViewBag.AddressLine2 = new SelectList(con, "AddressLine2", "AddressLine2", order.Contact.AddressLine2);
-            return View(order);
+                OrderId = order.Id,
+                AddressLine1 = order.Contact.AddressLine1,
+                AddressLine2 = order.Contact.AddressLine2,
+                City = order.Contact.City,
+                State = order.Contact.State,
+                ZipCode = order.Contact.ZipCode,
+            };
+            //var orderTmp = from o in db.orders
+            //               where o.RestaurantId == res.Id
+            //               where o.Id == id
+            //               select o;
+            //Order order = orderTmp.FirstOrDefault();
+            //if (order == null)
+            //{
+            //    return HttpNotFound();
+            //}
+            //var con = (from o in orderTmp
+            //           select o.Contact).AsEnumerable();
+            //ViewBag.AddressLine1 = new SelectList(con, "AddressLine1", "AddressLine1", order.Contact.AddressLine1);
+            //ViewBag.AddressLine2 = new SelectList(con, "AddressLine2", "AddressLine2", order.Contact.AddressLine2);
+            //ViewBag.City = new SelectList(con, "City", "City", order.Contact.City);
+            //ViewBag.State = new SelectList(con, "State", "State", order.Contact.State);
+            //ViewBag.ZipCode = new SelectList(con, "ZipCode", "ZipCode", order.Contact.ZipCode);
+            return View(model);
         }
 
         // POST: Restaurant/EditOrder/5
@@ -210,16 +226,27 @@ namespace DeliveryMan.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditOrder([Bind(Include = "")] Order order)
+        public ActionResult EditOrder([Bind(Include = "OrderId, AddressLine1, AddressLine2, City, State, ZipCode")] 
+            RestaurantEditOrderViewModel model)
         {
-            if (ModelState.IsValid)
+            Restaurant res = (from r in db.restaurants
+                              where r.Contact.Email.Equals(User.Identity.Name)
+                              select r).FirstOrDefault();
+            if (res == null)
             {
-                db.Entry(order).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Orders");
+                return HttpNotFound();
             }
-            //ViewBag.CId = new SelectList(db.contact, "CId", "Name", restaurant.CId);
-            return View(order);
+            Order order = (from o in db.orders
+                           where o.RestaurantId == res.Id
+                           where o.Id == model.OrderId
+                           select o).FirstOrDefault();
+            order.Contact.AddressLine1 = model.AddressLine1;
+            order.Contact.AddressLine2 = model.AddressLine2;
+            order.Contact.City = model.City;
+            order.Contact.State = model.State;
+            order.Contact.ZipCode = model.ZipCode;
+            db.SaveChanges();
+            return RedirectToAction("Orders");
         }
 
         // GET: Restaurant/CancelOrder/5
