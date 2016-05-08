@@ -10,7 +10,7 @@
 <hr />
 
 <div id="tab-nav">
-    <a href="javascript:;" data-container="form-1-container">Register as Deliveryman</a>
+    <a href="javascript:;" class="selected" data-container="form-1-container">Register as Deliveryman</a>
     <a href="javascript:;" data-container="form-2-container">Register as Restaurant</a>
 </div>
 
@@ -188,8 +188,8 @@
 
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" class="btn btn-default" value="Register Restaurant" />
-                    <input type="button" value="Cancel" class="btn btn-default"
+                    <input type="submit" class="btn btn-danger" value="Register Restaurant" />
+                    <input type="button" value="Cancel" class="btn btn-danger"
                            onclick="location.href = '@(Url.Action("Index", "Home"))'" />
                 </div>
             </div>
