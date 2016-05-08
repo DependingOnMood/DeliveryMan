@@ -218,6 +218,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\CancelOrderViewModel.cs" />
     <Compile Include="Models\ReviewOrderViewModel.cs" />
     <Compile Include="Models\FindOrderViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -310,6 +311,8 @@
     <Content Include="Views\Restaurant\ReviewOrder.cshtml" />
     <Content Include="Views\Deliveryman\FindOrder.cshtml" />
     <Content Include="Views\Deliveryman\FindOrderResults.cshtml" />
+    <Content Include="Views\Restaurant\CancelOrder.cshtml" />
+    <Content Include="Views\Deliveryman\PickUpOrder.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

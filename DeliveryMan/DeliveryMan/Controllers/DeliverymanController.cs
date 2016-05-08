@@ -42,6 +42,7 @@ namespace DeliveryMan.Controllers
 
                 var q = (from o in db.orders
                          where o.Contact.City.Equals(model.city)
+                         where o.Status == Status.WAITING
                          select o
                          );
                 if (q != null)
@@ -63,34 +64,46 @@ namespace DeliveryMan.Controllers
         }
 
         // GET: 
-        public ActionResult PickUpOrder(int? id)
+        public ActionResult PickUpOrder(int? id )
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Restaurant res = (from r in db.restaurants
-                              where r.Contact.Email.Equals(User.Identity.Name)
-                              select r).FirstOrDefault();
+            var res = (from o in db.orders
+                         where o.Id == id
+                         where o.Status == Status.WAITING
+                              select o).FirstOrDefault();
             if (res == null)
             {
                 return HttpNotFound();
             }
-            Order order = (from o in db.orders
-                           where o.RestaurantId == res.Id
-                           where o.Id == id
-                           select o).FirstOrDefault();
-
-            if (order == null)
-            {
-                return HttpNotFound();
-            }
-            return View(order);
+            ViewBag.ifSuccessed = 0;
+            return View(res);
         }
 
         // POST: 
-        public ActionResult PickUpOrder()
+        [HttpPost]
+        public ActionResult PickUpOrder(Order o)
         {
+            if (o.Id == 0) {
+                return HttpNotFound();
+                    }
+            int id = o.Id;
+            var res = (from o1 in db.orders
+                       where o1.Id == id
+                       select o1).FirstOrDefault();
+            res.Status = Status.PENDING;
+            res.PickUpTime = DateTime.Now;
+
+            var user = (from u in db.deliverymen
+                        where u.Contact.Email.Equals(User.Identity.Name)
+                        select u).FirstOrDefault();
+
+            res.DeliverymanId = user.Id;
+            res.Deliveryman = user;
+            db.SaveChanges();
+            ViewBag.ifSuccessed = 1;
             return View();
         }
 

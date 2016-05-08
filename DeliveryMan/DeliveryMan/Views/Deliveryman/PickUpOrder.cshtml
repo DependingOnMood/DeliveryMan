@@ -1,13 +1,19 @@
-﻿@model DataLayer.Order
+﻿
+@{
+    ViewBag.Title = "PickUpOrder";
+}
+
+@model DataLayer.Order
 
 <!DOCTYPE html>
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>OrderDetails</title>
+    <title>Pick Up Order</title>
 </head>
 <body>
-    <div>
+    @if (ViewBag.ifSuccessed == 0)
+    {  <div>
         <h4>Order</h4>
         <hr />
         <dl class="dl-horizontal">
@@ -36,61 +42,45 @@
             </dd>
 
             <dt>
-                @Html.DisplayNameFor(model => model.PickUpTime)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.PickUpTime)
-            </dd>
-
-            <dt>
-                @Html.DisplayNameFor(model => model.DeliveredTime)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.DeliveredTime)
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.Status)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.Status)
-            </dd>           
-    
-            <dt>
                 @Html.DisplayNameFor(model => model.ETA)
             </dt>
-    
+
             <dd>
                 @Html.DisplayFor(model => model.ETA)
             </dd>
-    
+
             <dt>
                 @Html.DisplayNameFor(model => model.DeliveryFee)
             </dt>
-    
+
             <dd>
                 @Html.DisplayFor(model => model.DeliveryFee)
             </dd>
-    
+
             <dt>
                 @Html.DisplayNameFor(model => model.Deliveryman)
             </dt>
-
-            <dd>
-                @if (Model.Deliveryman != null)
-                {
-                    string name = Model.Deliveryman.getName();
-                    @name
-                }
-            </dd>
         </dl>
     </div>
-    <p>
-        @Html.ActionLink("Edit", "EditOrder", new { id = Model.Id }) |
-        @Html.ActionLink("Back to orders", "Orders")
-    </p>
+    using (Html.BeginForm("PickUpOrder", "Deliveryman", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Pick Up Order" class="btn btn-default" />
+            </div>
+        </div>
+
+        }
+
+
+    }
+    else {
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                @Html.Label("Order has been picked up successfully!")
+            </div>
+        </div>
+    }
+
 </body>
 </html>

@@ -111,11 +111,15 @@
                     @destination
                 </td>
                 <td>
-                    @if (item.Deliveryman != null)
-                    {
-                        @Html.DisplayFor(modelItem => item.Deliveryman.FirstName + " " + item.Deliveryman.LastName)
+                    @{
+                        if (item.Deliveryman != null)
+                        {
+                            string res = item.Deliveryman.getName();
+                            @res
+                        }
                     }
                 </td>
+
                 <td>
                     @Html.DisplayFor(modelItem => item.ETA)
                 </td>

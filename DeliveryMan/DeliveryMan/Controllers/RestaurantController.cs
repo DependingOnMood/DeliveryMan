@@ -169,6 +169,9 @@ namespace DeliveryMan.Controllers
             {
                 return HttpNotFound();
             }
+      
+
+
             return View(order);
         }
 
@@ -220,54 +223,55 @@ namespace DeliveryMan.Controllers
         // GET: Restaurant/CancelOrder/5
         public ActionResult CancelOrder(int? id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Restaurant res = (from r in db.restaurants
-                              where r.Contact.Email.Equals(User.Identity.Name)
-                              select r).FirstOrDefault();
-            if (res == null)
-            {
-                return HttpNotFound();
-            }
-            Order order = (from o in db.orders
-                           where o.RestaurantId == res.Id
-                           where o.Id == id
-                           where o.Status != Status.DELIVERED
-                           select o).FirstOrDefault();
+            var orderDetails = (from o in db.orders
+                                where o.Contact.Email == User.Identity.Name
+                                && o.Id == id
+                                select o).FirstOrDefault();
 
-            if (order == null)
-            {
-                return HttpNotFound();
-            }
-            return View(order);
+            CancelOrderViewModel cancelOrderVM = new CancelOrderViewModel();
+
+            cancelOrderVM.OrderId = orderDetails.Id;
+            cancelOrderVM.OrderName = orderDetails.Note;
+            cancelOrderVM.OrderStatus = orderDetails.Status;
+            cancelOrderVM.ETA = orderDetails.ETA;
+            cancelOrderVM.PlacedTime = orderDetails.PlacedTime;
+            cancelOrderVM.PickUpTime = orderDetails.PickUpTime;
+            cancelOrderVM.DeliveryFee = orderDetails.DeliveryFee;
+
+            // calculate cancellation fee
+            cancelOrderVM.CancellationFee = CancelOrderFee.calculateFee(orderDetails);
+
+            return View("CancelOrder", cancelOrderVM);
         }
 
         // POST: Restaurant/CancelOrder/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CancelOrder(int id)
+        public ActionResult CancelOrder(CancelOrderViewModel model, int id)
         {
-            Restaurant res = (from r in db.restaurants
-                              where r.Contact.Email.Equals(User.Identity.Name)
-                              select r).FirstOrDefault();
-            if (res == null)
-            {
-                return HttpNotFound();
-            }
-            Order order = (from o in db.orders
-                           where o.RestaurantId == res.Id
-                           where o.Id == id
-                           select o).FirstOrDefault();
+            Order curOrder = (from o in db.orders
+                              where o.Contact.Email == User.Identity.Name
+                              && o.Id == id
+                              select o).FirstOrDefault();
 
-            if (order == null)
+            if (curOrder == null)
             {
                 return HttpNotFound();
             }
-            db.orders.Remove(order);
-            db.SaveChanges();
-            return RedirectToAction("Orders");
+
+            if (curOrder.Status != Status.DELIVERED)
+            {
+                db.orders.Remove(curOrder);
+                db.SaveChanges();
+
+                return RedirectToAction("Orders");
+            }
+            else
+            {
+                ModelState.AddModelError("", "A Delivered Order can not be cancelled");
+            }
+
+            return View();
         }
 
         // GET: Restaurant/ReviewOrder/5
@@ -276,9 +280,9 @@ namespace DeliveryMan.Controllers
             int intId = int.Parse(id);
 
             var orderDetails = (from t in db.orders
-                               where t.Contact.Email == User.Identity.Name
-                               && t.Id == intId
-                               select t).FirstOrDefault();
+                                where t.Contact.Email == User.Identity.Name
+                                && t.Id == intId
+                                select t).FirstOrDefault();
 
             ReviewOrderViewModel reviewOrderVM = new ReviewOrderViewModel();
 
