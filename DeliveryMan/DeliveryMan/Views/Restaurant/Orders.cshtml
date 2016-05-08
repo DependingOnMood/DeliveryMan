@@ -8,8 +8,10 @@
     <title>Orders</title>
 </head>
 <body>
+    <br />
     <p>
-        @Html.ActionLink("Create New Order", "CreateOrder")
+        <input type="button" value="Create A New Order" class="btn btn-danger"
+               onclick="location.href = '@(Url.Action("CreateOrder", "Restaurant"))'" />
     </p>
     <table class="table">
         <tr>
@@ -109,11 +111,15 @@
                     @destination
                 </td>
                 <td>
-                    @if (item.Deliveryman != null)
-                    {
-                        @Html.DisplayFor(modelItem => item.Deliveryman.FirstName + " " + item.Deliveryman.LastName)
+                    @{
+                        if (item.Deliveryman != null)
+                        {
+                            string res = item.Deliveryman.getName();
+                            @res
+                        }
                     }
                 </td>
+
                 <td>
                     @Html.DisplayFor(modelItem => item.ETA)
                 </td>

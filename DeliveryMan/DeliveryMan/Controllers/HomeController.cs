@@ -11,32 +11,42 @@ namespace DeliveryMan.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        public ActionResult Index()
+        public int GetRole()
         {
-            if (User.Identity.IsAuthenticated)
-            {
+
                 var q = (
                 from c in db.contacts
                 where c.Email.Equals(User.Identity.Name)
                 select c).FirstOrDefault();
 
-                ViewBag.UserType = q.Role;
-            }
+                return (int)q.Role;
+                //return 0;
 
+        }
+        public ActionResult Index()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.UserType = GetRole();
+            }
             return View();
         }
 
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
-
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.UserType = GetRole();
+            }
             return View();
         }
 
         public ActionResult Contact()
         {
-            ViewBag.Message = "Contact us with emails below:";
-
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.UserType = GetRole();
+            }
             return View();
         }
     }

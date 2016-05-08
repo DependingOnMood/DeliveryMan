@@ -56,7 +56,8 @@
     <Compile Include="ContactAddress.cs" />
     <Compile Include="RestaurantCancelOrder.cs" />
     <Compile Include="RestaurantOrders.cs" />
-    <Compile Include="ReviewOrder.cs" />
+    <Compile Include="CancelOrderFee.cs" />
+    <Compile Include="ReviewRating.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DataLayer\DataLayer.csproj">

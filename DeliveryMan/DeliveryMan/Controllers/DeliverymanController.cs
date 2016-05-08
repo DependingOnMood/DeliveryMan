@@ -23,7 +23,7 @@ namespace DeliveryMan.Controllers
         {
             return View();
         }
-
+        
         // POST: BZ
         [HttpPost]
         public ActionResult FindOrder(FindOrderViewModel model)
@@ -42,6 +42,7 @@ namespace DeliveryMan.Controllers
 
                 var q = (from o in db.orders
                          where o.Contact.City.Equals(model.city)
+                         where o.Status == Status.WAITING
                          select o
                          );
                 if (q != null)
@@ -62,6 +63,49 @@ namespace DeliveryMan.Controllers
             return View("FindOrderResults");
         }
 
+        // GET: 
+        public ActionResult PickUpOrder(int? id )
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var res = (from o in db.orders
+                         where o.Id == id
+                         where o.Status == Status.WAITING
+                              select o).FirstOrDefault();
+            if (res == null)
+            {
+                return HttpNotFound();
+            }
+            ViewBag.ifSuccessed = 0;
+            return View(res);
+        }
+
+        // POST: 
+        [HttpPost]
+        public ActionResult PickUpOrder(Order o)
+        {
+            if (o.Id == 0) {
+                return HttpNotFound();
+                    }
+            int id = o.Id;
+            var res = (from o1 in db.orders
+                       where o1.Id == id
+                       select o1).FirstOrDefault();
+            res.Status = Status.PENDING;
+            res.PickUpTime = DateTime.Now;
+
+            var user = (from u in db.deliverymen
+                        where u.Contact.Email.Equals(User.Identity.Name)
+                        select u).FirstOrDefault();
+
+            res.DeliverymanId = user.Id;
+            res.Deliveryman = user;
+            db.SaveChanges();
+            ViewBag.ifSuccessed = 1;
+            return View();
+        }
 
 
 
