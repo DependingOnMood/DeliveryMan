@@ -12,7 +12,21 @@
     <br />
     <br />
     <br />
-    <p class="feed">Your local food delivery solution</p>
+@if (User.Identity.IsAuthenticated) {
+    <p class="feed">Welcome to DeliveryMan!</p>
+    <div class="row">
+        <div>
+            <p class="center-button"><a href="@(Url.Action("Register", "Account"))" class="btn btn-danger">Find Orders</a></p>
+        </div>
+        <div>
+            <p class="center-button"><a href="@(Url.Action("Login", "Account"))" class="btn btn-danger">Log In</a></p>
+        </div>
+        <br />
+        <br />
+    </div>
+}
+else {
+    <p class="feed">Welcome to DeliveryMan!</p>
     <div class="row">
         <div>
             <p class="center-button"><a href="@(Url.Action("Register", "Account"))" class="btn btn-danger">Register</a></p>
@@ -23,6 +37,7 @@
         <br />
         <br />
     </div>
+}
 </div>
         <div class="row">
             <div class="col-md-4">
