@@ -38,6 +38,11 @@ namespace DataLayer
         public decimal Latitude { get; set; }
 
         public decimal Longitude { get; set; }
+
+        public string AddressToString()
+        {
+            return AddressLine1 + AddressLine2;
+        }
     }
 
     public enum Role
