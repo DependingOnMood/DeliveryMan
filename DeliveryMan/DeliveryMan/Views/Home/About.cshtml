@@ -1,7 +1,36 @@
 ﻿@{
     ViewBag.Title = "About";
 }
-<h2>@ViewBag.Title.</h2>
-<h3>@ViewBag.Message</h3>
 
-<p>Use this area to provide additional information.</p>
+<head     class="background-banner">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    @Styles.Render("~/Content/About.css")
+</head>
+
+
+    <div class="background-banner">
+        <br />
+        <br />
+        <br />
+        <br />
+        <h3>@ViewBag.Title</h3>
+        <br />
+        <br />
+        <br />
+        <br />
+    </div>
+        <br />
+
+        <p class="about-text">
+            DeliveryMan is an web application that provides a local delivery solution for restaurants. It’s a platform for local restaurants such that they can deliver food orders to their customers with registered Deliveryman.
+        </p>
+
+<br />
+        <p class="about-text">
+            Registered restaurants can post food orders for delivery on the website with order details such as delivery address, item information and required delivery time. Registered deliveryman can accept orders and pick up the delivery.
+        </p>
+<br />
+        <p class="about-text">
+            Our web application is a self-sustaining system in that as more restaurants register, more orders will be posted for delivery, and there will be a bigger demand for deliveryman, and in turn more deliverymans will register to deliver orders.
+        </p>
