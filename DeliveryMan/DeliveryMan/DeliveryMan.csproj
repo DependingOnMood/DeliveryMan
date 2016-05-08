@@ -305,6 +305,7 @@
     <Content Include="Views\BZ\FindOrder.cshtml" />
     <Content Include="Views\Restaurant\Orders.cshtml" />
     <Content Include="Views\BZ\ViewOrdersByR.cshtml" />
+    <Content Include="Views\Restaurant\OrderDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
