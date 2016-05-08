@@ -93,22 +93,23 @@ namespace DeliveryMan.Controllers
                     contact.Longitude = Decimal.Parse(latAndLong.Split(' ')[1]);
                 }
             }
-            db.SaveChanges();
+            //db.SaveChanges();
+            helper = new GoogleMapHelper();
+            string loc1 = res.Contact.getAddress();
+            string loc2 = totalAddress;
+            double distance = CreateOrderLogic.getRealDistance(loc1, loc2);
             Order order = new Order()
             {
                 RestaurantId = res.Id,
+                Restaurant =res,
                 Status = Status.WAITING,
                 Note = model.Note,
                 PlacedTime = DateTime.Now,
                 ContactId = contact.PhoneNumber,
                 Contact = contact,
+                DeliveryFee = CreateOrderLogic.computePrice(distance, model.OrderFee),
+                ETA = CreateOrderLogic.getETA(loc1, loc2),
             };
-            helper = new GoogleMapHelper();
-            string loc1 = res.Contact.getAddress();
-            string loc2 = totalAddress;
-            double distance = CreateOrderLogic.getRealDistance(loc1, loc2);
-            order.DeliveryFee = CreateOrderLogic.computePrice(distance, model.OrderFee);
-            order.ETA = CreateOrderLogic.getETA(loc1, loc2);
             db.orders.Add(order);
             db.SaveChanges();
             return RedirectToAction("Orders");
