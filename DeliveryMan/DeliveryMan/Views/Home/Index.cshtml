@@ -13,7 +13,7 @@
     <br />
     <br />
 @if (User.Identity.IsAuthenticated) {
-    if (Session["UserType"].ToString() == "0")
+    if (ViewBag.UserType == 0)
     {
     <p class="feed">Welcome to DeliveryMan Web Application, DeliveryMan!</p>
     <div class="row">
