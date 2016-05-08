@@ -8,8 +8,10 @@
     <title>Orders</title>
 </head>
 <body>
+    <br />
     <p>
-        @Html.ActionLink("Create New Order", "CreateOrder")
+        <input type="button" value="Create A New Order" class="btn btn-danger"
+               onclick="location.href = '@(Url.Action("CreateOrder", "Restaurant"))'" />
     </p>
     <table class="table">
         <tr>

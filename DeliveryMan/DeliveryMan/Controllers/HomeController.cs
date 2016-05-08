@@ -20,6 +20,7 @@ namespace DeliveryMan.Controllers
                 select c).FirstOrDefault();
 
                 return (int)q.Role;
+                //return 0;
 
         }
         public ActionResult Index()
