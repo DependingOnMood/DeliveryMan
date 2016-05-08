@@ -1,82 +1,96 @@
-﻿@model DataLayer.Deliveryman
-
-@{
-    Layout = null;
-}
+﻿@model DataLayer.Order
 
 <!DOCTYPE html>
-
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>Details</title>
+    <title>OrderDetails</title>
 </head>
 <body>
     <div>
-        <h4>Deliveryman</h4>
+        <h4>Order</h4>
         <hr />
         <dl class="dl-horizontal">
             <dt>
-                @Html.DisplayNameFor(model => model.Contact.Name)
+                @Html.DisplayNameFor(model => model.Note)
             </dt>
-    
+
             <dd>
-                @Html.DisplayFor(model => model.Contact.Name)
+                @Html.DisplayFor(model => model.Note)
             </dd>
-    
+
             <dt>
-                @Html.DisplayNameFor(model => model.IconImageUrl)
+                @Html.DisplayNameFor(model => model.Contact.PhoneNumber)
             </dt>
-    
+
             <dd>
-                @Html.DisplayFor(model => model.IconImageUrl)
+                @Html.DisplayFor(model => model.Contact.PhoneNumber)
             </dd>
-    
+
             <dt>
-                @Html.DisplayNameFor(model => model.TotalDeliveryCount)
+                @Html.DisplayNameFor(model => model.PlacedTime)
             </dt>
-    
+
             <dd>
-                @Html.DisplayFor(model => model.TotalDeliveryCount)
+                @Html.DisplayFor(model => model.PlacedTime)
             </dd>
-    
+
             <dt>
-                @Html.DisplayNameFor(model => model.TotalStarsEarned)
+                @Html.DisplayNameFor(model => model.PickUpTime)
             </dt>
-    
+
             <dd>
-                @Html.DisplayFor(model => model.TotalStarsEarned)
+                @Html.DisplayFor(model => model.PickUpTime)
             </dd>
-    
+
             <dt>
-                @Html.DisplayNameFor(model => model.Rating)
+                @Html.DisplayNameFor(model => model.DeliveredTime)
             </dt>
-    
+
             <dd>
-                @Html.DisplayFor(model => model.Rating)
+                @Html.DisplayFor(model => model.DeliveredTime)
             </dd>
-    
+
             <dt>
-                @Html.DisplayNameFor(model => model.Ranking)
+                @Html.DisplayNameFor(model => model.Status)
             </dt>
-    
+
             <dd>
-                @Html.DisplayFor(model => model.Ranking)
+                @Html.DisplayFor(model => model.Status)
             </dd>
-    
+
             <dt>
-                @Html.DisplayNameFor(model => model.Balance)
+                @Html.DisplayNameFor(model => model.ETA)
             </dt>
-    
+
             <dd>
-                @Html.DisplayFor(model => model.Balance)
+                @Html.DisplayFor(model => model.ETA)
             </dd>
-    
+
+            <dt>
+                @Html.DisplayNameFor(model => model.DeliveryFee)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.DeliveryFee)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Deliveryman)
+            </dt>
+
+            <dd>
+                @if (Model.Deliveryman != null)
+                {
+                    string name = Model.Deliveryman.getName();
+                    @name
+                }
+            </dd>
         </dl>
     </div>
     <p>
-        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-        @Html.ActionLink("Back to List", "Index")
+        @Html.ActionLink("Edit", "EditOrder", new { id = Model.Id }) |
+        @Html.ActionLink("Back to orders", "Orders")
     </p>
 </body>
 </html>
