@@ -27,12 +27,15 @@ namespace DeliveryMan.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateOrder([Bind(Include = "Note, AddressLine1, AddressLine2, City, State, ZipCode, PhoneNumber")]
+        public ActionResult CreateOrder([Bind(Include = "Note, AddressLine1, AddressLine2, City, State, ZipCode, PhoneNumber, OrderFee")]
             RestaurantCreateOrderViewModel model)
         {
+            GoogleMapHelper helper = null;
             Restaurant res = (from r in db.restaurants
-                              where r.Contact.Email.Equals(User.Identity.Name)
+                              from c in db.contacts
+                              where r.ContactId.Equals(c.PhoneNumber)
                               select r).FirstOrDefault();
+        
             if (res == null)
             {
                 return HttpNotFound();
@@ -51,27 +54,41 @@ namespace DeliveryMan.Controllers
                     City = model.City,
                     State = model.State,
                     ZipCode = model.ZipCode,
-                    //calc latitude
-                    //calc longitude
                 };
+                String totalAddress = model.AddressLine1 + " " + model.AddressLine2 + " " + model.City + " " + model.State + " " + model.ZipCode;
+                helper = new GoogleMapHelper();
+                String latAndLong = helper.getLatandLngByAddr(totalAddress);
+                contact.Latitude = Decimal.Parse(latAndLong.Split(' ')[0]);
+                contact.Longitude = Decimal.Parse(latAndLong.Split(' ')[1]);
                 db.contacts.Add(contact);
             }
             else
             {
+                bool changed = false;
                 if (!contact.AddressLine1.Equals(model.AddressLine1))
                 {
                     contact.AddressLine1 = model.AddressLine1;
-                    
+                    changed = true;
                 }
                 if (model.AddressLine2 != null && contact.AddressLine2 != null && !contact.AddressLine2.Equals(model.AddressLine2))
                 {
                     contact.AddressLine2 = model.AddressLine2;
+                    changed = true;
                 }
                 if (!contact.City.Equals(model.City) || !contact.State.Equals(model.State) || !contact.ZipCode.Equals(model.ZipCode))
                 {
                     contact.City = model.City;
                     contact.State = model.State;
                     contact.ZipCode = model.ZipCode;
+                    changed = true;
+                }
+                if (changed)
+                {
+                    String totalAddress = model.AddressLine1 + " " + model.AddressLine2 + " " + model.City + " " + model.State + " " + model.ZipCode;
+                    helper = new GoogleMapHelper();
+                    String latAndLong = helper.getLatandLngByAddr(totalAddress);
+                    contact.Latitude = Decimal.Parse(latAndLong.Split(' ')[0]);
+                    contact.Longitude = Decimal.Parse(latAndLong.Split(' ')[1]);
                 }
             }
             db.SaveChanges();
@@ -82,9 +99,13 @@ namespace DeliveryMan.Controllers
                 Note = model.Note,
                 PlacedTime = DateTime.Now,
                 ContactId = contact.PhoneNumber,
-                //calc ETA
-                //calc DeliveryFee
             };
+            helper = new GoogleMapHelper();
+            string loc1 = res.getAddress();
+            string loc2 = order.getAddress();
+            double distance = CreateOrderLogic.getRealDistance(loc1, loc2);
+            order.DeliveryFee = CreateOrderLogic.computePrice(distance, model.OrderFee);
+            order.ETA = CreateOrderLogic.getETA(loc1, loc2);
             db.orders.Add(order);
             db.SaveChanges();
             return RedirectToAction("Orders");
@@ -94,24 +115,28 @@ namespace DeliveryMan.Controllers
         public ActionResult Orders()
         {
             Restaurant res = (from r in db.restaurants
-                              where r.Contact.Email.Equals(User.Identity.Name)
+                              from c in db.contacts
+                              where r.ContactId.Equals(c.PhoneNumber)
                               select r).FirstOrDefault();
             if (res == null)
             {
                 return HttpNotFound();
             }
             IEnumerable<Order> wo = from o in db.orders
-                                    where o.RestaurantId == res.Id
+                                    from r in db.restaurants
+                                    where o.RestaurantId == r.Id
                                     where o.Status == Status.WAITING
                                     orderby o.PlacedTime descending
                                     select o;
             IEnumerable<Order> po = from o in db.orders
-                                    where o.RestaurantId == res.Id
+                                    from r in db.restaurants
+                                    where o.RestaurantId == r.Id
                                     where o.Status == Status.PENDING
                                     orderby o.PlacedTime descending
                                     select o;
             IEnumerable<Order> io = from o in db.orders
-                                    where o.RestaurantId == res.Id
+                                    from r in db.restaurants
+                                    where o.RestaurantId == r.Id
                                     where o.Status == Status.INPROGRESS
                                     orderby o.PlacedTime descending
                                     select o;
@@ -132,6 +157,7 @@ namespace DeliveryMan.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Restaurant res = (from r in db.restaurants
+                              from c in db.contacts
                               where r.Contact.Email.Equals(User.Identity.Name)
                               select r).FirstOrDefault();
             if (res == null)
