@@ -19,11 +19,13 @@ namespace DeliveryMan.Models
 
         [Required]
         [Display(Name = "Picked-up Time")]
-        public DateTime PickUpTime { get; set; }
+        [DataType(DataType.DateTime)]
+        public DateTime? PickUpTime { get; set; }
 
         [Required]
         [Display(Name = "Delivered Time")]
-        public DateTime DeliveredTime { get; set; }
+        [DataType(DataType.DateTime)]
+        public DateTime? DeliveredTime { get; set; }
 
         [Display(Name = "Write a review")]
         public string ReviewText { get; set; }

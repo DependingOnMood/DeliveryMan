@@ -155,7 +155,6 @@ namespace DeliveryMan.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Restaurant res = (from r in db.restaurants
-                              from c in db.contacts
                               where r.Contact.Email.Equals(User.Identity.Name)
                               select r).FirstOrDefault();
             if (res == null)
@@ -166,7 +165,6 @@ namespace DeliveryMan.Controllers
                            where o.RestaurantId == res.Id
                            where o.Id == id
                            select o).FirstOrDefault();
-
             if (order == null)
             {
                 return HttpNotFound();

@@ -25,6 +25,19 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        if (@ViewBag.UserType == 0)
+                        {
+                            <li>@Html.ActionLink("Find Orders", "FindOrder", "Deliveryman")</li>
+                            <li>@Html.ActionLink("View Orders", "MyOrders", "Deliveryman")</li>
+                        }
+                        else if (@ViewBag.UserType == 1)
+                        {
+                            <li>@Html.ActionLink("Create Order", "CreateOrder", "Restaurant")</li>
+                            <li>@Html.ActionLink("View Orders", "Orders", "Restaurant")</li>
+                        }
+                    }
                     <li>@Html.ActionLink("About", "About", "Home")</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                 </ul>

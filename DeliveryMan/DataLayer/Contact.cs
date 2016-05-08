@@ -47,8 +47,7 @@ namespace DataLayer
             }
             else {
                 return AddressLine1 + ", " + City + ", " + State + ", " + ZipCode;
-            }
-           
+            }           
         }
     }
 
