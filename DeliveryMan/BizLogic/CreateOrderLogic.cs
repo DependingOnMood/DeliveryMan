@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace BizLogic
 {
-    class CreateOrderLogic
+    public static class CreateOrderLogic
     {
-        public decimal computePrice(double distance, decimal orderFee)
+        public static decimal computePrice( double distance, decimal orderFee)
         {
             decimal price = 0;
             if (distance >= 0 && distance < 5)
@@ -26,7 +26,7 @@ namespace BizLogic
             return price;
         }
 
-        public double getRealDistance(String addr1, String addr2)
+        public static double getRealDistance( String addr1, String addr2)
         {
             GoogleMapHelper helper = new GoogleMapHelper();
             String str = helper.getRoute(addr1, addr2);
@@ -35,7 +35,7 @@ namespace BizLogic
             return res;
         }
 
-        public TimeSpan getETA(String addr1, String addr2)
+        public static TimeSpan getETA( String addr1, String addr2)
         {
             GoogleMapHelper helper = new GoogleMapHelper();
             String str = helper.getRoute(addr1, addr2);
