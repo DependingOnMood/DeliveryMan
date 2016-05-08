@@ -3,11 +3,8 @@
     ViewBag.Title = "Find Order Results";
 }
 
-<h2>ViewOrdersByR</h2>
+<h3>Orders Waiting For Pick Up</h3>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <table class="table">
     <tr>
         <th>
@@ -21,6 +18,9 @@
         </th>
         <th>
             ETA
+        </th>
+        <th>
+            
         </th>
     </tr>
     @{
@@ -43,7 +43,7 @@
                 </td>
 
                 <td>
-                    @Html.ActionLink("PickUpOrder", "Deliveryman", new { id = item.Id }) |
+                    @Html.ActionLink("PickUp","PickUpOrder", new { id = item.Id })
 
                 </td>
             </tr>

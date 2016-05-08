@@ -1,4 +1,4 @@
-﻿@model DeliveryMan.Models.RestaurantOrdersViewModel
+﻿@model DeliveryMan.Models.DeliverymanOrdersViewModel
 
 <!DOCTYPE html>
 
@@ -10,8 +10,8 @@
 <body>
     <br />
     <p>
-        <input type="button" value="Create A New Order" class="btn btn-danger"
-               onclick="location.href = '@(Url.Action("CreateOrder", "Restaurant"))'" />
+        <input type="button" value="Find A Order" class="btn btn-danger"
+               onclick="location.href = '@(Url.Action("FindOrder", "Deliveryman"))'" />
     </p>
     <table class="table">
         <tr>
@@ -93,12 +93,9 @@
                         @Html.DisplayFor(modelItem => item.DeliveryFee)
                     </td>*@
                 <td>
-                    <input type="button" value="Edit" class="btn btn-danger"
-                           onclick="location.href = '@(Url.Action("EditOrder", "Restaurant", new { id = item.Id }))'" />
-                    <input type="button" value="Details" class="btn btn-danger"
-                           onclick="location.href = '@(Url.Action("OrderDetails", "Restaurant", new { id = item.Id }))'" />
-                    <input type="button" value="Cancel" class="btn btn-danger"
-                           onclick="location.href = '@(Url.Action("CancelOrder", "Restaurant", new { id = item.Id }))'" />
+                    @Html.ActionLink("Edit", "EditOrder", new { id = item.Id }) |
+                    @Html.ActionLink("Details", "OrderDetails", new { id = item.Id }) |
+                    @Html.ActionLink("Cancel", "CancelOrder", new { id = item.Id })
                 </td>
             </tr>
         }
@@ -153,7 +150,7 @@
                     @Html.ActionLink("Cancel", "CancelOrder", new { id = item.Id })
                 </td>
             </tr>
-        }
+                        }
         InProgress Orders
         @foreach (var item in Model.InProgressOrders.ToList())
         {

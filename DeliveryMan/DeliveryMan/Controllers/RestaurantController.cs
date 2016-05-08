@@ -169,6 +169,9 @@ namespace DeliveryMan.Controllers
             {
                 return HttpNotFound();
             }
+      
+
+
             return View(order);
         }
 
@@ -186,17 +189,19 @@ namespace DeliveryMan.Controllers
             {
                 return HttpNotFound();
             }
-            Order order = (from o in db.orders
+            var orderTmp = from o in db.orders
                            where o.RestaurantId == res.Id
                            where o.Id == id
-                           select o).FirstOrDefault();
-
+                           select o;
+            Order order = orderTmp.FirstOrDefault();
             if (order == null)
             {
                 return HttpNotFound();
             }
-
-            //ViewBag.CId = new SelectList(db.contact, "CId", "Name", restaurant.CId);
+            var con = (from o in orderTmp
+                       select o.Contact).AsEnumerable();
+            ViewBag.AddressLine1 = new SelectList(con, "AddressLine1", "AddressLine1", order.Contact.AddressLine1);
+            ViewBag.AddressLine2 = new SelectList(con, "AddressLine2", "AddressLine2", order.Contact.AddressLine2);
             return View(order);
         }
 
