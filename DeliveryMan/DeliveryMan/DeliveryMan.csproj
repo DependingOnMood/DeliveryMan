@@ -298,7 +298,6 @@
     <Content Include="Views\Restaurant\CreateOrder.cshtml" />
     <Content Include="Views\Restaurant\Delete.cshtml" />
     <Content Include="Views\Restaurant\Details.cshtml" />
-    <Content Include="Views\Restaurant\Edit.cshtml" />
     <Content Include="Views\Restaurant\Index.cshtml" />
     <Content Include="Views\Deliveryman\Create.cshtml" />
     <Content Include="Views\Deliveryman\Delete.cshtml" />
@@ -310,6 +309,7 @@
     <Content Include="Views\Restaurant\ReviewOrder.cshtml" />
     <Content Include="Views\Deliveryman\FindOrder.cshtml" />
     <Content Include="Views\Deliveryman\FindOrderResults.cshtml" />
+    <Content Include="Views\Restaurant\EditOrder.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
