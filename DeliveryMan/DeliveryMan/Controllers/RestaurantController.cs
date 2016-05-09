@@ -256,12 +256,13 @@ namespace DeliveryMan.Controllers
                                 where o.Restaurant.Contact.Email.Equals(User.Identity.Name)
                                 where o.Id == id
                                 select o).FirstOrDefault();
-
+            
             CancelOrderViewModel cancelOrderVM = new CancelOrderViewModel();
 
             cancelOrderVM.OrderId = orderDetails.Id;
             cancelOrderVM.OrderName = orderDetails.Note;
             cancelOrderVM.OrderStatus = orderDetails.Status;
+
             cancelOrderVM.ETA = orderDetails.ETA;
             cancelOrderVM.PlacedTime = orderDetails.PlacedTime;
             cancelOrderVM.PickUpTime = orderDetails.PickUpTime;
@@ -279,7 +280,7 @@ namespace DeliveryMan.Controllers
         public ActionResult CancelOrder(CancelOrderViewModel model, int id)
         {
             Order curOrder = (from o in db.orders
-                              where o.Contact.Email == User.Identity.Name
+                              where o.Restaurant.Contact.Email == User.Identity.Name
                               && o.Id == id
                               select o).FirstOrDefault();
 
@@ -303,14 +304,12 @@ namespace DeliveryMan.Controllers
         }
 
         // GET: Restaurant/ReviewOrder/5
-        public ActionResult ReviewOrder(string id)
+        public ActionResult ReviewOrder(int? id)
         {
-            int intId = int.Parse(id);
-
-            var orderDetails = (from t in db.orders
-                                where t.Restaurant.Contact.Email == User.Identity.Name
-                                && t.Id == intId
-                                select t).FirstOrDefault();
+            var orderDetails = (from o in db.orders
+                                where o.Restaurant.Contact.Email == User.Identity.Name
+                                where o.Id == id
+                                select o).FirstOrDefault();
 
             ReviewOrderViewModel reviewOrderVM = new ReviewOrderViewModel();
 
@@ -326,12 +325,12 @@ namespace DeliveryMan.Controllers
         // POST: Restaurant/ReviewOrder/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ReviewOrder(ReviewOrderViewModel model, string id)
+        public ActionResult ReviewOrder(ReviewOrderViewModel model, int? id)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && (id ?? 0) == 0)
             {
                 Review newReview = new Review();
-                newReview.OrderId = int.Parse(id);
+                newReview.OrderId = (int) id;
                 newReview.ReviewText = model.ReviewText;
                 newReview.Rating = model.Rating;
 
@@ -341,7 +340,6 @@ namespace DeliveryMan.Controllers
                 return RedirectToAction("Orders");
             }
 
-            //ViewBag.CId = new SelectList(db.contact, "CId", "Name", restaurant.CId);
             return View();
         }
 

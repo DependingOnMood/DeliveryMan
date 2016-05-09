@@ -22,10 +22,10 @@ namespace BizLogic
                     }
                     else
                     {
-                        return feeCalculation(order.DeliveryFee);
+                        return pendingFeeCalculation(order.DeliveryFee);
                     }
                 case Status.INPROGRESS:
-                    return 0M;
+                    return inprogressFeeCalculation(order.DeliveryFee); ;
                 case Status.DELIVERED:
                     return 0M;
                 default:
@@ -33,9 +33,14 @@ namespace BizLogic
             }
         }
 
-        private static decimal feeCalculation(decimal deliveryFee)
+        private static decimal pendingFeeCalculation(decimal deliveryFee)
         {
-            return deliveryFee / 2;
+            return deliveryFee * Convert.ToDecimal(0.8);
+        }
+
+        private static decimal inprogressFeeCalculation(decimal deliveryFee)
+        {
+            return deliveryFee * Convert.ToDecimal(1.5);
         }
     }
 }
