@@ -4,11 +4,11 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>OrderDetails</title>
+    <title>Order Details</title>
 </head>
 <body>
     <div>
-        <h4>Order</h4>
+        <h4>Order details.</h4>
         <hr />
         <dl class="dl-horizontal">
             <dt>
@@ -89,10 +89,7 @@
         </dl>
     </div>
     <p>
-        @Html.ActionLink("Edit", "EditOrder", new { id = Model.Id }) |
-        @Html.ActionLink("Back to orders", "Orders")
-
-   
+        @Html.ActionLink("My Orders", "MyOrders")   
     </p>
 </body>
 </html>

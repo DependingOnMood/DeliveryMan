@@ -20,15 +20,12 @@ namespace DeliveryMan.Controllers
             from c in db.contacts
             where c.Email.Equals(User.Identity.Name)
             select c).FirstOrDefault();
-
             return (int)q.Role;
-            //return 0;
-
         }
 
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: BZ
+        // GET: Deliveryman/
         public ActionResult FindOrder()
         {
             if (User.Identity.IsAuthenticated)
@@ -38,7 +35,7 @@ namespace DeliveryMan.Controllers
             return View();
         }
         
-        // POST: BZ
+        // POST: Deliveryman/FindOrder
         [HttpPost]
         public ActionResult FindOrder(FindOrderViewModel model)
         {
@@ -136,45 +133,6 @@ namespace DeliveryMan.Controllers
             ViewBag.ifSuccessed = 1;
             return View();
         }
-        
-        // GET: Deliveryman
-        public ActionResult Orders()
-        {
-            if (User.Identity.IsAuthenticated)
-            {
-                ViewBag.UserType = GetRole();
-            }
-
-            var d = (from u in db.deliverymen
-                              where u.Contact.Email.Equals(User.Identity.Name)
-                              select u).FirstOrDefault();
-            if (d == null)
-            {
-                return HttpNotFound();
-            }
-            IEnumerable<Order> wo = from o in db.orders
-                                    where o.DeliverymanId == d.Id
-                                    where o.Status == Status.WAITING
-                                    orderby o.PlacedTime descending
-                                    select o;
-            IEnumerable<Order> po = from o in db.orders
-                                    where o.DeliverymanId == d.Id
-                                    where o.Status == Status.PENDING
-                                    orderby o.PlacedTime descending
-                                    select o;
-            IEnumerable<Order> io = from o in db.orders
-                                    where o.DeliverymanId == d.Id
-                                    where o.Status == Status.INPROGRESS
-                                    orderby o.PlacedTime descending
-                                    select o;
-            DeliverymanOrdersViewModel rovm = new DeliverymanOrdersViewModel()
-            {
-                WaitingOrders = wo,
-                PendingOrders = po,
-                InProgressOrders = io,
-            };
-            return View(rovm);
-        }
 
         // GET: Deliveryman/OrderDetails/5
         public ActionResult OrderDetails(int? id)
@@ -183,7 +141,6 @@ namespace DeliveryMan.Controllers
             {
                 ViewBag.UserType = GetRole();
             }
-
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -192,7 +149,6 @@ namespace DeliveryMan.Controllers
                            where o.Id == id
                            where o.Deliveryman.Contact.Email.Equals(User.Identity.Name)
                            select o).FirstOrDefault();
-
             if (order == null)
             {
                 return HttpNotFound();
@@ -207,7 +163,6 @@ namespace DeliveryMan.Controllers
             {
                 ViewBag.UserType = GetRole();
             }
-
             Deliveryman deli = (from dm in db.deliverymen
                                 where dm.Contact.Email.Equals(User.Identity.Name)
                                 select dm).FirstOrDefault();
@@ -215,10 +170,28 @@ namespace DeliveryMan.Controllers
             {
                 return HttpNotFound();
             }
-            IEnumerable<Order> orders = from o in db.orders
-                                        where o.DeliverymanId == deli.Id
-                                        select o;
-            return View(orders);
+            IEnumerable<Order> pendingO = from o in db.orders
+                                               where o.DeliverymanId == deli.Id
+                                               where o.Status == Status.PENDING
+                                               orderby o.PlacedTime descending
+                                               select o;
+            IEnumerable<Order> inProgressO = from o in db.orders
+                                                  where o.DeliverymanId == deli.Id
+                                                  where o.Status == Status.INPROGRESS
+                                                  orderby o.PickUpTime descending
+                                                  select o;
+            IEnumerable<Order> deliveredO = from o in db.orders
+                                                 where o.DeliverymanId == deli.Id
+                                                 where o.Status == Status.DELIVERED
+                                                 orderby o.DeliveredTime descending
+                                                 select o;
+            DeliverymanMyOrdersViewModel model = new DeliverymanMyOrdersViewModel()
+            {
+                pendingOrders = pendingO,
+                inProgressOrders = inProgressO,
+                deliveredOrders = deliveredO,
+            };
+            return View(model);
         }
 
         // POST: Deliveryman/CancelPickup/5
@@ -248,18 +221,16 @@ namespace DeliveryMan.Controllers
             //order.Status = Status.WAITING;
             //order.DeliverymanId = 0;
             //db.SaveChanges();
-            return RedirectToAction("Orders");
-
+            return RedirectToAction("MyOrders");
         }
 
-        // POST: Deliveryman/CompleteOrder/5
-        public ActionResult CompleteOrder(int id)
+        // GET: Deliveryman/CompleteOrder/5
+        public ActionResult CompleteOrder(int? id)
         {
             if (User.Identity.IsAuthenticated)
             {
                 ViewBag.UserType = GetRole();
             }
-
             Deliveryman deliveryman = (from dm in db.deliverymen
                                        where dm.Contact.Email.Equals(User.Identity.Name)
                                        select dm).FirstOrDefault();
@@ -279,7 +250,7 @@ namespace DeliveryMan.Controllers
             order.Status = Status.DELIVERED;
             order.DeliveredTime = DateTime.Now;
             db.SaveChanges();
-            return RedirectToAction("Orders");
+            return RedirectToAction("MyOrders");
         }
 
         //Get
@@ -289,11 +260,6 @@ namespace DeliveryMan.Controllers
             ViewBag.desti = "55 riverdrive south 07310";
             return View();
         }
-
-
-
-
-
 
         protected override void Dispose(bool disposing)
         {

@@ -221,6 +221,7 @@
     <Compile Include="Models\CancelOrderViewModel.cs" />
     <Compile Include="Models\DeliverymanOrdersViewModel.cs" />
     <Compile Include="Models\DeliverymanRankingViewModel.cs" />
+    <Compile Include="Models\DeliverymanViewModels.cs" />
     <Compile Include="Models\ReviewOrderViewModel.cs" />
     <Compile Include="Models\FindOrderViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -319,7 +320,7 @@
     <Content Include="Views\Deliveryman\FindOrderResults.cshtml" />
     <Content Include="Views\Restaurant\CancelOrder.cshtml" />
     <Content Include="Views\Deliveryman\AcceptOrder.cshtml" />
-    <Content Include="Views\Deliveryman\Orders.cshtml" />
+    <Content Include="Views\Deliveryman\MyOrders.cshtml" />
     <Content Include="Views\Restaurant\EditOrder.cshtml" />
     <Content Include="Views\Home\Ranking.cshtml" />
     <Content Include="Views\Deliveryman\Map.cshtml" />
