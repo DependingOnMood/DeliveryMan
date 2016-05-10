@@ -109,7 +109,7 @@ namespace DeliveryMan.Controllers
 
         // POST: 
         [HttpPost]
-        public ActionResult PickUpOrder(Order o)
+        public ActionResult AcceptOrder(Order o)
         {
             if (User.Identity.IsAuthenticated)
             {
