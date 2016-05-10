@@ -228,6 +228,13 @@
     <Compile Include="Models\RestaurantModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="WebForm1.aspx.cs">
+      <DependentUpon>WebForm1.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForm1.aspx.designer.cs">
+      <DependentUpon>WebForm1.aspx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\About.css" />
@@ -264,6 +271,7 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
+    <Content Include="WebForm1.aspx" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -310,10 +318,13 @@
     <Content Include="Views\Deliveryman\FindOrder.cshtml" />
     <Content Include="Views\Deliveryman\FindOrderResults.cshtml" />
     <Content Include="Views\Restaurant\CancelOrder.cshtml" />
-    <Content Include="Views\Deliveryman\PickUpOrder.cshtml" />
+    <Content Include="Views\Deliveryman\AcceptOrder.cshtml" />
     <Content Include="Views\Deliveryman\Orders.cshtml" />
     <Content Include="Views\Restaurant\EditOrder.cshtml" />
     <Content Include="Views\Home\Ranking.cshtml" />
+    <Content Include="Views\Deliveryman\Map.cshtml" />
+    <Content Include="Views\Deliveryman\Direction.cshtml" />
+    <Content Include="Views\Restaurant\OrdersHistory.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -16,9 +16,26 @@ namespace DeliveryMan.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
+        public int GetRole()
+        {
+            var q = (
+            from c in db.contacts
+            where c.Email.Equals(User.Identity.Name)
+            select c).FirstOrDefault();
+
+            return (int)q.Role;
+            //return 0;
+
+        }
+
         // GET: Restaurant/CreateOrder
         public ActionResult CreateOrder()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.UserType = GetRole();
+            }
+
             return View();
         }
 
@@ -113,6 +130,11 @@ namespace DeliveryMan.Controllers
         // GET: Restaurant
         public ActionResult Orders()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.UserType = GetRole();
+            }
+
             Restaurant res = (from r in db.restaurants
                               where r.Contact.Email.Equals(User.Identity.Name)
                               select r).FirstOrDefault();
@@ -150,6 +172,11 @@ namespace DeliveryMan.Controllers
         // GET: Restaurant/OrderDetails/5
         public ActionResult OrderDetails(int? id)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.UserType = GetRole();
+            }
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -178,6 +205,11 @@ namespace DeliveryMan.Controllers
         // GET: Restaurant/EditOrder/5
         public ActionResult EditOrder(int? id)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.UserType = GetRole();
+            }
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -202,22 +234,6 @@ namespace DeliveryMan.Controllers
                 State = order.Contact.State,
                 ZipCode = order.Contact.ZipCode,
             };
-            //var orderTmp = from o in db.orders
-            //               where o.RestaurantId == res.Id
-            //               where o.Id == id
-            //               select o;
-            //Order order = orderTmp.FirstOrDefault();
-            //if (order == null)
-            //{
-            //    return HttpNotFound();
-            //}
-            //var con = (from o in orderTmp
-            //           select o.Contact).AsEnumerable();
-            //ViewBag.AddressLine1 = new SelectList(con, "AddressLine1", "AddressLine1", order.Contact.AddressLine1);
-            //ViewBag.AddressLine2 = new SelectList(con, "AddressLine2", "AddressLine2", order.Contact.AddressLine2);
-            //ViewBag.City = new SelectList(con, "City", "City", order.Contact.City);
-            //ViewBag.State = new SelectList(con, "State", "State", order.Contact.State);
-            //ViewBag.ZipCode = new SelectList(con, "ZipCode", "ZipCode", order.Contact.ZipCode);
             return View(model);
         }
 
@@ -229,6 +245,11 @@ namespace DeliveryMan.Controllers
         public ActionResult EditOrder([Bind(Include = "OrderId, AddressLine1, AddressLine2, City, State, ZipCode")]
             RestaurantEditOrderViewModel model)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.UserType = GetRole();
+            }
+
             Restaurant res = (from r in db.restaurants
                               where r.Contact.Email.Equals(User.Identity.Name)
                               select r).FirstOrDefault();
@@ -252,6 +273,11 @@ namespace DeliveryMan.Controllers
         // GET: Restaurant/CancelOrder/5
         public ActionResult CancelOrder(int? id)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.UserType = GetRole();
+            }
+
             var orderDetails = (from o in db.orders
                                 where o.Restaurant.Contact.Email.Equals(User.Identity.Name)
                                 where o.Id == id
@@ -279,6 +305,11 @@ namespace DeliveryMan.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CancelOrder(CancelOrderViewModel model, int id)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.UserType = GetRole();
+            }
+
             Order curOrder = (from o in db.orders
                               where o.Restaurant.Contact.Email == User.Identity.Name
                               && o.Id == id
@@ -306,6 +337,11 @@ namespace DeliveryMan.Controllers
         // GET: Restaurant/ReviewOrder/5
         public ActionResult ReviewOrder(int? id)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.UserType = GetRole();
+            }
+
             var orderDetails = (from o in db.orders
                                 where o.Restaurant.Contact.Email == User.Identity.Name
                                 where o.Id == id
@@ -387,6 +423,11 @@ namespace DeliveryMan.Controllers
         // GET: Restaurant/OrdersHistory
         public ActionResult OrdersHistory()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.UserType = GetRole();
+            }
+
             Restaurant res = (from r in db.restaurants
                               where r.Contact.Email.Equals(User.Identity.Name)
                               select r).FirstOrDefault();
@@ -394,16 +435,22 @@ namespace DeliveryMan.Controllers
             {
                 return HttpNotFound();
             }
-            IEnumerable<Order> orders = from o in db.orders
+            IEnumerable<Order> orders = (from o in db.orders
                                         where o.RestaurantId == res.Id
                                         where o.Status == Status.DELIVERED
-                                        select o;
+                                  orderby o.PlacedTime descending
+                                  select o).AsEnumerable<Order>();
             return View(orders);
         }
 
         // GET: Restaurant/Blacklist
         public ActionResult Blacklist()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.UserType = GetRole();
+            }
+
             Restaurant res = (from r in db.restaurants
                               where r.Contact.Email.Equals(User.Identity.Name)
                               select r).FirstOrDefault();
@@ -420,6 +467,11 @@ namespace DeliveryMan.Controllers
         // GET: Restaurant/DeliverymanDetails/5
         public ActionResult DeliverymanDetails(int? id)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.UserType = GetRole();
+            }
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -455,6 +507,11 @@ namespace DeliveryMan.Controllers
         // GET: Restaurant/AddToBlacklist/5
         public ActionResult AddToBlacklist(int? id)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.UserType = GetRole();
+            }
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -467,6 +524,11 @@ namespace DeliveryMan.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult AddToBlacklist(int id)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.UserType = GetRole();
+            }
+
             Restaurant res = (from r in db.restaurants
                               where r.Name.Equals(User.Identity.Name)
                               select r).FirstOrDefault();

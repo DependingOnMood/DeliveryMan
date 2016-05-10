@@ -64,5 +64,4 @@ namespace DeliveryMan.Models
         [DataType(DataType.PostalCode)]
         public string ZipCode { get; set; }
     }
-
 }

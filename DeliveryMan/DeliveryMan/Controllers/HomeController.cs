@@ -27,6 +27,11 @@ namespace DeliveryMan.Controllers
         // rank deliveryman by his/her cumulative rating
         public ActionResult Ranking()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.UserType = GetRole();
+            }
+
             // get deliveryman ranking
             IEnumerable<Deliveryman> deliveryman = (from d in db.deliverymen
                                                     where d.Ranking != 0
