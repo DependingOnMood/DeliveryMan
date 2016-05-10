@@ -26,6 +26,11 @@ namespace DeliveryMan.Controllers
 
         public ActionResult Ranking()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.UserType = GetRole();
+            }
+
             // get deliveryman ranking
             IEnumerable<Deliveryman> deliveryman = (from d in db.deliverymen
                                                     select d).OrderByDescending(x => x.Ranking);

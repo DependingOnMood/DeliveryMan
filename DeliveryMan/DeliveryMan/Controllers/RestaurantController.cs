@@ -16,9 +16,26 @@ namespace DeliveryMan.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
+        public int GetRole()
+        {
+            var q = (
+            from c in db.contacts
+            where c.Email.Equals(User.Identity.Name)
+            select c).FirstOrDefault();
+
+            return (int)q.Role;
+            //return 0;
+
+        }
+
         // GET: Restaurant/CreateOrder
         public ActionResult CreateOrder()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.UserType = GetRole();
+            }
+
             return View();
         }
 
@@ -113,6 +130,11 @@ namespace DeliveryMan.Controllers
         // GET: Restaurant
         public ActionResult Orders()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.UserType = GetRole();
+            }
+
             Restaurant res = (from r in db.restaurants
                               where r.Contact.Email.Equals(User.Identity.Name)
                               select r).FirstOrDefault();
@@ -150,6 +172,11 @@ namespace DeliveryMan.Controllers
         // GET: Restaurant/OrderDetails/5
         public ActionResult OrderDetails(int? id)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.UserType = GetRole();
+            }
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -178,6 +205,11 @@ namespace DeliveryMan.Controllers
         // GET: Restaurant/EditOrder/5
         public ActionResult EditOrder(int? id)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.UserType = GetRole();
+            }
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -229,6 +261,11 @@ namespace DeliveryMan.Controllers
         public ActionResult EditOrder([Bind(Include = "OrderId, AddressLine1, AddressLine2, City, State, ZipCode")]
             RestaurantEditOrderViewModel model)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.UserType = GetRole();
+            }
+
             Restaurant res = (from r in db.restaurants
                               where r.Contact.Email.Equals(User.Identity.Name)
                               select r).FirstOrDefault();
@@ -252,6 +289,11 @@ namespace DeliveryMan.Controllers
         // GET: Restaurant/CancelOrder/5
         public ActionResult CancelOrder(int? id)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.UserType = GetRole();
+            }
+
             var orderDetails = (from o in db.orders
                                 where o.Restaurant.Contact.Email.Equals(User.Identity.Name)
                                 where o.Id == id
@@ -279,6 +321,11 @@ namespace DeliveryMan.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CancelOrder(CancelOrderViewModel model, int id)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.UserType = GetRole();
+            }
+
             Order curOrder = (from o in db.orders
                               where o.Restaurant.Contact.Email == User.Identity.Name
                               && o.Id == id
@@ -306,6 +353,11 @@ namespace DeliveryMan.Controllers
         // GET: Restaurant/ReviewOrder/5
         public ActionResult ReviewOrder(int? id)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.UserType = GetRole();
+            }
+
             var orderDetails = (from o in db.orders
                                 where o.Restaurant.Contact.Email == User.Identity.Name
                                 where o.Id == id
@@ -327,6 +379,11 @@ namespace DeliveryMan.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult ReviewOrder(ReviewOrderViewModel model, int? id)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.UserType = GetRole();
+            }
+
             if (ModelState.IsValid && (id ?? 0) == 0)
             {
                 Review newReview = new Review();
@@ -378,6 +435,11 @@ namespace DeliveryMan.Controllers
         // GET: Restaurant/OrdersHistory
         public ActionResult OrdersHistory()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.UserType = GetRole();
+            }
+
             Restaurant res = (from r in db.restaurants
                               where r.Contact.Email.Equals(User.Identity.Name)
                               select r).FirstOrDefault();
@@ -395,6 +457,11 @@ namespace DeliveryMan.Controllers
         // GET: Restaurant/Blacklist
         public ActionResult Blacklist()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.UserType = GetRole();
+            }
+
             Restaurant res = (from r in db.restaurants
                               where r.Contact.Email.Equals(User.Identity.Name)
                               select r).FirstOrDefault();
@@ -411,6 +478,11 @@ namespace DeliveryMan.Controllers
         // GET: Restaurant/DeliverymanDetails/5
         public ActionResult DeliverymanDetails(int? id)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.UserType = GetRole();
+            }
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -446,6 +518,11 @@ namespace DeliveryMan.Controllers
         // GET: Restaurant/AddToBlacklist/5
         public ActionResult AddToBlacklist(int? id)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.UserType = GetRole();
+            }
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -458,6 +535,11 @@ namespace DeliveryMan.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult AddToBlacklist(int id)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.UserType = GetRole();
+            }
+
             Restaurant res = (from r in db.restaurants
                               where r.Name.Equals(User.Identity.Name)
                               select r).FirstOrDefault();
