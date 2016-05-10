@@ -7,16 +7,20 @@ using System.Threading.Tasks;
 
 namespace BizLogic
 {
-    // sort deliveryman by descending
+    // compare and return deliveryman ranking
     public static class DeliverymanRanking
     {
-        public static List<Deliveryman> RankDeliveryman(this IQueryable<Deliveryman> allDeliveryman)
+        public static int getRank(int i, Deliveryman curDman, Deliveryman prevDman)
         {
-            List<Deliveryman> deliverymanList = allDeliveryman.ToList();
-
-            deliverymanList.Sort();
-
-            return deliverymanList;
+            if (prevDman.Rating == curDman.Rating)
+            {
+                return i;
+            }
+            else
+            {
+                return i + 1;
+            }
         }
+
     }
 }

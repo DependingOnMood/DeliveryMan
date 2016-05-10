@@ -9,7 +9,7 @@
 <h4>Here's a ranking of our top deliverymen!</h4>
 <hr />
 
-@foreach (var item in Model)
+@foreach (var item in Model.OrderBy(x => x.Rank))
 {
     <div class="form-group">
         <div class="col-md-10">
@@ -36,13 +36,6 @@
                 </dd>
 
                 <dt>
-                    @Html.DisplayNameFor(model => model.OrdersPercentage)
-                </dt>
-                <dd>
-                    @Html.DisplayFor(modelItem => item.OrdersPercentage)
-                </dd>
-
-                <dt>
                     @Html.DisplayNameFor(model => model.Rating)
                 </dt>
                 <dd>
@@ -56,11 +49,10 @@
         <div class="col-md-10">
             @Html.LabelFor(modelItem => item.ReviewText, new { @class = "col-md-2 control-label" })
             <div class="col-md-10">
-                @Html.TextAreaFor(modelItem => item.ReviewText, new { cols = "50", rows = "10" })
+                @Html.TextAreaFor(modelItem => item.ReviewText, new { @readonly = "readonly" })
             </div>
         </div>
     </div>
-
 }
 
 @section Scripts {
