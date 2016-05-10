@@ -13,16 +13,14 @@ namespace DeliveryMan.Models
         [Display(Name = "Order Name")]
         public string OrderName { get; set; }
 
-        [Required]
         [Display(Name = "Placed Time")]
+        [DataType(DataType.DateTime)]
         public DateTime PlacedTime { get; set; }
 
-        [Required]
         [Display(Name = "Picked-up Time")]
         [DataType(DataType.DateTime)]
         public DateTime? PickUpTime { get; set; }
 
-        [Required]
         [Display(Name = "Delivered Time")]
         [DataType(DataType.DateTime)]
         public DateTime? DeliveredTime { get; set; }

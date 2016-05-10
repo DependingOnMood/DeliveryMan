@@ -90,7 +90,8 @@
     </div>
     <p>
         @Html.ActionLink("Edit", "EditOrder", new { id = Model.Id }) |
-        @Html.ActionLink("Back to orders", "Orders")
+        @Html.ActionLink("Back to orders", "Orders") |
+        @Html.ActionLink("Review this order", "ReviewOrder", new { id = Model.Id })
     </p>
 </body>
 </html>
