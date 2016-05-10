@@ -473,7 +473,7 @@ namespace DeliveryMan.Controllers
         }
 
         // GET: Restaurant/Blacklist
-        public ActionResult Blacklist()
+        public ActionResult Blacklist(int? id)
         {
             if (User.Identity.IsAuthenticated)
             {
@@ -487,6 +487,7 @@ namespace DeliveryMan.Controllers
             {
                 return RedirectToAction("ErrorPage", "Home");
             }
+
             IEnumerable<Deliveryman> badGuys = from bl in db.blacklists
                                                where bl.RestaurantId == res.Id
                                                select bl.Deliveryman;

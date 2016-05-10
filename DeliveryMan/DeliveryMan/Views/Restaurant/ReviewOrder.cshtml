@@ -80,6 +80,9 @@
                 <input type="submit" name="command" class="btn btn-default" value="Submit" />
                 <input type="button" value="Cancel" class="btn btn-default"
                        onclick="location.href = '@(Url.Action("Orders", "Restaurant"))'" />
+               
+                 <input type="button" value="Add to Blacklist" class="btn btn-danger"
+                       onclick="location.href = '@(Url.Action("Blacklist", "Restaurant", new { id = Model.OrderId }))'" />
             </div>
         </div>
 }
