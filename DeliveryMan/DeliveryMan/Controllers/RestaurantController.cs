@@ -295,7 +295,7 @@ namespace DeliveryMan.Controllers
             cancelOrderVM.DeliveryFee = orderDetails.DeliveryFee;
 
             // calculate cancellation fee
-            cancelOrderVM.CancellationFee = CancelOrderFee.calculateFee(orderDetails);
+            cancelOrderVM.CancellationFee = RestaurantCancelOrder.cancellationFee(orderDetails);
 
             return View("CancelOrder", cancelOrderVM);
         }
@@ -363,13 +363,10 @@ namespace DeliveryMan.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult ReviewOrder(ReviewOrderViewModel model, int? id)
         {
-            if (User.Identity.IsAuthenticated)
-            {
-                ViewBag.UserType = GetRole();
-            }
-
-            if (ModelState.IsValid && (id ?? 0) == 0)
-            {
+            if (ModelState.IsValid && id != null)
+            { // check model state
+              //   if (model.DeliveredTime != null)
+              //  { // only allow delivered order to be reviewed
                 Review newReview = new Review();
                 newReview.OrderId = (int)id;
                 newReview.ReviewText = model.ReviewText;
@@ -380,8 +377,6 @@ namespace DeliveryMan.Controllers
                                         select o).FirstOrDefault();
 
                 Deliveryman deliveryman = db.deliverymen.Find(orderDeliveryman.DeliverymanId);
-
-                decimal currentRating = deliveryman.Rating;
 
                 // calculate cumulative rating
                 decimal rating = ReviewRating.calculateRating(deliveryman, newReview.Rating);
@@ -399,21 +394,30 @@ namespace DeliveryMan.Controllers
                 var rankedDmans = (from d in db.deliverymen
                                    select d).OrderByDescending(x => x.Rating);
 
+                Deliveryman prevDman = new Deliveryman();
+
                 for (int i = 0; i < rankedDmans.Count(); i++)
                 {
-                    Deliveryman ithDman = rankedDmans.Skip(i).First();
+                    Deliveryman curDman = rankedDmans.Skip(i).First();
 
-                    Deliveryman rankedDman = db.deliverymen.Find(ithDman.Id);
+                    Deliveryman rankedDman = db.deliverymen.Find(curDman.Id);
 
-                    rankedDman.Ranking = i + 1;
+                    rankedDman.Ranking = DeliverymanRanking.getRank(i, curDman, prevDman);
+
+                    prevDman = curDman;
                 }
 
                 db.SaveChanges();
 
                 return RedirectToAction("Orders");
             }
+            //   else
+            //    {
+            //        ModelState.AddModelError("", "You cannot review an order that has not yet been delivered!");
+            //        return View(model);
+            //    }
 
-            return View();
+            return View(model);
         }
 
         // GET: Restaurant/OrdersHistory
@@ -432,8 +436,8 @@ namespace DeliveryMan.Controllers
                 return HttpNotFound();
             }
             IEnumerable<Order> orders = (from o in db.orders
-                                  where o.RestaurantId == res.Id
-                                  where o.Status == Status.DELIVERED
+                                        where o.RestaurantId == res.Id
+                                        where o.Status == Status.DELIVERED
                                   orderby o.PlacedTime descending
                                   select o).AsEnumerable<Order>();
             return View(orders);

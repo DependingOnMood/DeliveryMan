@@ -9,7 +9,6 @@ namespace BizLogic
 {
     public static class ReviewRating
     {
-
         /// <summary>
         /// calculate the cumulative rating for deliveryman
         /// </summary>
