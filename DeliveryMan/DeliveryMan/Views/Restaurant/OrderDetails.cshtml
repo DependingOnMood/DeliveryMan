@@ -89,7 +89,10 @@
         </dl>
     </div>
     <p>
-        @Html.ActionLink("Edit", "EditOrder", new { id = Model.Id }) |
+        @if (Model.Status == DataLayer.Status.WAITING)
+        {
+            @Html.ActionLink("Edit", "EditOrder", new { id = Model.Id })
+        }
         @Html.ActionLink("Back to orders", "Orders")
     </p>
 </body>

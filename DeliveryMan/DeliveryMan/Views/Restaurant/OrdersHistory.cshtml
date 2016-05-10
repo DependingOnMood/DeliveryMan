@@ -9,7 +9,8 @@
 </head>
 <body>
     <p>
-        @Html.ActionLink("Current orders", "Orders")
+        <input type="button" value="Current Orders" class="btn btn-danger"
+               onclick="location.href = '@(Url.Action("Orders", "Restaurant"))'" />
     </p>
     <table class="table">
         <tr>
@@ -55,7 +56,7 @@
                 @Html.DisplayFor(modelItem => item.DeliveryFee)
             </td>
             <td>
-                @Html.ActionLink("Details", "OrderDetails", new { id=item.Id }) |
+                @Html.ActionLink("Details", "OrderDetails", new { id=item.Id })
             </td>
         </tr>
     }
