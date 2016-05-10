@@ -89,8 +89,14 @@
         </dl>
     </div>
     <p>
-        @Html.ActionLink("Edit", "EditOrder", new { id = Model.Id }) |
-        @Html.ActionLink("Back to orders", "Orders")
+        @if (Model.Status == DataLayer.Status.WAITING)
+        {
+            <input type="button" value="Edit" class="btn btn-danger"
+                   onclick="location.href = '@(Url.Action("EditOrder", "Restaurant", new { id = Model.Id }))'" />
+        }
+        <input type="button" value="Back to Orders" class="btn btn-danger"
+               onclick="location.href = '@(Url.Action("Orders", "Restaurant"))'" />
+
     </p>
 </body>
 </html>

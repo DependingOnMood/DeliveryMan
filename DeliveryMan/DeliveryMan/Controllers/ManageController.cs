@@ -17,24 +17,8 @@ namespace DeliveryMan.Controllers
         private ApplicationUserManager _userManager;
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        public int GetRole()
-        {
-            var q = (
-            from c in db.contacts
-            where c.Email.Equals(User.Identity.Name)
-            select c).FirstOrDefault();
-
-            return (int)q.Role;
-            //return 0;
-
-        }
-
         public ManageController()
         {
-            if (User.Identity.IsAuthenticated)
-            {
-                ViewBag.UserType = GetRole();
-            }
         }
 
         public ManageController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
@@ -232,11 +216,6 @@ namespace DeliveryMan.Controllers
         // GET: /Manage/ChangePassword
         public ActionResult ChangePassword()
         {
-            if (User.Identity.IsAuthenticated)
-            {
-                ViewBag.UserType = GetRole();
-            }
-
             return View();
         }
 

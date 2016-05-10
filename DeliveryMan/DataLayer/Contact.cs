@@ -43,10 +43,12 @@ namespace DataLayer
         {
             if (AddressLine2 != null)
             {
-                return AddressLine1 + ", " + AddressLine2 + ", " + City + ", " + State + ", " + ZipCode;
+                //return AddressLine1 + ", " + AddressLine2 + ", " + City + ", " + State + ", " + ZipCode;
+                return AddressLine1 + ", " + AddressLine2;
             }
             else {
-                return AddressLine1 + ", " + City + ", " + State + ", " + ZipCode;
+                //return AddressLine1 + ", " + City + ", " + State + ", " + ZipCode;
+                return AddressLine1;
             }           
         }
     }
