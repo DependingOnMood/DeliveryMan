@@ -26,6 +26,11 @@ namespace DeliveryMan.Controllers
 
         public ActionResult Ranking()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.UserType = GetRole();
+            }
+
             // get deliveryman ranking
             IEnumerable<Deliveryman> deliveryman = (from d in db.deliverymen
                                                     select d).OrderByDescending(x => x.Ranking);
@@ -49,8 +54,8 @@ namespace DeliveryMan.Controllers
                 curRankingVM.DeliverymanName = curDeliveryman.FirstName + " " + curDeliveryman.LastName;
                 curRankingVM.TotalOrders = curDeliveryman.TotalDeliveryCount;
 
-                curRankingVM.Rating = orderDetails.PickUpTime;
-                curRankingVM.ReviewText = orderDetails.DeliveredTime;
+                //curRankingVM.Rating = orderDetails.PickUpTime;
+                //curRankingVM.ReviewText = orderDetails.DeliveredTime;
             }
 
             return View("Ranking", rankingVMs);

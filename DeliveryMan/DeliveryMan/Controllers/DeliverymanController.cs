@@ -14,13 +14,27 @@ namespace DeliveryMan.Controllers
 {
     public class DeliverymanController : Controller
     {
+        public int GetRole()
+        {
+            var q = (
+            from c in db.contacts
+            where c.Email.Equals(User.Identity.Name)
+            select c).FirstOrDefault();
 
+            return (int)q.Role;
+            //return 0;
+
+        }
 
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: BZ
         public ActionResult FindOrder()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.UserType = GetRole();
+            }
             return View();
         }
         
@@ -28,6 +42,11 @@ namespace DeliveryMan.Controllers
         [HttpPost]
         public ActionResult FindOrder(FindOrderViewModel model)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.UserType = GetRole();
+            }
+
             //   String location = model;
             List<Order> orders = new List<Order>();
             String add1 = model.line1 + " " + model.line2 + " " + model.city + " " + model.state + " " + model.zipCode;
@@ -65,8 +84,13 @@ namespace DeliveryMan.Controllers
         }
 
         // GET: 
-        public ActionResult PickUpOrder(int? id )
+        public ActionResult AcceptOrder(int? id )
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.UserType = GetRole();
+            }
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -87,6 +111,11 @@ namespace DeliveryMan.Controllers
         [HttpPost]
         public ActionResult PickUpOrder(Order o)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.UserType = GetRole();
+            }
+
             if (o.Id == 0) {
                 return HttpNotFound();
                     }
@@ -111,6 +140,11 @@ namespace DeliveryMan.Controllers
         // GET: Deliveryman
         public ActionResult Orders()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.UserType = GetRole();
+            }
+
             var d = (from u in db.deliverymen
                               where u.Contact.Email.Equals(User.Identity.Name)
                               select u).FirstOrDefault();
@@ -145,6 +179,11 @@ namespace DeliveryMan.Controllers
         // GET: Deliveryman/OrderDetails/5
         public ActionResult OrderDetails(int? id)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.UserType = GetRole();
+            }
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -164,6 +203,11 @@ namespace DeliveryMan.Controllers
         // GET: Deliveryman/MyOrders
         public ActionResult MyOrders()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.UserType = GetRole();
+            }
+
             Deliveryman deli = (from dm in db.deliverymen
                                 where dm.Contact.Email.Equals(User.Identity.Name)
                                 select dm).FirstOrDefault();
@@ -180,6 +224,11 @@ namespace DeliveryMan.Controllers
         // POST: Deliveryman/CancelPickup/5
         public ActionResult CancelPickup(int id)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.UserType = GetRole();
+            }
+
             Deliveryman deliveryman = (from dm in db.deliverymen
                                        where dm.Contact.Email.Equals(User.Identity.Name)
                                        select dm).FirstOrDefault();
@@ -206,6 +255,11 @@ namespace DeliveryMan.Controllers
         // POST: Deliveryman/CompleteOrder/5
         public ActionResult CompleteOrder(int id)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.UserType = GetRole();
+            }
+
             Deliveryman deliveryman = (from dm in db.deliverymen
                                        where dm.Contact.Email.Equals(User.Identity.Name)
                                        select dm).FirstOrDefault();
@@ -228,8 +282,26 @@ namespace DeliveryMan.Controllers
             return RedirectToAction("Orders");
         }
 
+        //Get
+        public ActionResult Direction()
+        {
+            ViewBag.source = "110 riverdrive south 07310";
+            ViewBag.desti = "55 riverdrive south 07310";
+            return View();
+        }
+
+
+
+
+
+
         protected override void Dispose(bool disposing)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.UserType = GetRole();
+            }
+
             if (disposing)
             {
                 db.Dispose();
