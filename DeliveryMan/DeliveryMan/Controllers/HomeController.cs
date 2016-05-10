@@ -40,10 +40,10 @@ namespace DeliveryMan.Controllers
                 int avgReview = Convert.ToInt32(curDeliveryman.Rating);
 
                 // get a review reflecting the deliveryman's current rating
-                Review DeliverymanReview = (from r in db.reviews
-                                    where r.Restaurant.Contact.Email == User.Identity.Name
-                                    where r.Id == id
-                                    select r).FirstOrDefault();
+               // Review DeliverymanReview = (from r in db.reviews
+                                   // where r.Email == User.Identity.Name
+                                   // where r.Id == id
+                                   // select r).FirstOrDefault();
 
                 curRankingVM.Rank = curDeliveryman.Ranking;
                 curRankingVM.DeliverymanName = curDeliveryman.FirstName + " " + curDeliveryman.LastName;
