@@ -16,10 +16,26 @@
 
 <div id="forms-container">
     <div id="form-1-container">
-        @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", role = "form" }))
         {
             @Html.AntiForgeryToken()
             @Html.ValidationSummary("", new { @class = "text-danger" })
+
+            <fieldset class="form-group">
+                <legend>Icon</legend>
+                <div class="editor-label">
+                @Html.Label("Icon Image",new { @class = "col-md-2 control-label" })
+                </div>
+                <div class="col-md-10">
+                    <div class="editor-field">
+                        <input id="ImagePath" title="Upload a product image"
+                               type="file" name="file" class="btn btn-danger" />
+                
+                    </div>
+                </div>
+
+</fieldset>
+
 
             <div class="form-group">
                 @Html.LabelFor(m => m.FirstName, new { @class = "col-md-2 control-label" })
@@ -111,11 +127,25 @@
 
 
     <div id="form-2-container">
-        @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", role = "form" }))
         {
             @Html.AntiForgeryToken()
             @Html.ValidationSummary("", new { @class = "text-danger" })
 
+            <fieldset class="form-group">
+                <legend>Icon</legend>
+                <div class="editor-label">
+                    @Html.Label("Icon Image", new { @class = "col-md-2 control-label" })
+                </div>
+                <div class="col-md-10">
+                    <div class="editor-field">
+                        <input id="ImagePath" title="Upload a product image"
+                               type="file" name="file" class="btn btn-danger" />
+
+                    </div>
+                </div>
+
+            </fieldset>
             <div class="form-group">
                 @Html.LabelFor(m => m.RestaurantName, new { @class = "col-md-2 control-label" })
                 <div class="col-md-10">

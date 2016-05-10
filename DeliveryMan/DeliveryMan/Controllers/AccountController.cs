@@ -150,7 +150,7 @@ namespace DeliveryMan.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterViewModel model, string command)
+        public async Task<ActionResult> Register(RegisterViewModel model, HttpPostedFileBase file, string command)
         {
             if (ModelState.IsValid)
             {
@@ -159,6 +159,7 @@ namespace DeliveryMan.Controllers
 
                 if (result.Succeeded)
                 {
+
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
                     // add user to database
@@ -180,12 +181,21 @@ namespace DeliveryMan.Controllers
                         // add to deliveryman table 
                         Deliveryman newDeliveryman = new Deliveryman();
 
+
+                        if (file != null)
+                        {
+                            file.SaveAs(HttpContext.Server.MapPath("~/Content/Img/userIcon")
+                                                                  + file.FileName);
+                            newDeliveryman.IconImageUrl = file.FileName;
+                        }
+
                         newDeliveryman.FirstName = model.FirstName;
                         newDeliveryman.LastName = model.LastName;
 
                         newDeliveryman.ContactId = newContact.PhoneNumber;
 
                         newDeliveryman.Contact = newContact;
+              
 
                         db.deliverymen.Add(newDeliveryman);
                     }
@@ -195,6 +205,13 @@ namespace DeliveryMan.Controllers
 
                         // add to restaurant table 
                         Restaurant newRestaurant = new Restaurant();
+                        if (file != null)
+                        {
+                            file.SaveAs(HttpContext.Server.MapPath("~/Content/Img/userIcon")
+                                                                  + file.FileName);
+                            newRestaurant.IconImageUrl = file.FileName;
+                        }
+                
 
                         newRestaurant.Name = model.RestaurantName;
 
