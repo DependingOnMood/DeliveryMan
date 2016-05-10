@@ -363,6 +363,11 @@ namespace DeliveryMan.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult ReviewOrder(ReviewOrderViewModel model, int? id)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.UserType = GetRole();
+            }
+
             if (ModelState.IsValid && id != null)
             { // check model state
               //   if (model.DeliveredTime != null)
