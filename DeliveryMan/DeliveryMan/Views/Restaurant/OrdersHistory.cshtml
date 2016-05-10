@@ -1,4 +1,4 @@
-﻿@model IEnumerable<DataLayer.Order>
+﻿@model List<DeliveryMan.Models.RestaurantOrdersHistoryViewModel>
 
 <!DOCTYPE html>
 
@@ -15,22 +15,22 @@
     <table class="table">
         <tr>
             <th>
-                Deliveryman
+                Deliveryman Name
             </th>
             <th>
-                Note
+                Description
             </th>
             <th>
-                PlacedTime
+                Placed Time
             </th>
             <th>
-                PickUpTime
+                Pickup Time
             </th>
             <th>
-                DeliveredTime
+                Delivered Time
             </th>
             <th>
-                DeliveryFee
+                Delivery Fee
             </th>
             <th></th>
         </tr>
@@ -38,7 +38,7 @@
     @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.DeliverymanId)
+                @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Note)
@@ -56,7 +56,16 @@
                 @Html.DisplayFor(modelItem => item.DeliveryFee)
             </td>
             <td>
-                @Html.ActionLink("Details", "OrderDetails", new { id=item.Id })
+                @if (!item.IsReviewed)
+                {
+                    <input type="button" value="Review" class="btn btn-danger"
+                           onclick="location.href = '@(Url.Action("ReviewOrder", "Restaurant", new { id = item.OrderId}))'" />
+
+                    @*@Html.ActionLink("Review", "ReviewOrder", new { id = item.OrderId })*@
+                }
+                <input type="button" value="Details" class="btn btn-danger"
+                       onclick="location.href = '@(Url.Action("OrderDetails", "Restaurant", new { id = item.OrderId}))'" />
+                @*@Html.ActionLink("Details", "OrderDetails", new { id = item.OrderId })*@
             </td>
         </tr>
     }

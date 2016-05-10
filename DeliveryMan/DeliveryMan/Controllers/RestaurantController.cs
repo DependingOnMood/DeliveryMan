@@ -460,11 +460,37 @@ namespace DeliveryMan.Controllers
                 return HttpNotFound();
             }
             IEnumerable<Order> orders = (from o in db.orders
-                                        where o.RestaurantId == res.Id
-                                        where o.Status == Status.DELIVERED
-                                  orderby o.PlacedTime descending
-                                  select o).AsEnumerable<Order>();
-            return View(orders);
+                                         where o.RestaurantId == res.Id
+                                         where o.Status == Status.DELIVERED
+                                         orderby o.PlacedTime descending
+                                         select o).ToList<Order>();
+            List<RestaurantOrdersHistoryViewModel> models = new List<RestaurantOrdersHistoryViewModel>();
+            foreach (Order o in orders)
+            {
+                RestaurantOrdersHistoryViewModel model = new RestaurantOrdersHistoryViewModel()
+                {
+                    OrderId = o.Id,
+                    Name = o.Deliveryman.getName(),
+                    Note = o.Note,
+                    PlacedTime = o.PlacedTime,
+                    PickUpTime = (DateTime)o.PickUpTime,
+                    DeliveredTime = (DateTime)o.DeliveredTime,
+                    DeliveryFee = o.DeliveryFee,
+                };
+                Review rev = (from rv in db.reviews
+                              where rv.OrderId == o.Id
+                              select rv).FirstOrDefault();
+                if (rev == null)
+                {
+                    model.IsReviewed = false;
+                }
+                else
+                {
+                    model.IsReviewed = true;
+                }
+                models.Add(model);
+            }
+            return View(models);
         }
 
         // GET: Restaurant/Blacklist
