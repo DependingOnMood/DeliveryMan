@@ -314,6 +314,7 @@
     <Content Include="Views\Deliveryman\Orders.cshtml" />
     <Content Include="Views\Restaurant\EditOrder.cshtml" />
     <Content Include="Views\Home\Ranking.cshtml" />
+    <Content Include="Views\Restaurant\OrdersHistory.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
