@@ -24,6 +24,7 @@ namespace DeliveryMan.Controllers
 
         }
 
+        // rank deliveryman by his/her cumulative rating
         public ActionResult Ranking()
         {
             if (User.Identity.IsAuthenticated)
@@ -33,29 +34,35 @@ namespace DeliveryMan.Controllers
 
             // get deliveryman ranking
             IEnumerable<Deliveryman> deliveryman = (from d in db.deliverymen
+                                                    where d.Ranking != 0
                                                     select d).OrderByDescending(x => x.Ranking);
 
-            List<DeliverymanRankingViewModel> rankingVMs = new List<DeliverymanRankingViewModel>();
+            int count = deliveryman.Count();
+            List<DeliverymanRankingViewModel> rankingVMs = 
+                new List<DeliverymanRankingViewModel>(new DeliverymanRankingViewModel[count]);
 
-            for (int i = 0; i < rankingVMs.Count(); i++)
+            for (int i = 0; i < Math.Min(count, 20); i++)
             {
                 Deliveryman curDeliveryman = deliveryman.Skip(i).First();
-                DeliverymanRankingViewModel curRankingVM = rankingVMs[i];
+                rankingVMs[i] = new DeliverymanRankingViewModel();
 
                 int avgReview = Convert.ToInt32(curDeliveryman.Rating);
 
                 // get a review reflecting the deliveryman's current rating
-               // Review DeliverymanReview = (from r in db.reviews
-                                   // where r.Email == User.Identity.Name
-                                   // where r.Id == id
-                                   // select r).FirstOrDefault();
+                rankingVMs[i].Rank = curDeliveryman.Ranking;
+                rankingVMs[i].DeliverymanName = curDeliveryman.FirstName + " " + curDeliveryman.LastName;
+                rankingVMs[i].TotalOrders = curDeliveryman.TotalDeliveryCount;
+                rankingVMs[i].Rating = curDeliveryman.Rating;
 
-                curRankingVM.Rank = curDeliveryman.Ranking;
-                curRankingVM.DeliverymanName = curDeliveryman.FirstName + " " + curDeliveryman.LastName;
-                curRankingVM.TotalOrders = curDeliveryman.TotalDeliveryCount;
+                Review DeliverymanReview = (from r in db.reviews
+                                            where r.order.Deliveryman.Id == curDeliveryman.Id
+                                            where r.order.Deliveryman.Rating == avgReview
+                                            select r).FirstOrDefault();
 
-                //curRankingVM.Rating = orderDetails.PickUpTime;
-                //curRankingVM.ReviewText = orderDetails.DeliveredTime;
+                if (DeliverymanReview != null)
+                {
+                    rankingVMs[i].ReviewText = DeliverymanReview.ReviewText;
+                }
             }
 
             return View("Ranking", rankingVMs);
