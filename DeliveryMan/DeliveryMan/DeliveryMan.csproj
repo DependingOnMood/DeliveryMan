@@ -221,6 +221,7 @@
     <Compile Include="Models\CancelOrderViewModel.cs" />
     <Compile Include="Models\DeliverymanOrdersViewModel.cs" />
     <Compile Include="Models\DeliverymanRankingViewModel.cs" />
+    <Compile Include="Models\DeliverymanViewModels.cs" />
     <Compile Include="Models\ReviewOrderViewModel.cs" />
     <Compile Include="Models\FindOrderViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -240,7 +241,9 @@
     <Content Include="Content\About.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\ErrorPage.css" />
     <Content Include="Content\Img\about_banner.jpg" />
+    <Content Include="Content\Img\errorlogo.png" />
     <Content Include="Content\RegisterTabs.css" />
     <Content Include="Content\Contact.css" />
     <Content Include="Content\Details.css" />
@@ -319,12 +322,14 @@
     <Content Include="Views\Deliveryman\FindOrderResults.cshtml" />
     <Content Include="Views\Restaurant\CancelOrder.cshtml" />
     <Content Include="Views\Deliveryman\AcceptOrder.cshtml" />
-    <Content Include="Views\Deliveryman\Orders.cshtml" />
+    <Content Include="Views\Deliveryman\MyOrders.cshtml" />
     <Content Include="Views\Restaurant\EditOrder.cshtml" />
     <Content Include="Views\Home\Ranking.cshtml" />
     <Content Include="Views\Deliveryman\Map.cshtml" />
     <Content Include="Views\Deliveryman\Direction.cshtml" />
     <Content Include="Views\Restaurant\OrdersHistory.cshtml" />
+    <Content Include="Views\Restaurant\Blacklist.cshtml" />
+    <Content Include="Views\Home\ErrorPage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

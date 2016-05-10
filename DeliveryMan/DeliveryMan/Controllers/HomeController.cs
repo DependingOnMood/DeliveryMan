@@ -94,5 +94,14 @@ namespace DeliveryMan.Controllers
             }
             return View();
         }
+
+        public ActionResult ErrorPage()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.UserType = GetRole();
+            }
+            return View();
+        }
     }
 }

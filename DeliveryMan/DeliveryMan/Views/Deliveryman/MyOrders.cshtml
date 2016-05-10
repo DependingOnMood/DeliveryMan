@@ -1,0 +1,143 @@
+﻿@model DeliveryMan.Models.DeliverymanMyOrdersViewModel
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Orders</title>
+</head>
+<body>
+    <br />
+    <p>
+        <input type="button" value="Find A Order" class="btn btn-danger"
+               onclick="location.href = '@(Url.Action("FindOrder", "Deliveryman"))'" />
+    </p>
+    <table class="table">
+        <tr>
+            <th></th>
+            <th>
+                Note
+            </th>
+            <th>
+                Destination
+            </th>
+            <th>
+                Restaurant
+            </th>
+            <th>
+                ETA
+            </th>
+            <th>
+                Delivery Fee
+            </th>
+            <th></th>
+        </tr>
+
+        <tr>
+            <td>Pending Orders</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        @foreach (var item in Model.pendingOrders.ToList())
+        {
+            string destination = item.Contact.AddressToString();
+            <tr>
+                <td></td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Note)
+                </td>
+                <td>
+                    @destination
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Restaurant.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ETA)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DeliveryFee)
+                </td>
+                <td>
+                    @Html.ActionLink("Cancel", "CancelOrder", new { id = item.Id })
+                </td>
+            </tr>
+        }
+
+        <tr>
+            <td>In Progress Orders</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        @foreach (var item in Model.inProgressOrders.ToList())
+        {
+            string destination = item.Contact.AddressToString();
+            <tr>
+                <td></td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Note)
+                </td>
+                <td>
+                    @destination
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Restaurant.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ETA)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DeliveryFee)
+                </td>
+                <td>
+                    @Html.ActionLink("Complete", "CompleteOrder", new { id = item.Id })
+                </td>
+            </tr>
+        }
+
+        <tr>
+            <td>Delivered Orders</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        @foreach (var item in Model.deliveredOrders.ToList())
+        {
+            string destination = item.Contact.AddressToString();
+            <tr>
+                <td></td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Note)
+                </td>
+                <td>
+                    @destination
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Restaurant.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ETA)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DeliveryFee)
+                </td>
+                <td>
+                    @Html.ActionLink("Details", "OrderDetails", new { id = item.Id })
+                </td>
+            </tr>
+        }
+    </table>
+</body>
+</html>

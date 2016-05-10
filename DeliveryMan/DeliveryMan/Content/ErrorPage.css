@@ -1,0 +1,15 @@
+﻿body {
+}
+.errorlogo
+{
+    background: url(../Content/Img/errorlogo.png) no-repeat top left;
+     display: block;
+     width: 300px;
+     background-size:contain;
+     margin:auto;
+     height: 300px;
+     text-align:center;
+}
+p{
+    text-align:center
+}
