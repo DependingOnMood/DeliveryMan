@@ -9,15 +9,31 @@ namespace BizLogic
 {
     public static class ReviewRating
     {
-        public static double calculateScore(this Review review)
+
+        /// <summary>
+        /// calculate the cumulative rating for deliveryman
+        /// </summary>
+        /// <param name="the deliveryman in question"></param>
+        /// <param name=" his/her current review rating from restaurant"></param>
+        /// <returns>new rating</returns>
+
+        public static decimal calculateRating(this Deliveryman deliveryman, int curStars)
         {
-            double score = 120 - Math.Round(1 / (1 + Math.Pow(10, (review.Rating / 400))) * 120);
-            return score;
+            decimal curRating = 0;
+            decimal prevRating = deliveryman.Rating;
+            int totalStars = deliveryman.TotalStarsEarned;
+            int totalDelivery = deliveryman.TotalDeliveryCount;
+
+            if (prevRating == 0)
+            { // meaning this is the deliveryman's first review
+                curRating = curStars;
+            } else
+            { // calculate cumulative rating
+                curRating = (totalStars + curStars) / (totalDelivery + 1);
+            }
+
+            return curRating;
         }
 
-        public static double calculateWeight(this Review review)
-        {
-            return review.Rating / 10; 
-        }
     }
 }

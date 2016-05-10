@@ -169,7 +169,7 @@ namespace DeliveryMan.Controllers
             {
                 return HttpNotFound();
             }
-      
+
 
 
             return View(order);
@@ -190,9 +190,9 @@ namespace DeliveryMan.Controllers
                 return HttpNotFound();
             }
             Order order = (from o in db.orders
-                               where o.RestaurantId == res.Id
-                               where o.Id == id
-                               select o).FirstOrDefault();
+                           where o.RestaurantId == res.Id
+                           where o.Id == id
+                           select o).FirstOrDefault();
             RestaurantEditOrderViewModel model = new RestaurantEditOrderViewModel()
             {
                 OrderId = order.Id,
@@ -226,7 +226,7 @@ namespace DeliveryMan.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditOrder([Bind(Include = "OrderId, AddressLine1, AddressLine2, City, State, ZipCode")] 
+        public ActionResult EditOrder([Bind(Include = "OrderId, AddressLine1, AddressLine2, City, State, ZipCode")]
             RestaurantEditOrderViewModel model)
         {
             Restaurant res = (from r in db.restaurants
@@ -256,7 +256,7 @@ namespace DeliveryMan.Controllers
                                 where o.Restaurant.Contact.Email.Equals(User.Identity.Name)
                                 where o.Id == id
                                 select o).FirstOrDefault();
-            
+
             CancelOrderViewModel cancelOrderVM = new CancelOrderViewModel();
 
             cancelOrderVM.OrderId = orderDetails.Id;
@@ -330,11 +330,43 @@ namespace DeliveryMan.Controllers
             if (ModelState.IsValid && (id ?? 0) == 0)
             {
                 Review newReview = new Review();
-                newReview.OrderId = (int) id;
+                newReview.OrderId = (int)id;
                 newReview.ReviewText = model.ReviewText;
                 newReview.Rating = model.Rating;
 
+                // calculate deliveryman's current rating
+                var orderDeliveryman = (from o in db.orders
+                                        select o).FirstOrDefault();
+
+                Deliveryman deliveryman = db.deliverymen.Find(orderDeliveryman.DeliverymanId);
+
+                decimal currentRating = deliveryman.Rating;
+
+                // calculate cumulative rating
+                decimal rating = ReviewRating.calculateRating(deliveryman, newReview.Rating);
+
+                // update deliveryman table
+                deliveryman.Rating = rating;
+                deliveryman.TotalStarsEarned = deliveryman.TotalStarsEarned + newReview.Rating;
+                deliveryman.TotalDeliveryCount = deliveryman.TotalDeliveryCount + 1;
+
                 db.reviews.Add(newReview);
+
+                db.SaveChanges();
+
+                // update deliveryman ranking
+                var rankedDmans = (from d in db.deliverymen
+                                   select d).OrderByDescending(x => x.Rating);
+
+                for (int i = 0; i < rankedDmans.Count(); i++)
+                {
+                    Deliveryman ithDman = rankedDmans.Skip(i).First();
+
+                    Deliveryman rankedDman = db.deliverymen.Find(ithDman.Id);
+
+                    rankedDman.Ranking = i + 1;
+                }
+
                 db.SaveChanges();
 
                 return RedirectToAction("Orders");

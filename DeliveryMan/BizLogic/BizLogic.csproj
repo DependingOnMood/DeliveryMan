@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CreateOrderLogic.cs" />
+    <Compile Include="ReviewRating.cs" />
     <Compile Include="FindOrderLogic.cs" />
     <Compile Include="GoogleMapHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -57,7 +58,7 @@
     <Compile Include="RestaurantCancelOrder.cs" />
     <Compile Include="RestaurantOrders.cs" />
     <Compile Include="CancelOrderFee.cs" />
-    <Compile Include="ReviewRating.cs" />
+    <Compile Include="DeliverymanRanking.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DataLayer\DataLayer.csproj">
