@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "PickUpOrder";
+    ViewBag.Title = "AcceptOrder";
 }
 
 @model DataLayer.Order
@@ -9,7 +9,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>Pick Up Order</title>
+    <title>Accept Order</title>
 </head>
 <body>
     @if (ViewBag.ifSuccessed == 0)
@@ -62,12 +62,13 @@
             </dt>
         </dl>
     </div>
-    using (Html.BeginForm("PickUpOrder", "Deliveryman", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    using (Html.BeginForm("AcceptOrder", "Deliveryman", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
     {
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Pick Up Order" class="btn btn-default" />
+                <input type="submit" value="Accept it" class="btn btn-default" />
             </div>
+            @Html.ActionLink("Direction", "Direction")
         </div>
 
         }
@@ -78,6 +79,7 @@
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 @Html.Label("Order has been picked up successfully!")
+                @Html.ActionLink("Direction", "Direction")
             </div>
         </div>
     }

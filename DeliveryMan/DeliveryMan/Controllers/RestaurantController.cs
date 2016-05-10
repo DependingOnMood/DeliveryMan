@@ -234,22 +234,6 @@ namespace DeliveryMan.Controllers
                 State = order.Contact.State,
                 ZipCode = order.Contact.ZipCode,
             };
-            //var orderTmp = from o in db.orders
-            //               where o.RestaurantId == res.Id
-            //               where o.Id == id
-            //               select o;
-            //Order order = orderTmp.FirstOrDefault();
-            //if (order == null)
-            //{
-            //    return HttpNotFound();
-            //}
-            //var con = (from o in orderTmp
-            //           select o.Contact).AsEnumerable();
-            //ViewBag.AddressLine1 = new SelectList(con, "AddressLine1", "AddressLine1", order.Contact.AddressLine1);
-            //ViewBag.AddressLine2 = new SelectList(con, "AddressLine2", "AddressLine2", order.Contact.AddressLine2);
-            //ViewBag.City = new SelectList(con, "City", "City", order.Contact.City);
-            //ViewBag.State = new SelectList(con, "State", "State", order.Contact.State);
-            //ViewBag.ZipCode = new SelectList(con, "ZipCode", "ZipCode", order.Contact.ZipCode);
             return View(model);
         }
 
@@ -447,10 +431,11 @@ namespace DeliveryMan.Controllers
             {
                 return HttpNotFound();
             }
-            IEnumerable<Order> orders = from o in db.orders
-                                        where o.RestaurantId == res.Id
-                                        where o.Status == Status.DELIVERED
-                                        select o;
+            IEnumerable<Order> orders = (from o in db.orders
+                                  where o.RestaurantId == res.Id
+                                  where o.Status == Status.DELIVERED
+                                  orderby o.PlacedTime descending
+                                  select o).AsEnumerable<Order>();
             return View(orders);
         }
 

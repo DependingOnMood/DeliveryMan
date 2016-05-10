@@ -1,0 +1,64 @@
+﻿@model IEnumerable<DataLayer.Order>
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Orders History</title>
+</head>
+<body>
+    <p>
+        @Html.ActionLink("Current orders", "Orders")
+    </p>
+    <table class="table">
+        <tr>
+            <th>
+                Deliveryman
+            </th>
+            <th>
+                Note
+            </th>
+            <th>
+                PlacedTime
+            </th>
+            <th>
+                PickUpTime
+            </th>
+            <th>
+                DeliveredTime
+            </th>
+            <th>
+                DeliveryFee
+            </th>
+            <th></th>
+        </tr>
+    
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DeliverymanId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Note)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PlacedTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PickUpTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DeliveredTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DeliveryFee)
+            </td>
+            <td>
+                @Html.ActionLink("Details", "OrderDetails", new { id=item.Id }) |
+            </td>
+        </tr>
+    }
+    </table>
+</body>
+</html>

@@ -84,7 +84,7 @@ namespace DeliveryMan.Controllers
         }
 
         // GET: 
-        public ActionResult PickUpOrder(int? id )
+        public ActionResult AcceptOrder(int? id )
         {
             if (User.Identity.IsAuthenticated)
             {
@@ -281,6 +281,19 @@ namespace DeliveryMan.Controllers
             db.SaveChanges();
             return RedirectToAction("Orders");
         }
+
+        //Get
+        public ActionResult Direction()
+        {
+            ViewBag.source = "110 riverdrive south 07310";
+            ViewBag.desti = "55 riverdrive south 07310";
+            return View();
+        }
+
+
+
+
+
 
         protected override void Dispose(bool disposing)
         {
