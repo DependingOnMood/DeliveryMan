@@ -143,20 +143,17 @@ namespace DeliveryMan.Controllers
                 return HttpNotFound();
             }
             IEnumerable<Order> wo = from o in db.orders
-                                    from r in db.restaurants
-                                    where o.RestaurantId == r.Id
+                                    where o.RestaurantId == res.Id
                                     where o.Status == Status.WAITING
                                     orderby o.PlacedTime descending
                                     select o;
             IEnumerable<Order> po = from o in db.orders
-                                    from r in db.restaurants
-                                    where o.RestaurantId == r.Id
+                                    where o.RestaurantId == res.Id
                                     where o.Status == Status.PENDING
                                     orderby o.PlacedTime descending
                                     select o;
             IEnumerable<Order> io = from o in db.orders
-                                    from r in db.restaurants
-                                    where o.RestaurantId == r.Id
+                                    where o.RestaurantId == res.Id
                                     where o.Status == Status.INPROGRESS
                                     orderby o.PlacedTime descending
                                     select o;
@@ -169,6 +166,34 @@ namespace DeliveryMan.Controllers
             return View(rovm);
         }
 
+        // GET: Restaurant/PickUpOrder/5
+        public ActionResult PickUpOrder(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Restaurant res = (from r in db.restaurants
+                              where r.Contact.Email.Equals(User.Identity.Name)
+                              select r).FirstOrDefault();
+            if (res == null)
+            {
+                return HttpNotFound();
+            }
+            Order order = (from o in db.orders
+                           where o.RestaurantId == res.Id
+                           where o.Id == id
+                           where o.Status == Status.PENDING
+                           select o).FirstOrDefault();
+            if (order == null)
+            {
+                return HttpNotFound();
+            }
+            order.Status = Status.INPROGRESS;
+            db.SaveChanges();
+            return RedirectToAction("Orders");
+        }
+
         // GET: Restaurant/OrderDetails/5
         public ActionResult OrderDetails(int? id)
         {
@@ -176,7 +201,6 @@ namespace DeliveryMan.Controllers
             {
                 ViewBag.UserType = GetRole();
             }
-
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
