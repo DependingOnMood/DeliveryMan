@@ -53,7 +53,7 @@ namespace DeliveryMan.Controllers
                               select r).FirstOrDefault();
             if (res == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("ErrorPage", "Home");
             }
             Contact contact = (from c in db.contacts
                                where c.PhoneNumber.Equals(model.PhoneNumber)
@@ -140,7 +140,7 @@ namespace DeliveryMan.Controllers
                               select r).FirstOrDefault();
             if (res == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("ErrorPage", "Home");
             }
             IEnumerable<Order> wo = from o in db.orders
                                     where o.RestaurantId == res.Id
@@ -210,7 +210,7 @@ namespace DeliveryMan.Controllers
                               select r).FirstOrDefault();
             if (res == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("ErrorPage", "Home");
             }
             Order order = (from o in db.orders
                            where o.RestaurantId == res.Id
@@ -218,7 +218,7 @@ namespace DeliveryMan.Controllers
                            select o).FirstOrDefault();
             if (order == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("ErrorPage", "Home");
             }
 
 
@@ -243,7 +243,7 @@ namespace DeliveryMan.Controllers
                               select r).FirstOrDefault();
             if (res == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("ErrorPage", "Home");
             }
             Order order = (from o in db.orders
                            where o.RestaurantId == res.Id
@@ -279,7 +279,7 @@ namespace DeliveryMan.Controllers
                               select r).FirstOrDefault();
             if (res == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("ErrorPage", "Home");
             }
             Order order = (from o in db.orders
                            where o.RestaurantId == res.Id
@@ -341,7 +341,7 @@ namespace DeliveryMan.Controllers
 
             if (curOrder == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("ErrorPage", "Home");
             }
 
             if (curOrder.Status != Status.DELIVERED)
@@ -387,6 +387,11 @@ namespace DeliveryMan.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult ReviewOrder(ReviewOrderViewModel model, int? id)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.UserType = GetRole();
+            }
+
             if (ModelState.IsValid && id != null)
             { // check model state
               //   if (model.DeliveredTime != null)
@@ -457,7 +462,7 @@ namespace DeliveryMan.Controllers
                               select r).FirstOrDefault();
             if (res == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("ErrorPage", "Home");
             }
             IEnumerable<Order> orders = (from o in db.orders
                                          where o.RestaurantId == res.Id
@@ -506,7 +511,7 @@ namespace DeliveryMan.Controllers
                               select r).FirstOrDefault();
             if (res == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("ErrorPage", "Home");
             }
             IEnumerable<Deliveryman> badGuys = from bl in db.blacklists
                                                where bl.RestaurantId == res.Id
@@ -531,14 +536,14 @@ namespace DeliveryMan.Controllers
                               select r).FirstOrDefault();
             if (res == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("ErrorPage", "Home");
             }
             Deliveryman deliveryman = (from dm in db.deliverymen
                                        where dm.Id == id
                                        select dm).FirstOrDefault();
             if (deliveryman == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("ErrorPage", "Home");
             }
             Order order = (from o in db.orders
                            where o.DeliverymanId == deliveryman.Id
@@ -550,7 +555,7 @@ namespace DeliveryMan.Controllers
             }
             else
             {
-                return HttpNotFound();
+                return RedirectToAction("ErrorPage", "Home");
             }
         }
 
@@ -584,14 +589,14 @@ namespace DeliveryMan.Controllers
                               select r).FirstOrDefault();
             if (res == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("ErrorPage", "Home");
             }
             if (ModelState.IsValid)
             {
                 Deliveryman badGuy = db.deliverymen.Find(id);
                 if (badGuy == null)
                 {
-                    return HttpNotFound();
+                    return RedirectToAction("ErrorPage", "Home");
                 }
                 else
                 {

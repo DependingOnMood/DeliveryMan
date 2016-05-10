@@ -94,6 +94,13 @@
             <input type="button" value="Edit" class="btn btn-danger"
                    onclick="location.href = '@(Url.Action("EditOrder", "Restaurant", new { id = Model.Id }))'" />
         }
+
+        @if (Model.Status == DataLayer.Status.DELIVERED)
+        {
+            <input type="button" value="Edit" class="btn btn-danger"
+                   onclick="location.href = '@(Url.Action("ReviewOrder", "Restaurant", new { id = Model.Id }))'" />
+        }
+
         <input type="button" value="Back to Orders" class="btn btn-danger"
                onclick="location.href = '@(Url.Action("Orders", "Restaurant"))'" />
 

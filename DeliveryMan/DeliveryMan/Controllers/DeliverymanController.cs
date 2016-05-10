@@ -46,7 +46,17 @@ namespace DeliveryMan.Controllers
 
             //   String location = model;
             List<Order> orders = new List<Order>();
-            String add1 = model.line1 + " " + model.line2 + " " + model.city + " " + model.state + " " + model.zipCode;
+            String add1 = "";
+            if (model.latlng == null)
+            {
+                add1 = model.line1 + " " + model.line2 + " " + model.city + " " + model.state + " " + model.zipCode;
+            }
+            else {
+                GoogleMapHelper map = new GoogleMapHelper();
+                add1 = map.getAddrByLatandLng(model.latlng);
+            }
+
+
             FindOrderLogic helper = new FindOrderLogic();
 
             double distance = 1;
@@ -57,7 +67,6 @@ namespace DeliveryMan.Controllers
 
 
                 var q = (from o in db.orders
-                         where o.Contact.City.Equals(model.city)
                          where o.Status == Status.WAITING
                          orderby o.DeliveryFee descending
                          select o
@@ -98,7 +107,7 @@ namespace DeliveryMan.Controllers
                               select o).FirstOrDefault();
             if (res == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("ErrorPage", "Home");
             }
             ViewBag.ifSuccessed = 0;
             return View(res);
@@ -114,7 +123,7 @@ namespace DeliveryMan.Controllers
             }
 
             if (o.Id == 0) {
-                return HttpNotFound();
+                return RedirectToAction("ErrorPage", "Home");
                     }
             int id = o.Id;
             var res = (from o1 in db.orders
@@ -151,7 +160,7 @@ namespace DeliveryMan.Controllers
                            select o).FirstOrDefault();
             if (order == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("ErrorPage", "Home");
             }
             return View(order);
         }
@@ -168,7 +177,7 @@ namespace DeliveryMan.Controllers
                                 select dm).FirstOrDefault();
             if (deli == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("ErrorPage", "Home");
             }
             IEnumerable<Order> pendingO = from o in db.orders
                                                where o.DeliverymanId == deli.Id
@@ -207,7 +216,7 @@ namespace DeliveryMan.Controllers
                                        select dm).FirstOrDefault();
             if (deliveryman == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("ErrorPage", "Home");
             }
             Order order = (from o in db.orders
                            where o.Id == id
@@ -216,7 +225,7 @@ namespace DeliveryMan.Controllers
                            select o).FirstOrDefault();
             if (order == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("ErrorPage", "Home");
             }
             //order.Status = Status.WAITING;
             //order.DeliverymanId = 0;
@@ -236,7 +245,7 @@ namespace DeliveryMan.Controllers
                                        select dm).FirstOrDefault();
             if (deliveryman == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("ErrorPage", "Home");
             }
             Order order = (from o in db.orders
                            where o.Id == id
@@ -245,7 +254,7 @@ namespace DeliveryMan.Controllers
                            select o).FirstOrDefault();
             if (order == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("ErrorPage", "Home");
             }
             order.Status = Status.DELIVERED;
             order.DeliveredTime = DateTime.Now;
