@@ -64,4 +64,37 @@ namespace DeliveryMan.Models
         [DataType(DataType.PostalCode)]
         public string ZipCode { get; set; }
     }
+
+    public class RestaurantOrdersHistoryViewModel
+    {
+        [Required]
+        public int OrderId { get; set; }
+
+        [Required]
+        public bool IsReviewed { get; set; }
+
+        [Required]
+        [Display(Name = "Deliveryman Name")]
+        public string Name { get; set; }
+
+        [Required]
+        [Display(Name = "Description")]
+        public string Note { get; set; }
+
+        [Required]
+        [DataType(DataType.DateTime)]
+        public DateTime PlacedTime { get; set; }
+
+        [Required]
+        [DataType(DataType.DateTime)]
+        public DateTime PickUpTime { get; set; }
+
+        [Required]
+        [DataType(DataType.DateTime)]
+        public DateTime DeliveredTime { get; set; }
+
+        [Required]
+        [Display(Name = "Delivery Fee")]
+        public decimal DeliveryFee { get; set; }
+    }
 }
