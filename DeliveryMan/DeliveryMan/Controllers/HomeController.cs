@@ -54,8 +54,8 @@ namespace DeliveryMan.Controllers
                 curRankingVM.DeliverymanName = curDeliveryman.FirstName + " " + curDeliveryman.LastName;
                 curRankingVM.TotalOrders = curDeliveryman.TotalDeliveryCount;
 
-                curRankingVM.Rating = orderDetails.PickUpTime;
-                curRankingVM.ReviewText = orderDetails.DeliveredTime;
+                //curRankingVM.Rating = orderDetails.PickUpTime;
+                //curRankingVM.ReviewText = orderDetails.DeliveredTime;
             }
 
             return View("Ranking", rankingVMs);
