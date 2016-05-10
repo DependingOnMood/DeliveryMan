@@ -18,6 +18,8 @@
     <table class="table">
         <tr>
             <th>
+            </th>
+            <th>
                 Note
             </th>
             <th>
@@ -25,6 +27,9 @@
             </th>
             <th>
                 Deliveryman
+            </th>
+            <th>
+                Status
             </th>
             <th>
                 ETA
@@ -35,11 +40,23 @@
             <th></th>
         </tr>
 
-        Waiting Orders
+        <tr>
+            <td>
+                Waiting Orders
+            </td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
         @foreach (var item in Model.WaitingOrders.ToList())
         {
             string destination = item.Contact.AddressToString();
             <tr>
+                <td></td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Note)
                 </td>
@@ -52,6 +69,9 @@
                         string res = item.Deliveryman.getName();
                         @res
                     }
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.Status)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.ETA)
@@ -69,11 +89,24 @@
                 </td>
             </tr>
         }
-        Pending Orders
+
+        <tr>
+            <td>
+                Pending Orders
+            </td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
         @foreach (var item in Model.PendingOrders.ToList())
         {
             string destination = item.Contact.AddressToString();
             <tr>
+                <td></td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Note)
                 </td>
@@ -89,7 +122,9 @@
                         }
                     }
                 </td>
-
+                <td>
+                    @Html.DisplayFor(model => item.Status)
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.ETA)
                 </td>
@@ -97,8 +132,8 @@
                     @Html.DisplayFor(modelItem => item.DeliveryFee)
                 </td>
                 <td>
-                    <input type="button" value="Edit" class="btn btn-danger"
-                           onclick="location.href = '@(Url.Action("EditOrder", "Restaurant", new { id = item.Id }))'" />
+                    @*<input type="button" value="Edit" class="btn btn-danger"
+                           onclick="location.href = '@(Url.Action("EditOrder", "Restaurant", new { id = item.Id }))'" />*@
                     <input type="button" value="Details" class="btn btn-danger"
                            onclick="location.href = '@(Url.Action("OrderDetails", "Restaurant", new { id = item.Id }))'" />
                     <input type="button" value="Cancel" class="btn btn-danger"
@@ -106,11 +141,24 @@
                 </td>
             </tr>
         }
-        InProgress Orders
+
+        <tr>
+            <td>
+                In Progress Orders
+            </td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
         @foreach (var item in Model.InProgressOrders.ToList())
         {
             string destination = item.Contact.AddressToString();
             <tr>
+                <td></td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Note)
                 </td>
@@ -125,18 +173,21 @@
                     }
                 </td>
                 <td>
+                    @Html.DisplayFor(model => item.Status)
+                </td>
+                <td>
                     @Html.DisplayFor(modelItem => item.ETA)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.DeliveryFee)
                 </td>
                 <td>
-                    <input type="button" value="Edit" class="btn btn-danger"
-                           onclick="location.href = '@(Url.Action("EditOrder", "Restaurant", new { id = item.Id }))'" />
+                    @*<input type="button" value="Edit" class="btn btn-danger"
+                           onclick="location.href = '@(Url.Action("EditOrder", "Restaurant", new { id = item.Id }))'" />*@
                     <input type="button" value="Details" class="btn btn-danger"
                            onclick="location.href = '@(Url.Action("OrderDetails", "Restaurant", new { id = item.Id }))'" />
-                    <input type="button" value="Cancel" class="btn btn-danger"
-                           onclick="location.href = '@(Url.Action("CancelOrder", "Restaurant", new { id = item.Id }))'" />
+                    @*<input type="button" value="Cancel" class="btn btn-danger"
+                           onclick="location.href = '@(Url.Action("CancelOrder", "Restaurant", new { id = item.Id }))'" />*@
                 </td>
             </tr>
         }
