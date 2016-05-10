@@ -32,6 +32,31 @@ namespace BizLogic
             return _lat + " " + _lng;
         }
 
+        public String getAddrByLatandLng(string info)
+        {
+
+            var requestUri = string.Format("https://maps.googleapis.com/maps/api/geocode/xml?latlng={0}", info);
+
+            var request = WebRequest.Create(requestUri);
+            var response = request.GetResponse();
+            var xdoc = XDocument.Load(response.GetResponseStream());
+
+            var result = xdoc.Element("GeocodeResponse").Element("result");
+
+            Console.WriteLine(result.FirstAttribute);
+            string addr = result.Element("formatted_address").ToString();
+            //  var lat = locationElement.Element("lat");
+            //var lng = locationElement.Element("lng");
+            String[] res1 = addr.ToString().Split('<');
+            //String[] res2 = lng.ToString().Split('<');
+            //String _lat = res1[1].Substring(4);
+            String res = res1[1].Substring(18);
+            return res;
+        }
+
+
+
+
         public String getRoute(String addr1, String addr2)
         {
             var requestUri = string.Format("https://maps.googleapis.com/maps/api/directions/xml?origin={0}&destination={1}", addr1, addr2);

@@ -29,7 +29,7 @@ namespace DeliveryMan.Models
         [Required]
         public double distance { get; set; }
 
-
+        public string latlng {get; set;}
 
     }
 

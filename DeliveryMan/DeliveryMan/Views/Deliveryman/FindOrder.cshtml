@@ -2,63 +2,127 @@
 @{
     ViewBag.Title = "FindOrder";
 }
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC6v5-2uaq_wusHDktM9ILcqIrlPtnZgEk&sensor=false">
+</script>
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false&libraries=places">
+</script>
+<script type="text/javascript">
+    function findMyLocation() {
+        document.getElementById("1").style.visibility = "hidden";
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(success);
+        } else {
+            alert("Geo Location is not supported on your current browser!");
+        }
+        function success(position) {
+            var lat = position.coords.latitude;
+            var long = position.coords.longitude;
+            var city = position.coords.locality;
+    
+           // dvDistance.innerHTML += "lat: " + lat + " long: " + long + "<br />";
+            document.getElementById("line1").value = "xxx";
+            document.getElementById("line2").value = "xxx";
+            document.getElementById("city").value = "xxx";
+            document.getElementById("state").value = "xxx";
+            document.getElementById("zipcode").value = "xxxxxx";
+           // document.getElementById("code").textContent = lat + "," + long;
+            document.getElementById("code").value = lat + "," + long;
 
+        }
+    }
+    function hideElem() {
+        document.getElementById("1").style.visibility = "hidden";
+    }
+
+    function showElem() {
+        document.getElementById("1").style.visibility = "visible";
+    }
+
+</script>
 <h2>@ViewBag.Title.</h2>
+<body>
+    @using (Html.BeginForm("FindOrder", "Deliveryman", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
 
-@using (Html.BeginForm("FindOrder", "Deliveryman", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-{
-    @Html.AntiForgeryToken()
-    <h4>Create a new account.</h4>
-    <hr />
-    @Html.ValidationSummary("", new { @class = "text-danger" })
-    <div class="form-group">
-        @Html.LabelFor(m => m.line1, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.line1, new { @class = "form-control" })
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.line2, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.line2, new { @class = "form-control" })
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.city, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.city, new { @class = "form-control" })
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.state, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.state, new { @class = "form-control" })
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.zipCode, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.zipCode, new { @class = "form-control" })
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.Label("Distance", new { @class = "col-md-2 control-label" })
-        <div class="radio-inline">
-            @Html.RadioButtonFor(m => m.distance, 1.0) < 1 mile
-        </div>
-        <div class="radio-inline">
-            @Html.RadioButtonFor(m => m.distance, 3.0) < 3 miles
-        </div>
-        <div class="radio-inline">
-            @Html.RadioButtonFor(m => m.distance, 3.01) > 3 miles
-        </div>
-    </div>
+        @Html.AntiForgeryToken()
+
+        <h4>Create a new order</h4>
+        <hr />
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
+            <div class="col-md-10">
+                <input type="button" value="Input An Address" class="btn btn-danger" />
+                <input type="button" value="Current Location" onclick="findMyLocation()" class="btn btn-danger" />
                 <input type="submit" class="btn btn-danger" value="Find" />
             </div>
         </div>
-        }
-        @section Scripts {
+        <div class="form-group">
+        </div>
+        @Html.ValidationSummary("", new { @class = "text-danger" })
+
+        <div class="form-group">
+            @Html.Label("Current Location:", new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.latlng, new { @id = "code", @class = "form-control" })
+            </div>
+        </div>
+        <div id="1">
+            <div class="form-group">
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.line1, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.line1, new { @id = "line1", @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.line2, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.line2, new { @id = "line2", @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.city, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.city, new { @id = "city", @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.state, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.state, new { @id = "state", @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.zipCode, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.zipCode, new { @id = "zipcode", @class = "form-control" })
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.Label("Distance", new { @class = "col-md-2 control-label" })
+            <div class="radio-inline">
+                @Html.RadioButtonFor(m => m.distance, 1.0) < 1 mile
+            </div>
+            <div class="radio-inline">
+                @Html.RadioButtonFor(m => m.distance, 3.0) < 3 miles
+            </div>
+            <div class="radio-inline">
+                @Html.RadioButtonFor(m => m.distance, 3.01) > 3 miles
+            </div>
+        </div>
+
+
+    }
+</body>
+
+
+ 
+
+
+
+
+ @section Scripts {
             @Scripts.Render("~/bundles/jqueryval")
         }

@@ -49,7 +49,17 @@ namespace DeliveryMan.Controllers
 
             //   String location = model;
             List<Order> orders = new List<Order>();
-            String add1 = model.line1 + " " + model.line2 + " " + model.city + " " + model.state + " " + model.zipCode;
+            String add1 = "";
+            if (model.latlng == null)
+            {
+                add1 = model.line1 + " " + model.line2 + " " + model.city + " " + model.state + " " + model.zipCode;
+            }
+            else {
+                GoogleMapHelper map = new GoogleMapHelper();
+                add1 = map.getAddrByLatandLng(model.latlng);
+            }
+
+
             FindOrderLogic helper = new FindOrderLogic();
 
             double distance = 1;
@@ -60,7 +70,6 @@ namespace DeliveryMan.Controllers
 
 
                 var q = (from o in db.orders
-                         where o.Contact.City.Equals(model.city)
                          where o.Status == Status.WAITING
                          orderby o.DeliveryFee descending
                          select o
