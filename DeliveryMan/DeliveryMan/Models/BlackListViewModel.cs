@@ -6,7 +6,6 @@ namespace DeliveryMan.Models
 {
     public class BlackListViewModel
     {
-        [Required]
         [Display(Name = "Deliveryman Name")]
         public string DeliverymanName { get; set; }
 

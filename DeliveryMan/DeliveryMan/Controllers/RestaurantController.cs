@@ -512,6 +512,7 @@ namespace DeliveryMan.Controllers
                                 select o).FirstOrDefault();
 
             int dmanID = (int)orderDetails.DeliverymanId;
+
             Deliveryman deliveryman = db.deliverymen.Find(dmanID);
             Restaurant restaurant = db.restaurants.Find(orderDetails.RestaurantId);
 
@@ -526,6 +527,7 @@ namespace DeliveryMan.Controllers
             // calculate average delivery time
             IEnumerable<Order> deliverymanOrders = (from o in db.orders
                                                     where o.DeliverymanId == dmanID
+                                                    where o.Status == Status.DELIVERED
                                                     select o);
 
             int count = deliverymanOrders.Count();
@@ -548,7 +550,7 @@ namespace DeliveryMan.Controllers
 
             db.SaveChanges();
 
-            return View("BlackList", blackListVM);
+            return View("Blacklist", blackListVM);
         }
 
         // POST: Restaurant/Blacklist
@@ -561,15 +563,22 @@ namespace DeliveryMan.Controllers
                 ViewBag.UserType = GetRole();
             }
 
+            var orderDetails = (from o in db.orders
+                                where o.Restaurant.Contact.Email == User.Identity.Name
+                                where o.Id == id
+                                select o).FirstOrDefault();
+
             // add to blacklist
             Blacklist newBlacklist = new Blacklist();
 
-            newBlacklist.DeliverymanId = (int)model.DeliverymanId;
-            newBlacklist.RestaurantId = (int)model.RestaurantId;
+            newBlacklist.DeliverymanId = (int)orderDetails.DeliverymanId;
+            newBlacklist.RestaurantId = orderDetails.RestaurantId;
+
+            db.blacklists.Add(newBlacklist);
 
             db.SaveChanges();
 
-            return View(model);
+            return View("BlacklistView", model);
         }
 
         // GET: Restaurant/DeliverymanDetails/5

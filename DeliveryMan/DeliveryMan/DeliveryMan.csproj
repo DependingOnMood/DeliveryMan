@@ -332,6 +332,7 @@
     <Content Include="Views\Restaurant\OrdersHistory.cshtml" />
     <Content Include="Views\Restaurant\Blacklist.cshtml" />
     <Content Include="Views\Home\ErrorPage.cshtml" />
+    <Content Include="Views\Restaurant\BlacklistView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
