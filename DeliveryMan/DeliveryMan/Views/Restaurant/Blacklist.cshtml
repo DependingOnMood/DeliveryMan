@@ -1,40 +1,67 @@
-﻿@model IEnumerable<DataLayer.Deliveryman>
+﻿@model DeliveryMan.Models.BlackListViewModel
 
 @{
-    ViewBag.Title = "Blacklist";
+    ViewBag.Title = "Black List";
 }
 
-<h2>Blacklist</h2>
+<h2>@ViewBag.Title.</h2>
 
-<p>
-    @Html.ActionLink("Add", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            FirstName
-        </th>
-        <th>
-            LastName
-        </th>
-        <th>
-            Rating
-        </th>
-        <th></th>
-    </tr>
+<h4>
+    Add a deliveryman to your Blacklist. In doing so, the deliveryman
+    will not be able to pick up any orders that you post in the future.
+</h4>
+<hr />
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.FirstName)
-            @Html.DisplayFor(modelItem => item.LastName)
-            @Html.DisplayFor(modelItem => item.Rating)
-        </td>
-        <td>
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
+@using (Html.BeginForm("BlackList", "Restaurant", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary("", new { @class = "text-danger" })
+
+    <div class="form-group">
+        <div class="col-md-10">
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.DeliverymanName)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.DeliverymanName)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.TotalOrders)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.TotalOrders)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.AverageDeliveryTime)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.AverageDeliveryTime)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.Rating)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Rating)
+                </dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <p> Are you sure you want to add this deliveryman to your blacklist?</p>
+
+            <input type="submit" name="command" class="btn btn-default" value="Submit" />
+            <input type="button" value="Cancel" class="btn btn-default"
+                       onclick="location.href = '@(Url.Action("ReviewOrder", "Restaurant", new { id = Model.OrderId }))'" />
+        </div>
+    </div>
 }
 
-</table>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

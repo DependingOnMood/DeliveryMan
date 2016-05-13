@@ -222,6 +222,7 @@
     <Compile Include="Models\DeliverymanOrdersViewModel.cs" />
     <Compile Include="Models\DeliverymanRankingViewModel.cs" />
     <Compile Include="Models\DeliverymanViewModels.cs" />
+    <Compile Include="Models\BlackListViewModel.cs" />
     <Compile Include="Models\ReviewOrderViewModel.cs" />
     <Compile Include="Models\FindOrderViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />

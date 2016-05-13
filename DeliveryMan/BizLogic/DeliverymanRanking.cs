@@ -24,7 +24,7 @@ namespace BizLogic
                 }
                 else
                 { // no review text
-                    return "The Restaurant did not write a Review!";
+                    return "Restaurant did not write a Review!";
                 }
             }
             else if (lastReview != null)
@@ -37,7 +37,7 @@ namespace BizLogic
                 }
                 else
                 {
-                    return "The Restaurant did not write a Review!";
+                    return "Restaurant did not write a Review!";
                 }
             }
             else

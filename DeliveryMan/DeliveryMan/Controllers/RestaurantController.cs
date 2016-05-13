@@ -506,18 +506,70 @@ namespace DeliveryMan.Controllers
                 ViewBag.UserType = GetRole();
             }
 
-            Restaurant res = (from r in db.restaurants
-                              where r.Contact.Email.Equals(User.Identity.Name)
-                              select r).FirstOrDefault();
-            if (res == null)
+            var orderDetails = (from o in db.orders
+                                where o.Restaurant.Contact.Email == User.Identity.Name
+                                where o.Id == id
+                                select o).FirstOrDefault();
+
+            int dmanID = (int)orderDetails.DeliverymanId;
+            Deliveryman deliveryman = db.deliverymen.Find(dmanID);
+            Restaurant restaurant = db.restaurants.Find(orderDetails.RestaurantId);
+
+            BlackListViewModel blackListVM = new BlackListViewModel();
+
+            blackListVM.OrderId = id;
+            blackListVM.DeliverymanName = deliveryman.FirstName + " " + deliveryman.LastName;
+            blackListVM.Rating = deliveryman.Rating;
+            blackListVM.RestaurantId = orderDetails.RestaurantId;
+            blackListVM.DeliverymanId = orderDetails.DeliverymanId;
+
+            // calculate average delivery time
+            IEnumerable<Order> deliverymanOrders = (from o in db.orders
+                                                    where o.DeliverymanId == dmanID
+                                                    select o);
+
+            int count = deliverymanOrders.Count();
+            int total = 0;
+            double deliveryTime = 0.0, totalTime = 0.0;
+
+            for (int i = 0; i < count; i++)
             {
-                return RedirectToAction("ErrorPage", "Home");
+                DateTime pickupTime = (DateTime)deliverymanOrders.Skip(i).First().PickUpTime;
+                DateTime deliveredTime = (DateTime)deliverymanOrders.Skip(i).First().DeliveredTime;
+
+                deliveryTime = deliveredTime.Subtract(pickupTime).TotalMinutes;
+
+                total++;
+                totalTime += deliveryTime;
             }
 
-            IEnumerable<Deliveryman> badGuys = from bl in db.blacklists
-                                               where bl.RestaurantId == res.Id
-                                               select bl.Deliveryman;
-            return View(badGuys);
+            blackListVM.AverageDeliveryTime = (int)DeliverymanTime.averageTime(total, totalTime);
+            blackListVM.TotalOrders = total;
+
+            db.SaveChanges();
+
+            return View("BlackList", blackListVM);
+        }
+
+        // POST: Restaurant/Blacklist
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Blacklist(BlackListViewModel model, int? id)
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.UserType = GetRole();
+            }
+
+            // add to blacklist
+            Blacklist newBlacklist = new Blacklist();
+
+            newBlacklist.DeliverymanId = (int)model.DeliverymanId;
+            newBlacklist.RestaurantId = (int)model.RestaurantId;
+
+            db.SaveChanges();
+
+            return View(model);
         }
 
         // GET: Restaurant/DeliverymanDetails/5

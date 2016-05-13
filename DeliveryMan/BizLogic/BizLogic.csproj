@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CreateOrderLogic.cs" />
+    <Compile Include="DeliverymanTime.cs" />
     <Compile Include="ReviewRating.cs" />
     <Compile Include="FindOrderLogic.cs" />
     <Compile Include="GoogleMapHelper.cs" />
