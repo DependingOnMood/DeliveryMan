@@ -221,8 +221,6 @@ namespace DeliveryMan.Controllers
                 return RedirectToAction("ErrorPage", "Home");
             }
 
-
-
             return View(order);
         }
 
@@ -336,7 +334,7 @@ namespace DeliveryMan.Controllers
 
             Order curOrder = (from o in db.orders
                               where o.Restaurant.Contact.Email == User.Identity.Name
-                              && o.Id == id
+                              where o.Id == id
                               select o).FirstOrDefault();
 
             if (curOrder == null)
@@ -403,6 +401,8 @@ namespace DeliveryMan.Controllers
 
                 // calculate deliveryman's current rating
                 var orderDeliveryman = (from o in db.orders
+                                        where o.Restaurant.Contact.Email == User.Identity.Name
+                                        where o.Id == id
                                         select o).FirstOrDefault();
 
                 Deliveryman deliveryman = db.deliverymen.Find(orderDeliveryman.DeliverymanId);

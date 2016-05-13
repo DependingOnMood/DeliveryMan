@@ -25,10 +25,12 @@ namespace BizLogic
 
             if (prevRating == 0)
             { // meaning this is the deliveryman's first review
-                curRating = curStars;
-            } else
+                curRating = Convert.ToDecimal(curStars);
+            }
+            else
             { // calculate cumulative rating
-                curRating = (totalStars + curStars) / (totalDelivery + 1);
+                double curRatingDouble = (totalStars + curStars) / (totalDelivery + 1);
+                curRating = Convert.ToDecimal(curRatingDouble);
             }
 
             return curRating;
