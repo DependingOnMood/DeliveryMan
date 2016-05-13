@@ -16,21 +16,33 @@ namespace BizLogic
 
             if (avgReview != null)
             { // found a review text matching his average rating
-                theReviewText = avgReview.ReviewText;
+                if (avgReview.ReviewText != null)
+                { // if restaurant wrote a review text
+                    theReviewText = avgReview.ReviewText;
 
-                return theReviewText;
+                    return theReviewText;
+                }
+                else
+                { // no review text
+                    return "The Restaurant did not write a Review!";
+                }
             }
             else if (lastReview != null)
             {
-                theReviewText = lastReview.ReviewText;
+                if (lastReview.ReviewText != null)
+                { // review text exist
+                    theReviewText = lastReview.ReviewText;
 
-                return theReviewText;
+                    return theReviewText;
+                }
+                else
+                {
+                    return "The Restaurant did not write a Review!";
+                }
             }
             else
-            {
-                theReviewText = "No Reviews Available!";
-
-                return theReviewText;
+            { // none of the above
+                return "No Reviews Available!";
             }
         }
 
