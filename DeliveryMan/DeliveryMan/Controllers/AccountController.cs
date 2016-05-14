@@ -182,11 +182,12 @@ namespace DeliveryMan.Controllers
                         // add to deliveryman table 
                         Deliveryman newDeliveryman = new Deliveryman();
                         if (file != null)
-                        {   
-                            file.SaveAs(HttpContext.Server.MapPath("~/Content/UserIcon/")
-                                                                  +model.Email+file.FileName);
-                
-                            newDeliveryman.IconImageUrl = model.Email+file.FileName;
+                        {
+                            String fileUrl = HttpContext.Server.MapPath("~/Content/UserIcon/")
+                                                                  + model.Email + file.FileName;
+                            file.SaveAs(fileUrl);
+
+                            newDeliveryman.IconImageUrl = fileUrl;
                         }
 
                         newDeliveryman.FirstName = model.FirstName;
@@ -204,9 +205,10 @@ namespace DeliveryMan.Controllers
                         Restaurant newRestaurant = new Restaurant();
                         if (file != null)
                         {
-                            file.SaveAs(HttpContext.Server.MapPath("~/Content/UserIcon")
-                                                                 +model.Email + file.FileName);
-                            newRestaurant.IconImageUrl = model.Email + file.FileName;
+                            String fileUrl = HttpContext.Server.MapPath("~/Content/UserIcon/")
+                                                                        + model.Email + file.FileName;
+                            file.SaveAs(fileUrl);
+                            newRestaurant.IconImageUrl = fileUrl;
                         }
                 
 
