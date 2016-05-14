@@ -26,7 +26,7 @@ namespace BizLogic
                         return pendingFeeCalculation(order.DeliveryFee);
                     }
                 case Status.INPROGRESS:
-                    return inprogressFeeCalculation(order.DeliveryFee); ;
+                    return inprogressFeeCalculation(order.DeliveryFee);
                 case Status.DELIVERED:
                     return 0M;
                 default:
