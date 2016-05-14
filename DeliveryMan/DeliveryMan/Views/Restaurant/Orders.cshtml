@@ -14,8 +14,6 @@
                onclick="location.href = '@(Url.Action("CreateOrder", "Restaurant"))'" />
         <input type="button" value="View Order History" class="btn btn-danger"
                onclick="location.href = '@(Url.Action("OrdersHistory", "Restaurant"))'" />
-        @Html.DisplayNameFor(model => model.Balance)
-        @Html.DisplayFor(model => model.Balance)
     </p>
     <table class="table">
         <tr>
@@ -39,7 +37,10 @@
             <th>
                 DeliveryFee
             </th>
-            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.Balance)
+                @Html.DisplayFor(model => model.Balance)
+            </th>
         </tr>
 
         <tr>

@@ -12,8 +12,6 @@
     <p>
         <input type="button" value="Find A Order" class="btn btn-danger"
                onclick="location.href = '@(Url.Action("FindOrder", "Deliveryman"))'" />
-        @Html.DisplayNameFor(model => model.Balance)
-        @Html.DisplayFor(model => model.Balance)
     </p>
     <table class="table">
         <tr>
@@ -33,7 +31,10 @@
             <th>
                 Delivery Fee
             </th>
-            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.Balance)
+                @Html.DisplayFor(model => model.Balance)
+            </th>
         </tr>
 
         <tr>
