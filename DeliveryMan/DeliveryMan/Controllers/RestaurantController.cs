@@ -55,6 +55,10 @@ namespace DeliveryMan.Controllers
             {
                 return RedirectToAction("ErrorPage", "Home");
             }
+            if (res.Balance.CompareTo(0.00M) < 0)
+            {
+                return RedirectToAction("ErrorPage", "Home");
+            }
             Contact contact = (from c in db.contacts
                                where c.PhoneNumber.Equals(model.PhoneNumber)
                                select c).FirstOrDefault();

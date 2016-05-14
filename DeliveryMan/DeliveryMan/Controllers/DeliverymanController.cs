@@ -231,6 +231,8 @@ namespace DeliveryMan.Controllers
                 return RedirectToAction("ErrorPage", "Home");
             }
             order.Status = Status.WAITING;
+            decimal cancellationFee = order.cancellationFee();
+            order.Deliveryman.Balance -= cancellationFee;
             order.DeliverymanId = null;
             order.Deliveryman = null;
             db.SaveChanges();
@@ -262,6 +264,8 @@ namespace DeliveryMan.Controllers
             }
             order.Status = Status.DELIVERED;
             order.DeliveredTime = DateTime.Now;
+            order.Deliveryman.Balance += order.DeliveryFee;
+            order.Restaurant.Balance -= order.DeliveryFee;
             db.SaveChanges();
             return RedirectToAction("MyOrders");
         }
