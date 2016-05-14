@@ -20,21 +20,22 @@ namespace BizLogic
             /// <param name=" his/her current review rating from restaurant"></param>
             /// <returns>new score</returns>
             int oldScore = deliveryman.Ranking;
+            int newScore = oldScore;
             int curScore = 0;
-            if (curStars)
+            //if (curStars)
 
 
 
-            if (prevRating == 0)
-            { // meaning this is the deliveryman's first review
+            //if (prevRating == 0)
+            //{ // meaning this is the deliveryman's first review
                 curScore = curStars;
-            }
-            else
-            { // calculate cumulative rating
-                curRating = (totalStars + curStars) / (totalDelivery + 1);
-            }
+            //}
+            //else
+            //{ // calculate cumulative rating
+                //curRating = (totalStars + curStars) / (totalDelivery + 1);
+           // }
 
-            return curRating;
+            return newScore;
         }
     }
 }
