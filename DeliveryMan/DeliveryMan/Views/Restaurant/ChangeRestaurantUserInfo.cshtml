@@ -8,7 +8,7 @@
     <title>ChangeRestaurantUserInfo</title>
 </head>
 <body>
-    @using (Html.BeginForm("ChangeRestaurantUserInfo", "Deliveryman", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    @using (Html.BeginForm("ChangeRestaurantUserInfo", "Restaurant", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
     {
         @Html.AntiForgeryToken()
 
