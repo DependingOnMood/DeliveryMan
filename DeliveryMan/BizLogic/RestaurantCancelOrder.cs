@@ -36,12 +36,12 @@ namespace BizLogic
 
         private static decimal pendingFeeCalculation(decimal deliveryFee)
         {
-            return deliveryFee * Convert.ToDecimal(0.8);
+            return deliveryFee * Convert.ToDecimal(0.4);
         }
 
         private static decimal inprogressFeeCalculation(decimal deliveryFee)
         {
-            return deliveryFee * Convert.ToDecimal(1.5);
+            return deliveryFee * Convert.ToDecimal(0.8);
         }
     }
 }

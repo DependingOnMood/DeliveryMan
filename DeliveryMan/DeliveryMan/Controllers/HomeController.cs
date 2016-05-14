@@ -82,6 +82,7 @@ namespace DeliveryMan.Controllers
             {
                 ViewBag.UserType = GetRole();
             }
+
             return View();
         }
 
@@ -91,6 +92,7 @@ namespace DeliveryMan.Controllers
             {
                 ViewBag.UserType = GetRole();
             }
+
             return View();
         }
 
@@ -100,6 +102,7 @@ namespace DeliveryMan.Controllers
             {
                 ViewBag.UserType = GetRole();
             }
+
             return View();
         }
 

@@ -6,13 +6,18 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Orders</title>
+    @Styles.Render("~/Content/RestaurantOrders.css")
 </head>
 <body>
     <br />
-    <p>
+    <div>
         <input type="button" value="Find A Order" class="btn btn-danger"
                onclick="location.href = '@(Url.Action("FindOrder", "Deliveryman"))'" />
-    </p>
+        <div class="balance">
+            @Html.DisplayNameFor(model => model.Balance)
+            @Html.DisplayFor(model => model.Balance)
+        </div>
+    </div>
     <table class="table">
         <tr>
             <th></th>
@@ -32,8 +37,6 @@
                 Delivery Fee
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Balance)
-                @Html.DisplayFor(model => model.Balance)
             </th>
         </tr>
 

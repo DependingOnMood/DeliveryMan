@@ -61,7 +61,7 @@ namespace DeliveryMan.Controllers
             {
                 // throw new ApplicationException("Error");
                 ModelState.AddModelError("Balance", "Your balance is less than 0.");
-                return View("Order",model);
+                return View("Order", model);
             }
             Contact contact = (from c in db.contacts
                                where c.PhoneNumber.Equals(model.PhoneNumber)
@@ -325,20 +325,25 @@ namespace DeliveryMan.Controllers
             Restaurant res = (from r in db.restaurants
                               where r.Contact.Email.Equals(User.Identity.Name)
                               select r).FirstOrDefault();
+
             if (res == null)
             {
                 throw new Exception("Error");
             }
+
             Order order = (from o in db.orders
                            where o.RestaurantId == res.Id
                            where o.Id == model.OrderId
                            select o).FirstOrDefault();
+
             order.Contact.AddressLine1 = model.AddressLine1;
             order.Contact.AddressLine2 = model.AddressLine2;
             order.Contact.City = model.City;
             order.Contact.State = model.State;
             order.Contact.ZipCode = model.ZipCode;
+
             db.SaveChanges();
+
             return RedirectToAction("Orders");
         }
 
@@ -412,16 +417,24 @@ namespace DeliveryMan.Controllers
             }
             else if (order.Status == Status.PENDING || order.Status == Status.INPROGRESS)
             {
-                order.Restaurant.Balance -= model.CancellationFee;
-                order.Deliveryman.Balance += model.CancellationFee;
-                db.orders.Remove(order);
-                db.SaveChanges();
-                return RedirectToAction("Orders");
+                if ((order.Restaurant.Balance - model.CancellationFee).CompareTo(0M) < 0)
+                {
+                    ModelState.AddModelError("CancellationFee", "You have insufficient balance to cancel it!");
+                    return View("CancelOrder", model);
+                }
+                else
+                {
+                    order.Restaurant.Balance -= model.CancellationFee;
+                    order.Deliveryman.Balance += model.CancellationFee;
+                    db.orders.Remove(order);
+                    db.SaveChanges();
+                    return RedirectToAction("Orders");
+                }
             }
             else
             {
-                ModelState.AddModelError("", "A Delivered Order can not be cancelled");
-                return View(model);
+                ModelState.AddModelError("OrderStatus", "A Delivered Order can not be cancelled");
+                return View("CancelOrder", model);
             }
         }
 

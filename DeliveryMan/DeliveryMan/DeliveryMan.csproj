@@ -317,11 +317,7 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Restaurant\CreateOrder.cshtml" />
-    <Content Include="Views\Restaurant\Delete.cshtml" />
-    <Content Include="Views\Restaurant\Details.cshtml" />
-    <Content Include="Views\Restaurant\Index.cshtml" />
     <Content Include="Views\Deliveryman\OrderDetails.cshtml" />
-    <Content Include="Views\Deliveryman\Index.cshtml" />
     <Content Include="Views\Restaurant\Orders.cshtml" />
     <Content Include="Views\Restaurant\OrderDetails.cshtml" />
     <Content Include="Views\Restaurant\ReviewOrder.cshtml" />

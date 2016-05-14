@@ -13,7 +13,7 @@ namespace DataLayer
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        public int OrderId {get; set;}
+        public int OrderId { get; set; }
 
         [ForeignKey("OrderId")]
         public virtual Order Order { get; set; }
