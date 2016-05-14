@@ -62,12 +62,12 @@ namespace DeliveryMan.Controllers
                 rankingVMs[i].Rating = curDeliveryman.Rating;
 
                 Review DmanReviewAvg = (from r in db.reviews
-                                        where r.order.Deliveryman.Id == curDeliveryman.Id
-                                        where r.order.Deliveryman.Rating == avgReview
+                                        where r.Order.Deliveryman.Id == curDeliveryman.Id
+                                        where r.Order.Deliveryman.Rating == avgReview
                                         select r).FirstOrDefault();
 
                 Review DmanReviewLast = (from r in db.reviews
-                                         where r.order.Deliveryman.Id == curDeliveryman.Id
+                                         where r.Order.Deliveryman.Id == curDeliveryman.Id
                                          select r).FirstOrDefault();
 
                 rankingVMs[i].ReviewText = DeliverymanRanking.getReview(DmanReviewAvg, DmanReviewLast);
