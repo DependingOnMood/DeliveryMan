@@ -25,8 +25,6 @@ namespace DeliveryMan.Controllers
             return (int)q.Role;
         }
 
-        private ApplicationDbContext db = new ApplicationDbContext();
-
         // GET: Deliveryman/FindOrder
         public ActionResult FindOrder()
         {
