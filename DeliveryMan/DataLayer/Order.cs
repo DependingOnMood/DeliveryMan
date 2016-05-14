@@ -37,7 +37,7 @@ namespace DataLayer
         public string Note { get; set; }
 
         [Required]
-        [Column(TypeName = "DateTime2")]//xue dao le
+        [Column(TypeName = "DateTime2")]//xue dao le diao
         [DataType(DataType.DateTime)]
         public DateTime PlacedTime { get; set; }
 

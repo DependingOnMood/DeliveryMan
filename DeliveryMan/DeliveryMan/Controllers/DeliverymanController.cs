@@ -322,27 +322,34 @@ namespace DeliveryMan.Controllers
             {
                 ViewBag.UserType = GetRole();
             }
+
             Deliveryman deliveryman = (from dm in db.deliverymen
                                        where dm.Contact.Email.Equals(User.Identity.Name)
                                        select dm).FirstOrDefault();
+
             if (deliveryman == null)
             {
                 throw new Exception("Error");
             }
+
             Order order = (from o in db.orders
                            where o.Id == id
                            where o.Status == Status.INPROGRESS
                            where o.DeliverymanId == deliveryman.Id
                            select o).FirstOrDefault();
+
             if (order == null)
             {
                 throw new Exception("Error");
             }
+
             order.Status = Status.DELIVERED;
             order.DeliveredTime = DateTime.Now;
             order.Deliveryman.Balance += order.DeliveryFee;
             order.Restaurant.Balance -= order.DeliveryFee;
+
             db.SaveChanges();
+
             return RedirectToAction("MyOrders");
         }
 
@@ -422,6 +429,7 @@ namespace DeliveryMan.Controllers
                                where d.Contact.Email != User.Identity.Name
                                where d.Contact.PhoneNumber == model.PhoneNumber
                                select d).FirstOrDefault();
+
             if (val != null)
             {
                 throw new Exception("Phone number already exists error");
@@ -430,6 +438,7 @@ namespace DeliveryMan.Controllers
             Deliveryman del = (from d in db.deliverymen
                                where d.Contact.Email.Equals(User.Identity.Name)
                                select d).FirstOrDefault();
+
             if (del == null)
             {
                 throw new Exception("Error");
@@ -443,7 +452,9 @@ namespace DeliveryMan.Controllers
             del.Contact.City = model.City;
             del.Contact.State = model.State;
             del.Contact.ZipCode = model.ZipCode;
+
             db.SaveChanges();
+
             return RedirectToAction("Index", "Manage");
         }
 
