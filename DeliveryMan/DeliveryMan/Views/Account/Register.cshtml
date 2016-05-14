@@ -16,15 +16,32 @@
 
 <div id="forms-container">
     <div id="form-1-container">
-        @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", role = "form" }))
         {
             @Html.AntiForgeryToken()
-            @Html.ValidationSummary("", new { @class = "text-danger" })
+         //   @Html.ValidationSummary("", new { @class = "text-danger" })
+
+            <fieldset class="form-group">
+                <legend>Icon</legend>
+                <div class="editor-label">
+                @Html.Label("Icon Image",new { @class = "col-md-2 control-label" })
+                </div>
+                <div class="col-md-10">
+                    <div class="editor-field">
+                        <input id="ImagePath" title="Upload a product image"
+                               type="file" name="file" class="btn btn-danger" />
+                
+                    </div>
+                </div>
+
+</fieldset>
+
 
             <div class="form-group">
                 @Html.LabelFor(m => m.FirstName, new { @class = "col-md-2 control-label" })
                 <div class="col-md-10">
                     @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "text-danger" })
                 </div>
             </div>
 
@@ -32,6 +49,7 @@
                 @Html.LabelFor(m => m.LastName, new { @class = "col-md-2 control-label" })
                 <div class="col-md-10">
                     @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "text-danger" })
                 </div>
             </div>
 
@@ -39,6 +57,7 @@
                 @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
                 <div class="col-md-10">
                     @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
                 </div>
             </div>
 
@@ -46,6 +65,7 @@
                 @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
                 <div class="col-md-10">
                     @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
                 </div>
             </div>
 
@@ -53,6 +73,7 @@
                 @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label" })
                 <div class="col-md-10">
                     @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
                 </div>
             </div>
 
@@ -60,6 +81,7 @@
                 @Html.LabelFor(m => m.PhoneNumber, new { @class = "col-md-2 control-label" })
                 <div class="col-md-10">
                     @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "text-danger" })
                 </div>
             </div>
 
@@ -67,6 +89,7 @@
                 @Html.LabelFor(m => m.AddressLine1, new { @class = "col-md-2 control-label" })
                 <div class="col-md-10">
                     @Html.TextBoxFor(m => m.AddressLine1, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.AddressLine1, "", new { @class = "text-danger" })
                 </div>
             </div>
 
@@ -74,6 +97,7 @@
                 @Html.LabelFor(m => m.AddressLine2, new { @class = "col-md-2 control-label" })
                 <div class="col-md-10">
                     @Html.TextBoxFor(m => m.AddressLine2, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.AddressLine2, "", new { @class = "text-danger" })
                 </div>
             </div>
 
@@ -81,6 +105,7 @@
                 @Html.LabelFor(m => m.AddressCity, new { @class = "col-md-2 control-label" })
                 <div class="col-md-10">
                     @Html.TextBoxFor(m => m.AddressCity, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.AddressCity, "", new { @class = "text-danger" })
                 </div>
             </div>
 
@@ -88,6 +113,7 @@
                 @Html.LabelFor(m => m.AddressState, new { @class = "col-md-2 control-label" })
                 <div class="col-md-10">
                     @Html.TextBoxFor(m => m.AddressState, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.AddressState, "", new { @class = "text-danger" })
                 </div>
             </div>
 
@@ -95,6 +121,7 @@
                 @Html.LabelFor(m => m.AddressZipCode, new { @class = "col-md-2 control-label" })
                 <div class="col-md-10">
                     @Html.TextBoxFor(m => m.AddressZipCode, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.AddressZipCode, "", new { @class = "text-danger" })
                 </div>
             </div>
 
@@ -111,15 +138,30 @@
 
 
     <div id="form-2-container">
-        @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", role = "form" }))
         {
             @Html.AntiForgeryToken()
-            @Html.ValidationSummary("", new { @class = "text-danger" })
+           // @Html.ValidationSummary("", new { @class = "text-danger" })
 
+            <fieldset class="form-group">
+                <legend>Icon</legend>
+                <div class="editor-label">
+                    @Html.Label("Icon Image", new { @class = "col-md-2 control-label" })
+                </div>
+                <div class="col-md-10">
+                    <div class="editor-field">
+                        <input id="ImagePath" title="Upload a product image"
+                               type="file" name="file" class="btn btn-danger" />
+
+                    </div>
+                </div>
+
+            </fieldset>
             <div class="form-group">
                 @Html.LabelFor(m => m.RestaurantName, new { @class = "col-md-2 control-label" })
                 <div class="col-md-10">
                     @Html.TextBoxFor(m => m.RestaurantName, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.RestaurantName, "", new { @class = "text-danger" })
                 </div>
             </div>
 
@@ -127,6 +169,7 @@
                 @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
                 <div class="col-md-10">
                     @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
                 </div>
             </div>
 
@@ -134,6 +177,7 @@
                 @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
                 <div class="col-md-10">
                     @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
                 </div>
             </div>
 
@@ -141,6 +185,7 @@
                 @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label" })
                 <div class="col-md-10">
                     @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
                 </div>
             </div>
 
@@ -148,6 +193,7 @@
                 @Html.LabelFor(m => m.PhoneNumber, new { @class = "col-md-2 control-label" })
                 <div class="col-md-10">
                     @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "text-danger" })
                 </div>
             </div>
 
@@ -155,6 +201,7 @@
                 @Html.LabelFor(m => m.AddressLine1, new { @class = "col-md-2 control-label" })
                 <div class="col-md-10">
                     @Html.TextBoxFor(m => m.AddressLine1, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.AddressLine1, "", new { @class = "text-danger" })
                 </div>
             </div>
 
@@ -162,6 +209,7 @@
                 @Html.LabelFor(m => m.AddressLine2, new { @class = "col-md-2 control-label" })
                 <div class="col-md-10">
                     @Html.TextBoxFor(m => m.AddressLine2, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.AddressLine2, "", new { @class = "text-danger" })
                 </div>
             </div>
 
@@ -169,6 +217,7 @@
                 @Html.LabelFor(m => m.AddressCity, new { @class = "col-md-2 control-label" })
                 <div class="col-md-10">
                     @Html.TextBoxFor(m => m.AddressCity, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.AddressCity, "", new { @class = "text-danger" })
                 </div>
             </div>
 
@@ -176,6 +225,7 @@
                 @Html.LabelFor(m => m.AddressState, new { @class = "col-md-2 control-label" })
                 <div class="col-md-10">
                     @Html.TextBoxFor(m => m.AddressState, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.AddressState, "", new { @class = "text-danger" })
                 </div>
             </div>
 
@@ -183,6 +233,7 @@
                 @Html.LabelFor(m => m.AddressZipCode, new { @class = "col-md-2 control-label" })
                 <div class="col-md-10">
                     @Html.TextBoxFor(m => m.AddressZipCode, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.AddressZipCode, "", new { @class = "text-danger" })
                 </div>
             </div>
 

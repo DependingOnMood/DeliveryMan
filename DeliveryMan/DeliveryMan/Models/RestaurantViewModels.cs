@@ -9,6 +9,8 @@ namespace DeliveryMan.Models
 {
     public class RestaurantOrdersViewModel
     {
+        public decimal Balance { get; set; }
+
         public IEnumerable<Order> WaitingOrders { get; set; }
 
         public IEnumerable<Order> PendingOrders { get; set; }
@@ -96,5 +98,14 @@ namespace DeliveryMan.Models
         [Required]
         [Display(Name = "Delivery Fee")]
         public decimal DeliveryFee { get; set; }
+    }
+
+    public class RestaurantAddBalanceViewModel
+    {
+        [Required]
+        public int RestaurantId { get; set; }
+
+        [Required]
+        public decimal Balance { get; set; }
     }
 }

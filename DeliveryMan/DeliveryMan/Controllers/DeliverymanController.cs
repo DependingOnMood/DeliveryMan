@@ -25,7 +25,9 @@ namespace DeliveryMan.Controllers
             return (int)q.Role;
         }
 
-        // GET: Deliveryman/
+        private ApplicationDbContext db = new ApplicationDbContext();
+
+        // GET: Deliveryman/FindOrder
         public ActionResult FindOrder()
         {
             if (User.Identity.IsAuthenticated)
@@ -53,7 +55,16 @@ namespace DeliveryMan.Controllers
             }
             else {
                 GoogleMapHelper map = new GoogleMapHelper();
+
+                try
+                {
                 add1 = map.getAddrByLatandLng(model.latlng);
+            }
+                catch (Exception e) {
+
+                    ModelState.AddModelError("location","Pleas input a valid address!");
+                    return View(model);
+                }
             }
 
 
@@ -67,6 +78,7 @@ namespace DeliveryMan.Controllers
 
 
                 var q = (from o in db.orders
+                         from b in db.blacklists
                          where o.Status == Status.WAITING
                          orderby o.DeliveryFee descending
                          select o
@@ -77,7 +89,18 @@ namespace DeliveryMan.Controllers
                     {
                         Contact c = o.Contact;
                         String addr2 = c.AddressLine1 + " " + c.AddressLine2 + " " + c.City + " " + c.State + " " + c.ZipCode;
-                        double dis = helper.ComputeDistanceBetweenAandB(add1, addr2);
+                    double dis = 0;
+                    try
+                    {
+                       dis = helper.ComputeDistanceBetweenAandB(add1, addr2);
+                    } catch (Exception e)
+                    {
+
+                        ModelState.AddModelError("location", "Pleas input a valid address!");
+                    }
+
+
+                    
                         if (helper.selectOrderByDistance(distance, dis))
                         {
                             orders.Add(o);
@@ -196,6 +219,7 @@ namespace DeliveryMan.Controllers
                                                  select o;
             DeliverymanMyOrdersViewModel model = new DeliverymanMyOrdersViewModel()
             {
+                Balance = deli.Balance,
                 pendingOrders = pendingO,
                 inProgressOrders = inProgressO,
                 deliveredOrders = deliveredO,
@@ -230,9 +254,14 @@ namespace DeliveryMan.Controllers
             {
                 throw new Exception("Error");
             }
-            order.Status = Status.WAITING;
             decimal cancellationFee = order.cancellationFee();
+            if ((order.Deliveryman.Balance - cancellationFee).CompareTo(0M) < 0)
+            {
+                //Unable to cancel pickup with insufficient balance
+                return RedirectToAction("MyOrders");
+            }
             order.Deliveryman.Balance -= cancellationFee;
+            order.Status = Status.WAITING;
             order.DeliverymanId = null;
             order.Deliveryman = null;
             db.SaveChanges();
