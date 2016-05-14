@@ -24,8 +24,8 @@
             }
             
         </dd>
-        <br/>
         <dd>
+            <br />
 
             @if (ViewBag.UserType == 0 )
             {
@@ -39,6 +39,16 @@
             }
 
         </dd>
+        <dd>
+            <br />
+            @if (ViewBag.UserType == 1)
+            {
+                <input type="button" value="My Black List" class="btn btn-danger"
+                       onclick="location.href = '@(Url.Action("BlackListView", "Restaurant"))'" />
+            }
+
+        </dd>
+
         @*<dt>External Logins:</dt>
         <dd>
             @Model.Logins.Count [
