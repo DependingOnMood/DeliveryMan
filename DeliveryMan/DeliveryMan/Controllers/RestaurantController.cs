@@ -78,13 +78,16 @@ namespace DeliveryMan.Controllers
 
                 helper = new GoogleMapHelper();
                 String latAndLong = "";
-                try {
+                try
+                {
                     latAndLong = helper.getLatandLngByAddr(totalAddress);
-                } catch (Exception e) {
+                }
+                catch (Exception e)
+                {
                     ModelState.AddModelError("location", "Pleas input a valid address!");
                     return View("CreateOrder", model);
                 }
-              
+
                 contact.Latitude = Decimal.Parse(latAndLong.Split(' ')[0]);
                 contact.Longitude = Decimal.Parse(latAndLong.Split(' ')[1]);
                 db.contacts.Add(contact);
@@ -390,7 +393,8 @@ namespace DeliveryMan.Controllers
                 db.orders.Remove(order);
                 db.SaveChanges();
                 return RedirectToAction("Orders");
-            } else if (order.Status == Status.PENDING || order.Status == Status.INPROGRESS)
+            }
+            else if (order.Status == Status.PENDING || order.Status == Status.INPROGRESS)
             {
                 order.Restaurant.Balance -= model.CancellationFee;
                 order.Deliveryman.Balance += model.CancellationFee;
@@ -484,7 +488,7 @@ namespace DeliveryMan.Controllers
 
                 // update deliveryman ranking
                 var rankedDmans = (from d in db.deliverymen
-                                   where d.TotalDeliveryCount >= 5
+                                   where d.TotalDeliveryCount >= 1
                                    select d).OrderByDescending(x => x.Rating);
 
                 Deliveryman prevDman = new Deliveryman();
@@ -562,8 +566,8 @@ namespace DeliveryMan.Controllers
             return View(models);
         }
 
-        // GET: Restaurant/Blacklist
-        public ActionResult Blacklist(int? id)
+        // GET: Restaurant/AddToBlacklist
+        public ActionResult AddToBlacklist(int? id)
         {
             if (User.Identity.IsAuthenticated)
             {
@@ -616,13 +620,13 @@ namespace DeliveryMan.Controllers
 
             db.SaveChanges();
 
-            return View("Blacklist", blackListVM);
+            return View("AddToBlacklist", blackListVM);
         }
 
-        // POST: Restaurant/Blacklist
+        // POST: Restaurant/AddToBlacklist
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Blacklist(BlackListViewModel model, int? id)
+        public ActionResult AddToBlacklist(BlackListViewModel model, int? id)
         {
             if (User.Identity.IsAuthenticated)
             {
@@ -646,6 +650,37 @@ namespace DeliveryMan.Controllers
 
             IEnumerable<Blacklist> blacklists = (from b in db.blacklists
                                                  where b.RestaurantId == orderDetails.RestaurantId
+                                                 select b);
+
+            int count = blacklists.Count();
+
+            List<BlackListViewModel> blacklistVMs =
+                new List<BlackListViewModel>(new BlackListViewModel[count]);
+
+            for (int i = 0; i < count; i++)
+            {
+                Blacklist blacklist = blacklists.Skip(i).First();
+                Deliveryman deliveryman = db.deliverymen.Find(blacklist.DeliverymanId);
+
+                blacklistVMs[i] = new BlackListViewModel();
+
+                blacklistVMs[i].DeliverymanName = deliveryman.FirstName + " " + deliveryman.LastName;
+                blacklistVMs[i].Rating = deliveryman.Rating;
+            }
+
+            return View("BlacklistView", blacklistVMs);
+        }
+
+        // GET: Restaurant/BlacklistView
+        public ActionResult BlacklistView(BlackListViewModel model)
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.UserType = GetRole();
+            }      
+
+            IEnumerable<Blacklist> blacklists = (from b in db.blacklists
+                                                 where b.Restaurant.Contact.Email == User.Identity.Name
                                                  select b);
 
             int count = blacklists.Count();
