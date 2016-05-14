@@ -113,8 +113,6 @@ namespace DeliveryMan.Models
         [Display(Name = "Zip Code")]
         [DataType(DataType.PostalCode)]
         public string AddressZipCode { get; set; }
-
-        [Required]
         public HttpPostedFileBase file { get; set; }
 
 
