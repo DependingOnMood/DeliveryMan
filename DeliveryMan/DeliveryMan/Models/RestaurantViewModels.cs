@@ -9,6 +9,8 @@ namespace DeliveryMan.Models
 {
     public class RestaurantOrdersViewModel
     {
+        public decimal Balance { get; set; }
+
         public IEnumerable<Order> WaitingOrders { get; set; }
 
         public IEnumerable<Order> PendingOrders { get; set; }

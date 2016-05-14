@@ -57,7 +57,7 @@ namespace DeliveryMan.Controllers
             }
             if (res.Balance.CompareTo(0.00M) < 0)
             {
-                return RedirectToAction("ErrorPage", "Home");
+                throw new ApplicationException("Error");
             }
             Contact contact = (from c in db.contacts
                                where c.PhoneNumber.Equals(model.PhoneNumber)
@@ -166,6 +166,7 @@ namespace DeliveryMan.Controllers
                 WaitingOrders = wo,
                 PendingOrders = po,
                 InProgressOrders = io,
+                Balance = res.Balance,
             };
             return View(rovm);
         }

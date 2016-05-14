@@ -8,6 +8,8 @@ namespace DeliveryMan.Models
 {
     public class DeliverymanMyOrdersViewModel
     {
+        public decimal Balance { get; set; }
+
         public IEnumerable<Order> pendingOrders { get; set; }
 
         public IEnumerable<Order> inProgressOrders { get; set; }
