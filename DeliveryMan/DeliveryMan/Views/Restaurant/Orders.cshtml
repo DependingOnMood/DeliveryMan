@@ -189,12 +189,10 @@
                     @Html.DisplayFor(modelItem => item.DeliveryFee)
                 </td>
                 <td>
-                    @*<input type="button" value="Edit" class="btn btn-danger"
-                           onclick="location.href = '@(Url.Action("EditOrder", "Restaurant", new { id = item.Id }))'" />*@
                     <input type="button" value="Details" class="btn btn-danger"
                            onclick="location.href = '@(Url.Action("OrderDetails", "Restaurant", new { id = item.Id }))'" />
-                    @*<input type="button" value="Cancel" class="btn btn-danger"
-                           onclick="location.href = '@(Url.Action("CancelOrder", "Restaurant", new { id = item.Id }))'" />*@
+                    <input type="button" value="Cancel" class="btn btn-danger"
+                           onclick="location.href = '@(Url.Action("CancelOrder", "Restaurant", new { id = item.Id }))'" />
                 </td>
             </tr>
         }

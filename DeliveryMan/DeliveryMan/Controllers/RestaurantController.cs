@@ -304,54 +304,79 @@ namespace DeliveryMan.Controllers
             {
                 ViewBag.UserType = GetRole();
             }
+            Restaurant res = (from r in db.restaurants
+                              where r.Contact.Email.Equals(User.Identity.Name)
+                              select r).FirstOrDefault();
+            if (res == null)
+            {
+                throw new Exception("Error");
+            }
+            Order order = (from o in db.orders
+                           where o.RestaurantId == res.Id
+                           where o.Id == id
+                           select o).FirstOrDefault();
+            CancelOrderViewModel cancelOrderVM = new CancelOrderViewModel()
+            {
+                OrderId = order.Id,
+                OrderName = order.Note,
+                OrderStatus = order.Status,
+                ETA = order.ETA,
+                PlacedTime = order.PlacedTime,
+                PickUpTime = order.PickUpTime,
+                DeliveryFee = order.DeliveryFee,
+                CancellationFee = Decimal.Parse(order.cancellationFee().ToString("F")),
+            };
 
-            var orderDetails = (from o in db.orders
-                                where o.Restaurant.Contact.Email.Equals(User.Identity.Name)
-                                where o.Id == id
-                                select o).FirstOrDefault();
+            //cancelOrderVM.OrderId = order.Id;
+            //cancelOrderVM.OrderName = order.Note;
+            //cancelOrderVM.OrderStatus = order.Status;
 
-            CancelOrderViewModel cancelOrderVM = new CancelOrderViewModel();
+            //cancelOrderVM.ETA = order.ETA;
+            //cancelOrderVM.PlacedTime = order.PlacedTime;
+            //cancelOrderVM.PickUpTime = order.PickUpTime;
+            //cancelOrderVM.DeliveryFee = order.DeliveryFee;
 
-            cancelOrderVM.OrderId = orderDetails.Id;
-            cancelOrderVM.OrderName = orderDetails.Note;
-            cancelOrderVM.OrderStatus = orderDetails.Status;
-
-            cancelOrderVM.ETA = orderDetails.ETA;
-            cancelOrderVM.PlacedTime = orderDetails.PlacedTime;
-            cancelOrderVM.PickUpTime = orderDetails.PickUpTime;
-            cancelOrderVM.DeliveryFee = orderDetails.DeliveryFee;
-
-            // calculate cancellation fee
-            cancelOrderVM.CancellationFee = RestaurantCancelOrder.cancellationFee(orderDetails);
-
-            return View("CancelOrder", cancelOrderVM);
+            //// calculate cancellation fee
+            //cancelOrderVM.CancellationFee = RestaurantCancelOrder.cancellationFee(order);
+            return View(cancelOrderVM);
         }
 
         // POST: Restaurant/CancelOrder/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CancelOrder(CancelOrderViewModel model, int id)
+        public ActionResult CancelOrder(CancelOrderViewModel model)
         {
             if (User.Identity.IsAuthenticated)
             {
                 ViewBag.UserType = GetRole();
             }
-
-            Order curOrder = (from o in db.orders
-                              where o.Restaurant.Contact.Email == User.Identity.Name
-                              where o.Id == id
-                              select o).FirstOrDefault();
-
-            if (curOrder == null)
+            Restaurant res = (from r in db.restaurants
+                              where r.Contact.Email.Equals(User.Identity.Name)
+                              select r).FirstOrDefault();
+            if (res == null)
+            {
+                throw new Exception("Error");
+            }
+            Order order = (from o in db.orders
+                           where o.RestaurantId == res.Id
+                           where o.Id == model.OrderId
+                           select o).FirstOrDefault();
+            if (order == null)
             {
                 throw new Exception("Error");
             }
 
-            if (curOrder.Status != Status.DELIVERED)
+            if (order.Status == Status.WAITING)
             {
-                db.orders.Remove(curOrder);
+                db.orders.Remove(order);
                 db.SaveChanges();
-
+                return RedirectToAction("Orders");
+            } else if (order.Status == Status.PENDING || order.Status == Status.INPROGRESS)
+            {
+                order.Restaurant.Balance -= model.CancellationFee;
+                order.Deliveryman.Balance += model.CancellationFee;
+                db.orders.Remove(order);
+                db.SaveChanges();
                 return RedirectToAction("Orders");
             }
             else
