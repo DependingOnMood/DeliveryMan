@@ -15,9 +15,6 @@ namespace DeliveryMan.Models
         public string LastName { get; set; }
 
         [Required]
-        public string PhoneNumber { get; set; }
-
-        [Required]
         public string AddressLine1 { get; set; }
 
         public string AddressLine2 { get; set; }
@@ -31,5 +28,8 @@ namespace DeliveryMan.Models
         [Required]
         [DataType(DataType.PostalCode)]
         public string ZipCode { get; set; }
+
+
+        public HttpPostedFileBase file { get; set; }
     }
 }

@@ -9,6 +9,8 @@ using System.Web.Mvc;
 using DataLayer;
 using BizLogic;
 using DeliveryMan.Models;
+using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace DeliveryMan.Controllers
 {
@@ -861,12 +863,14 @@ namespace DeliveryMan.Controllers
             ChangeRestaurantInfoModel model = new ChangeRestaurantInfoModel()
             {
                 Name = res.Name,
-                PhoneNumber = res.Contact.PhoneNumber,
+               
                 AddressLine1 = res.Contact.AddressLine1,
                 AddressLine2 = res.Contact.AddressLine2,
                 City = res.Contact.City,
                 State = res.Contact.State,
                 ZipCode = res.Contact.ZipCode,
+               
+
             };
 
             return View(model);
@@ -877,7 +881,7 @@ namespace DeliveryMan.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ChangeRestaurantUserInfo([Bind(Include = "Name, PhoneNumber, AddressLine1, AddressLine2, City, State, ZipCode")]
+        public ActionResult ChangeRestaurantUserInfo([Bind(Include = "Name, PhoneNumber, AddressLine1, AddressLine2, City, State, ZipCode, file")]
             ChangeRestaurantInfoModel model)
         {
             if (User.Identity.IsAuthenticated)
@@ -885,14 +889,6 @@ namespace DeliveryMan.Controllers
                 ViewBag.UserType = GetRole();
             }
 
-            Restaurant val = (from r in db.restaurants
-                              where r.Contact.Email != User.Identity.Name
-                              where r.Contact.PhoneNumber == model.PhoneNumber
-                              select r).FirstOrDefault();
-            if (val != null)
-            {
-                throw new Exception("Phone number already exists error");
-            }
 
             Restaurant res = (from r in db.restaurants
                               where r.Contact.Email.Equals(User.Identity.Name)
@@ -902,12 +898,22 @@ namespace DeliveryMan.Controllers
                 throw new Exception("Error");
             }
             res.Name = model.Name;
-            res.Contact.PhoneNumber = model.PhoneNumber;
+            
+
+
             res.Contact.AddressLine1 = model.AddressLine1;
             res.Contact.AddressLine2 = model.AddressLine2;
             res.Contact.City = model.City;
             res.Contact.State = model.State;
             res.Contact.ZipCode = model.ZipCode;
+            if (model.file != null)
+            {
+              String  fileUrl = HttpContext.Server.MapPath("~/Content/UserIcon/")
+                                                    + res.Contact.Email + ".png";
+                Bitmap b = (Bitmap)Bitmap.FromStream(model.file.InputStream);
+                b.Save(fileUrl, ImageFormat.Png);
+                res.IconImageUrl = res.Contact.Email + ".png";
+            }
             db.SaveChanges();
             return RedirectToAction("Index", "Manage");
         }

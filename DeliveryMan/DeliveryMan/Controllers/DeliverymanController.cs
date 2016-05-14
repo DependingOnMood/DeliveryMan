@@ -9,6 +9,8 @@ using System.Web.Mvc;
 using DataLayer;
 using DeliveryMan.Models;
 using BizLogic;
+using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace DeliveryMan.Controllers
 {
@@ -300,9 +302,7 @@ namespace DeliveryMan.Controllers
             Order order = db.orders.Find(model.OrderId);
             if ((order.Deliveryman.Balance - model.CancellationFee).CompareTo(0M) < 0)
             {
-                //ViewBag.Message = "You have insufficient balance to cancel!";
-                ModelState.AddModelError("CancellationFee", "You have insufficient balance to cancel!");
-                return View("CancelPickup", model);
+                return View(model);
             }
             else
             {
@@ -322,34 +322,27 @@ namespace DeliveryMan.Controllers
             {
                 ViewBag.UserType = GetRole();
             }
-
             Deliveryman deliveryman = (from dm in db.deliverymen
                                        where dm.Contact.Email.Equals(User.Identity.Name)
                                        select dm).FirstOrDefault();
-
             if (deliveryman == null)
             {
                 throw new Exception("Error");
             }
-
             Order order = (from o in db.orders
                            where o.Id == id
                            where o.Status == Status.INPROGRESS
                            where o.DeliverymanId == deliveryman.Id
                            select o).FirstOrDefault();
-
             if (order == null)
             {
                 throw new Exception("Error");
             }
-
             order.Status = Status.DELIVERED;
             order.DeliveredTime = DateTime.Now;
             order.Deliveryman.Balance += order.DeliveryFee;
             order.Restaurant.Balance -= order.DeliveryFee;
-
             db.SaveChanges();
-
             return RedirectToAction("MyOrders");
         }
 
@@ -402,7 +395,6 @@ namespace DeliveryMan.Controllers
             {
                 FirstName = del.FirstName,
                 LastName = del.LastName,
-                PhoneNumber = del.Contact.PhoneNumber,
                 AddressLine1 = del.Contact.AddressLine1,
                 AddressLine2 = del.Contact.AddressLine2,
                 City = del.Contact.City,
@@ -417,7 +409,7 @@ namespace DeliveryMan.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ChangeDeliverymanUserInfo([Bind(Include = "FirstName, LastName, PhoneNumber, AddressLine1, AddressLine2, City, State, ZipCode")]
+        public ActionResult ChangeDeliverymanUserInfo([Bind(Include = "FirstName, LastName, AddressLine1, AddressLine2, City, State, ZipCode, file")]
             ChangeDeliverymanInfoModel model)
         {
             if (User.Identity.IsAuthenticated)
@@ -425,36 +417,35 @@ namespace DeliveryMan.Controllers
                 ViewBag.UserType = GetRole();
             }
 
-            Deliveryman val = (from d in db.deliverymen
-                               where d.Contact.Email != User.Identity.Name
-                               where d.Contact.PhoneNumber == model.PhoneNumber
-                               select d).FirstOrDefault();
-
-            if (val != null)
-            {
-                throw new Exception("Phone number already exists error");
-            }
+           
 
             Deliveryman del = (from d in db.deliverymen
                                where d.Contact.Email.Equals(User.Identity.Name)
                                select d).FirstOrDefault();
-
             if (del == null)
             {
                 throw new Exception("Error");
             }
+            
+
 
             del.FirstName = model.FirstName;
             del.LastName = model.LastName;
-            del.Contact.PhoneNumber = model.PhoneNumber;
+
             del.Contact.AddressLine1 = model.AddressLine1;
-            del.Contact.AddressLine2 = model.AddressLine2;
-            del.Contact.City = model.City;
-            del.Contact.State = model.State;
-            del.Contact.ZipCode = model.ZipCode;
-
+            del.Contact.AddressLine1 = model.AddressLine2;
+            del.Contact.AddressLine1 = model.City;
+            del.Contact.AddressLine1 = model.State;
+            del.Contact.AddressLine1 = model.ZipCode;
+            if (model.file != null)
+            {
+                String fileUrl = HttpContext.Server.MapPath("~/Content/UserIcon/")
+                                                      + del.Contact.Email + ".png";
+                Bitmap b = (Bitmap)Bitmap.FromStream(model.file.InputStream);
+                b.Save(fileUrl, ImageFormat.Png);
+                del.IconImageUrl = del.Contact.Email + ".png";
+            }
             db.SaveChanges();
-
             return RedirectToAction("Index", "Manage");
         }
 
