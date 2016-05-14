@@ -11,11 +11,11 @@
 <body>
     <br />
     <div>
-        <div class="mybutton">
-            <input type="button" value="Create A New Order" class="btn btn-danger"
-                   onclick="location.href = '@(Url.Action("CreateOrder", "Restaurant"))'" />
-            <input type="button" value="View Order History" class="btn btn-danger"
-                   onclick="location.href = '@(Url.Action("OrdersHistory", "Restaurant"))'" />
+        <div>
+        <input type="button" value="Create A New Order" class="btn btn-danger"
+               onclick="location.href = '@(Url.Action("CreateOrder", "Restaurant"))'" />
+        <input type="button" value="View Order History" class="btn btn-danger"
+               onclick="location.href = '@(Url.Action("OrdersHistory", "Restaurant"))'" />
             </div>
                 <div class="balance">
                     <input type="button" value="Balance" class="btn btn-danger"
@@ -46,6 +46,7 @@
             <th>
                 DeliveryFee
             </th>
+            <th></th>
         </tr>
 
         <tr>
@@ -121,7 +122,8 @@
                         if (item.Deliveryman != null)
                         {
                             string res = item.Deliveryman.getName();
-                            @res
+                            <a href="@(Url.Action("DeliverymanDetails", "Restaurant", new { Id = item.Id }))">@res</a>
+                          
                         }
                     }
                 </td>

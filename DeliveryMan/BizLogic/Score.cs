@@ -19,9 +19,11 @@ namespace BizLogic
             /// <param name="the deliveryman in question"></param>
             /// <param name=" his/her current review rating from restaurant"></param>
             /// <returns>new score</returns>
+
             int oldScore = review.Order.Deliveryman.Ranking;
             int newScore = oldScore;
             int curScore = 0;
+
             switch (review.Rating)
             {
                 case 1:
@@ -40,14 +42,17 @@ namespace BizLogic
                     curScore = 0;
                     break;
             }
+
             if (oldScore == 0)
             { // meaning this is the deliveryman's first review
                 newScore = 1500 + curScore;
             }
+
             else
             { // calculate new score
                 newScore = oldScore + curScore;
             }
+
             return newScore;
         }
     }

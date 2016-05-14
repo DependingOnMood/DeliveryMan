@@ -13,6 +13,12 @@
         <hr />
         <dl class="dl-horizontal">
             <dt>
+                @Html.Label("Icon")
+            </dt>
+            <dd>
+                <img src="~/Content/UserIcon/@Model.IconImageUrl" style="width: 150px; height:150px">
+            </dd>
+            <dt>
                 @Html.DisplayNameFor(model => model.Contact.Email)
             </dt>
     
@@ -62,7 +68,7 @@
         </dl>
     </div>
     <p>
-        @Html.ActionLink("Back to orders", "Orders")
+        @Html.ActionLink("Back to orders", "Orders", new { @class ="btn btn-danger"})
     </p>
 </body>
 </html>
