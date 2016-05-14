@@ -500,6 +500,7 @@ namespace DeliveryMan.Controllers
 
                 // calculate cumulative rating
                 Deliveryman deliveryman = db.deliverymen.Find(order.DeliverymanId);
+
                 decimal rating = ReviewRating.calculateRating(deliveryman, newReview.Rating);
 
                 // update deliveryman table
