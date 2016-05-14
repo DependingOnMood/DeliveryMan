@@ -78,13 +78,16 @@ namespace DeliveryMan.Controllers
 
                 helper = new GoogleMapHelper();
                 String latAndLong = "";
-                try {
+                try
+                {
                     latAndLong = helper.getLatandLngByAddr(totalAddress);
-                } catch (Exception e) {
+                }
+                catch (Exception e)
+                {
                     ModelState.AddModelError("location", "Pleas input a valid address!");
                     return View("CreateOrder", model);
                 }
-              
+
                 contact.Latitude = Decimal.Parse(latAndLong.Split(' ')[0]);
                 contact.Longitude = Decimal.Parse(latAndLong.Split(' ')[1]);
                 db.contacts.Add(contact);
@@ -161,10 +164,12 @@ namespace DeliveryMan.Controllers
             Restaurant res = (from r in db.restaurants
                               where r.Contact.Email.Equals(User.Identity.Name)
                               select r).FirstOrDefault();
+
             if (res == null)
             {
                 throw new Exception("Error");
             }
+
             IEnumerable<Order> wo = from o in db.orders
                                     where o.RestaurantId == res.Id
                                     where o.Status == Status.WAITING
@@ -180,6 +185,7 @@ namespace DeliveryMan.Controllers
                                     where o.Status == Status.INPROGRESS
                                     orderby o.PlacedTime descending
                                     select o;
+
             RestaurantOrdersViewModel rovm = new RestaurantOrdersViewModel()
             {
                 WaitingOrders = wo,
@@ -187,6 +193,7 @@ namespace DeliveryMan.Controllers
                 InProgressOrders = io,
                 Balance = res.Balance,
             };
+
             return View(rovm);
         }
 
@@ -197,22 +204,27 @@ namespace DeliveryMan.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             Restaurant res = (from r in db.restaurants
                               where r.Contact.Email.Equals(User.Identity.Name)
                               select r).FirstOrDefault();
+
             if (res == null)
             {
                 return HttpNotFound();
             }
+
             Order order = (from o in db.orders
                            where o.RestaurantId == res.Id
                            where o.Id == id
                            where o.Status == Status.PENDING
                            select o).FirstOrDefault();
+
             if (order == null)
             {
                 return HttpNotFound();
             }
+
             order.Status = Status.INPROGRESS;
             db.SaveChanges();
             return RedirectToAction("Orders");
@@ -225,21 +237,26 @@ namespace DeliveryMan.Controllers
             {
                 ViewBag.UserType = GetRole();
             }
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             Restaurant res = (from r in db.restaurants
                               where r.Contact.Email.Equals(User.Identity.Name)
                               select r).FirstOrDefault();
+
             if (res == null)
             {
                 throw new Exception("Error");
             }
+
             Order order = (from o in db.orders
                            where o.RestaurantId == res.Id
                            where o.Id == id
                            select o).FirstOrDefault();
+
             if (order == null)
             {
                 throw new Exception("Error");
@@ -260,17 +277,21 @@ namespace DeliveryMan.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             Restaurant res = (from r in db.restaurants
                               where r.Contact.Email.Equals(User.Identity.Name)
                               select r).FirstOrDefault();
+
             if (res == null)
             {
                 throw new Exception("Error");
             }
+
             Order order = (from o in db.orders
                            where o.RestaurantId == res.Id
                            where o.Id == id
                            select o).FirstOrDefault();
+
             RestaurantEditOrderViewModel model = new RestaurantEditOrderViewModel()
             {
                 OrderId = order.Id,
@@ -280,6 +301,7 @@ namespace DeliveryMan.Controllers
                 State = order.Contact.State,
                 ZipCode = order.Contact.ZipCode,
             };
+
             return View(model);
         }
 
@@ -345,25 +367,14 @@ namespace DeliveryMan.Controllers
                 DeliveryFee = order.DeliveryFee,
                 CancellationFee = Decimal.Parse(order.cancellationFee().ToString("F")),
             };
-
-            //cancelOrderVM.OrderId = order.Id;
-            //cancelOrderVM.OrderName = order.Note;
-            //cancelOrderVM.OrderStatus = order.Status;
-
-            //cancelOrderVM.ETA = order.ETA;
-            //cancelOrderVM.PlacedTime = order.PlacedTime;
-            //cancelOrderVM.PickUpTime = order.PickUpTime;
-            //cancelOrderVM.DeliveryFee = order.DeliveryFee;
-
-            //// calculate cancellation fee
-            //cancelOrderVM.CancellationFee = RestaurantCancelOrder.cancellationFee(order);
             return View(cancelOrderVM);
         }
 
         // POST: Restaurant/CancelOrder/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CancelOrder(CancelOrderViewModel model)
+        public ActionResult CancelOrder([Bind(Include = "OrderId, OrderName, OrderStatus, ETA, PlacedTime, PickUpTime, DeliveryFee, CancellationFee")]
+            CancelOrderViewModel model)
         {
             if (User.Identity.IsAuthenticated)
             {
@@ -390,7 +401,8 @@ namespace DeliveryMan.Controllers
                 db.orders.Remove(order);
                 db.SaveChanges();
                 return RedirectToAction("Orders");
-            } else if (order.Status == Status.PENDING || order.Status == Status.INPROGRESS)
+            }
+            else if (order.Status == Status.PENDING || order.Status == Status.INPROGRESS)
             {
                 order.Restaurant.Balance -= model.CancellationFee;
                 order.Deliveryman.Balance += model.CancellationFee;
@@ -484,7 +496,7 @@ namespace DeliveryMan.Controllers
 
                 // update deliveryman ranking
                 var rankedDmans = (from d in db.deliverymen
-                                   where d.TotalDeliveryCount >= 5
+                                   where d.TotalDeliveryCount >= 1
                                    select d).OrderByDescending(x => x.Rating);
 
                 Deliveryman prevDman = new Deliveryman();
@@ -562,8 +574,8 @@ namespace DeliveryMan.Controllers
             return View(models);
         }
 
-        // GET: Restaurant/Blacklist
-        public ActionResult Blacklist(int? id)
+        // GET: Restaurant/AddToBlacklist
+        public ActionResult AddToBlacklist(int? id)
         {
             if (User.Identity.IsAuthenticated)
             {
@@ -616,13 +628,13 @@ namespace DeliveryMan.Controllers
 
             db.SaveChanges();
 
-            return View("Blacklist", blackListVM);
+            return View("AddToBlacklist", blackListVM);
         }
 
-        // POST: Restaurant/Blacklist
+        // POST: Restaurant/AddToBlacklist
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Blacklist(BlackListViewModel model, int? id)
+        public ActionResult AddToBlacklist(BlackListViewModel model, int? id)
         {
             if (User.Identity.IsAuthenticated)
             {
@@ -667,6 +679,37 @@ namespace DeliveryMan.Controllers
             return View("BlacklistView", blacklistVMs);
         }
 
+        // GET: Restaurant/BlacklistView
+        public ActionResult BlacklistView()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.UserType = GetRole();
+            }      
+
+            IEnumerable<Blacklist> blacklists = (from b in db.blacklists
+                                                 where b.Restaurant.Contact.Email == User.Identity.Name
+                                                 select b);
+
+            int count = blacklists.Count();
+
+            List<BlackListViewModel> blacklistVMs =
+                new List<BlackListViewModel>(new BlackListViewModel[count]);
+
+            for (int i = 0; i < count; i++)
+            {
+                Blacklist blacklist = blacklists.Skip(i).First();
+                Deliveryman deliveryman = db.deliverymen.Find(blacklist.DeliverymanId);
+
+                blacklistVMs[i] = new BlackListViewModel();
+
+                blacklistVMs[i].DeliverymanName = deliveryman.FirstName + " " + deliveryman.LastName;
+                blacklistVMs[i].Rating = deliveryman.Rating;
+            }
+
+            return View("BlacklistView", blacklistVMs);
+        }
+
         // GET: Restaurant/DeliverymanDetails/5
         public ActionResult DeliverymanDetails(int? id)
         {
@@ -674,37 +717,28 @@ namespace DeliveryMan.Controllers
             {
                 ViewBag.UserType = GetRole();
             }
-
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             Restaurant res = (from r in db.restaurants
                               where r.Contact.Email.Equals(User.Identity.Name)
                               select r).FirstOrDefault();
+
             if (res == null)
             {
                 throw new Exception("Error");
             }
-            Deliveryman deliveryman = (from dm in db.deliverymen
-                                       where dm.Id == id
-                                       select dm).FirstOrDefault();
-            if (deliveryman == null)
-            {
-                throw new Exception("Error");
-            }
             Order order = (from o in db.orders
-                           where o.DeliverymanId == deliveryman.Id
+                           where o.Id == id
                            where o.RestaurantId == res.Id
                            select o).FirstOrDefault();
-            if (order != null)
-            {
-                return View(deliveryman);
-            }
-            else
+            if (order == null)
             {
                 throw new Exception("Error");
             }
+            return View(order.Deliveryman);
         }
 
         // GET: Restaurant/AddBalance
@@ -718,15 +752,18 @@ namespace DeliveryMan.Controllers
             Restaurant res = (from r in db.restaurants
                               where r.Contact.Email.Equals(User.Identity.Name)
                               select r).FirstOrDefault();
+
             if (res == null)
             {
                 throw new Exception("Error");
             }
+
             RestaurantAddBalanceViewModel model = new RestaurantAddBalanceViewModel()
             {
                 RestaurantId = res.Id,
                 Balance = res.Balance,
             };
+
             return View(model);
         }
 
@@ -737,12 +774,16 @@ namespace DeliveryMan.Controllers
             Restaurant res = (from r in db.restaurants
                               where model.RestaurantId == r.Id
                               select r).FirstOrDefault();
+
             if (res == null)
             {
                 throw new Exception("Error");
             }
+
             res.Balance = model.Balance;
+
             db.SaveChanges();
+
             return RedirectToAction("Orders");
         }
 
@@ -757,6 +798,7 @@ namespace DeliveryMan.Controllers
             Restaurant res = (from r in db.restaurants
                               where r.Contact.Email == User.Identity.Name
                               select r).FirstOrDefault();
+
             if (res == null)
             {
                 throw new Exception("Error");
@@ -772,6 +814,7 @@ namespace DeliveryMan.Controllers
                 State = res.Contact.State,
                 ZipCode = res.Contact.ZipCode,
             };
+
             return View(model);
         }
 

@@ -84,7 +84,7 @@
                 @if (!Model.Blacklist)
                 {
                     <input type="button" value="Add to Blacklist" class="btn btn-danger"
-                           onclick="location.href = '@(Url.Action("Blacklist", "Restaurant", new { id = Model.OrderId }))'" />
+                           onclick="location.href = '@(Url.Action("AddToBlacklist", "Restaurant", new { id = Model.OrderId }))'" />
                 }
             </div>
         </div>
