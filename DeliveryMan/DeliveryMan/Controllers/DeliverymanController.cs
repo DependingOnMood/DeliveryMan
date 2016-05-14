@@ -76,7 +76,6 @@ namespace DeliveryMan.Controllers
 
 
                 var q = (from o in db.orders
-                         from b in db.blacklists
                          where o.Status == Status.WAITING
                          orderby o.DeliveryFee descending
                          select o
