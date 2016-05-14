@@ -87,12 +87,25 @@ function findMyLocation() {
 <table border="0" cellpadding="0" cellspacing="3">
     <tr>
         <td colspan="2">
+            
+           
             Source:
-            <input type="button" value="Get Current Location" onclick="findMyLocation()"/>
             <input type="text" id="txtSource" value="@ViewBag.source" style="width: 50%">
             &nbsp; Destination:
             <input type="text" id="txtDestination" value="@ViewBag.desti" style="width: 50%">
             
+         
+           
+        </td>
+        
+    </tr>
+
+    <tr>
+        <td>
+        <input type="button" value="Get Current Location" onclick="findMyLocation()" class="btn btn-default" />
+            </td>
+
+        <td>
             <b>Mode of Travel: </b>
             <select id="mode">
                 <option value="DRIVING">Driving</option>
@@ -100,7 +113,11 @@ function findMyLocation() {
                 <option value="BICYCLING">Bicycling</option>
                 <option value="TRANSIT">Transit</option>
             </select>
-            <input type="button" value="Get Route" onclick="GetRoute()"/>
+        </td>
+        </tr>
+    <tr>
+        <td>
+            <input type="button" value="Get Route" onclick="GetRoute()" class="btn btn-danger" />
         </td>
     </tr>
     <tr>

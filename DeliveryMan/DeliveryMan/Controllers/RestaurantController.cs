@@ -57,7 +57,9 @@ namespace DeliveryMan.Controllers
             }
             if (res.Balance.CompareTo(0.00M) < 0)
             {
-                throw new ApplicationException("Error");
+                // throw new ApplicationException("Error");
+                ModelState.AddModelError("Balance", "Your balance is less than 0.");
+                return View("Order",model);
             }
             Contact contact = (from c in db.contacts
                                where c.PhoneNumber.Equals(model.PhoneNumber)
@@ -85,7 +87,7 @@ namespace DeliveryMan.Controllers
                 catch (Exception e)
                 {
                     ModelState.AddModelError("location", "Pleas input a valid address!");
-                    return View("CreateOrder", model);
+                    return View("CreateOrder", new RestaurantCreateOrderViewModel());
                 }
 
                 contact.Latitude = Decimal.Parse(latAndLong.Split(' ')[0]);
