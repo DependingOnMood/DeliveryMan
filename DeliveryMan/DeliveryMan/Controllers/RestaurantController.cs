@@ -371,6 +371,18 @@ namespace DeliveryMan.Controllers
                 DeliveryFee = order.DeliveryFee,
                 CancellationFee = Decimal.Parse(order.cancellationFee().ToString("F")),
             };
+
+            //cancelOrderVM.OrderId = order.Id;
+            //cancelOrderVM.OrderName = order.Note;
+            //cancelOrderVM.OrderStatus = order.Status;
+
+            //cancelOrderVM.ETA = order.ETA;
+            //cancelOrderVM.PlacedTime = order.PlacedTime;
+            //cancelOrderVM.PickUpTime = order.PickUpTime;
+            //cancelOrderVM.DeliveryFee = order.DeliveryFee;
+
+            //// calculate cancellation fee
+            //cancelOrderVM.CancellationFee = RestaurantCancelOrder.cancellationFee(order);
             return View(cancelOrderVM);
         }
 
@@ -560,6 +572,7 @@ namespace DeliveryMan.Controllers
         }
 
         // GET: Restaurant/AddToBlacklist
+        // add a deliveryman to blacklist
         public ActionResult AddToBlacklist(int? id)
         {
             if (User.Identity.IsAuthenticated)
@@ -659,19 +672,67 @@ namespace DeliveryMan.Controllers
 
                 blacklistVMs[i].DeliverymanName = deliveryman.FirstName + " " + deliveryman.LastName;
                 blacklistVMs[i].Rating = deliveryman.Rating;
+
+                blacklistVMs[i].DeliverymanId = deliveryman.Id;
             }
 
             return View("BlacklistView", blacklistVMs);
         }
 
         // GET: Restaurant/BlacklistView
+        // display all deliverymen thats in your blacklist
         public ActionResult BlacklistView()
         {
             if (User.Identity.IsAuthenticated)
             {
                 ViewBag.UserType = GetRole();
-            }      
+            }
 
+            IEnumerable<Blacklist> blacklists = (from b in db.blacklists
+                                                 where b.Restaurant.Contact.Email == User.Identity.Name
+                                                 select b);
+
+            int count = blacklists.Count();
+
+            List<BlackListViewModel> blacklistVMs =
+                new List<BlackListViewModel>(new BlackListViewModel[count]);
+
+            for (int i = 0; i < count; i++)
+            {
+                Blacklist blacklist = blacklists.Skip(i).First();
+                Deliveryman deliveryman = db.deliverymen.Find(blacklist.DeliverymanId);
+
+                blacklistVMs[i] = new BlackListViewModel();
+
+                blacklistVMs[i].DeliverymanName = deliveryman.FirstName + " " + deliveryman.LastName;
+                blacklistVMs[i].Rating = deliveryman.Rating;
+
+                blacklistVMs[i].DeliverymanId = deliveryman.Id;
+            }
+
+            return View("BlacklistView", blacklistVMs);
+        }
+
+        // GET: Restaurant/DeleteFromBlacklist
+        // remove deliveryman from your blacklist
+        public ActionResult DeleteFromBlacklist(int? id)
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.UserType = GetRole();
+            }
+
+            // remove deliveryman from blacklist
+            Blacklist reverseBlacklist = (from b in db.blacklists
+                                          where b.Restaurant.Contact.Email == User.Identity.Name
+                                          where b.DeliverymanId == id
+                                          select b).FirstOrDefault();
+
+            db.blacklists.Remove(reverseBlacklist);
+
+            db.SaveChanges();
+
+            // return new blacklist view
             IEnumerable<Blacklist> blacklists = (from b in db.blacklists
                                                  where b.Restaurant.Contact.Email == User.Identity.Name
                                                  select b);
@@ -692,7 +753,7 @@ namespace DeliveryMan.Controllers
                 blacklistVMs[i].Rating = deliveryman.Rating;
             }
 
-            return View("BlacklistView", blacklistVMs);
+            return RedirectToAction("BlacklistView");
         }
 
         // GET: Restaurant/DeliverymanDetails/5

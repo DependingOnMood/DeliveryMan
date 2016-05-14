@@ -11,6 +11,9 @@ using Microsoft.Owin.Security;
 using DeliveryMan.Models;
 using DataLayer;
 using System.Security.Policy;
+using System.Drawing;
+using System.IO;
+using System.Drawing.Imaging;
 
 namespace DeliveryMan.Controllers
 {
@@ -155,30 +158,39 @@ namespace DeliveryMan.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var result = await UserManager.CreateAsync(user, model.Password);
+    
+         
+                String fileUrl = "";
                 var c = (from pc in db.contacts
                          where pc.PhoneNumber == model.PhoneNumber
                          select pc).FirstOrDefault();
                 if (c != null)
                 {
                     ModelState.AddModelError("PhoneNumber", "PhoneNumber exists.");
-                    return View(model);
+                    return View("Register", model);
                 }
 
                 if ((model.FirstName == null || model.LastName == null) && model.RestaurantName == null) {
                     ModelState.AddModelError("FirstName", "FirstName and LastName is required.");
-                    return View(model);
+                    return View("Register", model);
                 }
 
                 if (model.RestaurantName == null && (model.FirstName == null || model.LastName ==null))
                 {
                     ModelState.AddModelError("Restaurant", "Restaurant Name is required.");
-                    return View(model);
+                    return View("Register", model);
                 }
 
-
-
+                if (file != null)
+                {
+                     fileUrl = HttpContext.Server.MapPath("~/Content/UserIcon/")
+                                                         + model.Email + ".png";
+                    Bitmap b = (Bitmap)Bitmap.FromStream(file.InputStream);
+                    b.Save(fileUrl, ImageFormat.Png);
+                    
+                }
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
 
@@ -187,10 +199,6 @@ namespace DeliveryMan.Controllers
                     // add user to database
                     Contact newContact = new Contact();
                  
-
-
-
-
                     // add to contact table
                     newContact.PhoneNumber = model.PhoneNumber;
                     newContact.Email = model.Email;
@@ -206,14 +214,14 @@ namespace DeliveryMan.Controllers
                         
                         // add to deliveryman table 
                         Deliveryman newDeliveryman = new Deliveryman();
-                        if (file != null)
+                        if (fileUrl == "")
                         {
-                            String fileUrl = HttpContext.Server.MapPath("~/Content/UserIcon/")
-                                                                  + model.Email + file.FileName;
-                            file.SaveAs(fileUrl);
-
-                            newDeliveryman.IconImageUrl = fileUrl;
+                            newDeliveryman.IconImageUrl = "~/Content/Img/errorlogo.png";
                         }
+                        else {
+                            newDeliveryman.IconImageUrl = model.Email + ".png";
+                        }
+                       
 
                         newDeliveryman.FirstName = model.FirstName;
                         newDeliveryman.LastName = model.LastName;
@@ -228,13 +236,16 @@ namespace DeliveryMan.Controllers
 
                         // add to restaurant table 
                         Restaurant newRestaurant = new Restaurant();
-                        if (file != null)
+
+                        if (fileUrl == "")
                         {
-                            String fileUrl = HttpContext.Server.MapPath("~/Content/UserIcon/")
-                                                                        + model.Email + file.FileName;
-                            file.SaveAs(fileUrl);
-                            newRestaurant.IconImageUrl = fileUrl;
+                            newRestaurant.IconImageUrl = "~/Content/Img/errorlogo.png";
                         }
+                        else {
+                            newRestaurant.IconImageUrl = model.Email + ".png";
+                        }
+                    
+                        
                 
 
                         newRestaurant.Name = model.RestaurantName;
@@ -256,11 +267,13 @@ namespace DeliveryMan.Controllers
                     return RedirectToAction("Index", "Home");
                 }
 
-                AddErrors(result);
+                // AddErrors(result);
+                ModelState.AddModelError("Email", "Email exists.");
+                return View("Register", model);
             }
 
             // If we got this far, something failed, redisplay form
-            return View(model);
+            return View("Register", model);
         }
 
         //
