@@ -58,8 +58,8 @@ namespace DeliveryMan.Controllers
             if (res.Balance.CompareTo(0.00M) < 0)
             {
                 // throw new ApplicationException("Error");
-                ModelState.AddModelError("Balance", "Your balance is less than 0.");
-                return View("Order", model);
+                ModelState.AddModelError("OrderFee", "Your balance is less than 0.");
+                return View("CreateOrder", model);
             }
             Contact contact = (from c in db.contacts
                                where c.PhoneNumber.Equals(model.PhoneNumber)
