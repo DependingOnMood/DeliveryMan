@@ -13,25 +13,14 @@
         @Html.AntiForgeryToken()
 
         <div class="form-horizontal">
-            <h4>Deliveryman</h4>
+            <h4>Restaurant</h4>
             <hr />
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-            @Html.HiddenFor(model => model.PhoneNumber)
-
-
             <div class="form-group">
                 @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
                     @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.PhoneNumber, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
                 </div>
             </div>
 
@@ -74,7 +63,19 @@
                     @Html.ValidationMessageFor(model => model.ZipCode, "", new { @class = "text-danger" })
                 </div>
             </div>
+            <fieldset class="form-group">
+                <div class="editor-label">
+                    @Html.Label("Icon Image", new { @class = "col-md-2 control-label" })
+                </div>
+                <div class="col-md-10">
+                    <div class="editor-field">
+                        <input id="ImagePath" title="Upload a product image"
+                               type="file" name="file" class="btn btn-danger" />
 
+                    </div>
+                </div>
+
+            </fieldset>
 
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
