@@ -1,4 +1,12 @@
 ﻿.balance{
     margin-top:10px;
     margin-bottom:10px;
+    display:inline;
+    float: right;
+}
+.mybutton{
+    margin-top:10px;
+    margin-bottom:10px;
+    display:inline;
+    float: left;
 }
