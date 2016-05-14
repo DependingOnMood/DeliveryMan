@@ -214,8 +214,15 @@ namespace DeliveryMan.Controllers
                         
                         // add to deliveryman table 
                         Deliveryman newDeliveryman = new Deliveryman();
-                      
-                        newDeliveryman.IconImageUrl = model.Email + ".png";
+                        if (fileUrl == "")
+                        {
+                            newDeliveryman.IconImageUrl = "~/Content/Img/errorlogo.png";
+                        }
+                        else {
+                            newDeliveryman.IconImageUrl = model.Email + ".png";
+                        }
+                       
+
                         newDeliveryman.FirstName = model.FirstName;
                         newDeliveryman.LastName = model.LastName;
                         newDeliveryman.ContactId = newContact.PhoneNumber;
@@ -229,7 +236,15 @@ namespace DeliveryMan.Controllers
 
                         // add to restaurant table 
                         Restaurant newRestaurant = new Restaurant();
-                        newRestaurant.IconImageUrl = model.Email + ".png";
+
+                        if (fileUrl == "")
+                        {
+                            newRestaurant.IconImageUrl = "~/Content/Img/errorlogo.png";
+                        }
+                        else {
+                            newRestaurant.IconImageUrl = model.Email + ".png";
+                        }
+                    
                         
                 
 
