@@ -11,7 +11,6 @@
     <hr />
     <dl class="dl-horizontal">
         <dd>
-            <Strong>Password: </Strong>
 
             @if (Model.HasPassword)
             {
@@ -24,6 +23,21 @@
                        onclick="location.href = '@(Url.Action("SetPassword", "Manage"))'" />
             }
             
+        </dd>
+        <br/>
+        <dd>
+
+            @if (ViewBag.UserType == 0 )
+            {
+                <input type="button" value="Change My Contact Info" class="btn btn-danger"
+                       onclick="location.href = '@(Url.Action("ChangeDeliverymanUserInfo", "Deliveryman"))'" />
+            }
+            else if (ViewBag.UserType == 1)
+            {
+                <input type="button" value="Change My Contact Info" class="btn btn-danger"
+                       onclick="location.href = '@(Url.Action("ChangeRestaurantUserInfo", "Restaurant"))'" />
+            }
+
         </dd>
         @*<dt>External Logins:</dt>
         <dd>

@@ -1,22 +1,39 @@
-﻿@model DeliveryMan.Models.RestaurantEditOrderViewModel
+﻿@model DeliveryMan.Models.ChangeRestaurantInfoModel
 
 <!DOCTYPE html>
 
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>EditOrder</title>
+    <title>ChangeRestaurantUserInfo</title>
 </head>
 <body>
-    @using (Html.BeginForm("EditOrder", "Restaurant", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    @using (Html.BeginForm("ChangeRestaurantUserInfo", "Deliveryman", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
     {
         @Html.AntiForgeryToken()
 
         <div class="form-horizontal">
-            <h4>Order</h4>
+            <h4>Deliveryman</h4>
             <hr />
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-            @Html.HiddenFor(model => model.OrderId)
+            @Html.HiddenFor(model => model.PhoneNumber)
+
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.PhoneNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
+                </div>
+            </div>
 
             <div class="form-group">
                 @Html.LabelFor(model => model.AddressLine1, "AddressLine1", htmlAttributes: new { @class = "control-label col-md-2" })
@@ -58,11 +75,12 @@
                 </div>
             </div>
 
+
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
                     <input type="submit" value="Save" class="btn btn-danger" />
-                    <input type="button" value="Back to My Orders" class="btn btn-danger"
-                           onclick="location.href = '@(Url.Action("Orders", "Restaurant"))'" />
+                    <input type="button" value="Cancel" class="btn btn-danger"
+                           onclick="location.href = '@(Url.Action("Index", "Manage"))'" />
                 </div>
             </div>
         </div>
