@@ -177,7 +177,7 @@ namespace DeliveryMan.Controllers
                     if (command == "Register Deliveryman")
                     {
                         newContact.Role = Role.DELIVERYMAN;
-
+                        
                         // add to deliveryman table 
                         Deliveryman newDeliveryman = new Deliveryman();
 
