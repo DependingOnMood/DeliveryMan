@@ -382,14 +382,15 @@ namespace DeliveryMan.Controllers
             reviewOrderVM.OrderId = orderDetails.Id;
 
             var blacklist = (from b in db.blacklists
-                                where b.Restaurant.Contact.Email == User.Identity.Name
-                                where b.DeliverymanId == orderDetails.DeliverymanId
-                                select b).FirstOrDefault();
+                             where b.Restaurant.Contact.Email == User.Identity.Name
+                             where b.DeliverymanId == orderDetails.DeliverymanId
+                             select b).FirstOrDefault();
 
             if (blacklist == null)
             {
                 reviewOrderVM.Blacklist = false;
-            } else
+            }
+            else
             {
                 reviewOrderVM.Blacklist = true;
             }
@@ -438,6 +439,7 @@ namespace DeliveryMan.Controllers
 
                 // update deliveryman ranking
                 var rankedDmans = (from d in db.deliverymen
+                                   where d.TotalDeliveryCount >= 5
                                    select d).OrderByDescending(x => x.Rating);
 
                 Deliveryman prevDman = new Deliveryman();
@@ -562,7 +564,9 @@ namespace DeliveryMan.Controllers
                 totalTime += deliveryTime;
             }
 
-            blackListVM.AverageDeliveryTime = (int)DeliverymanTime.averageTime(total, totalTime);
+            int averagetime = (int)DeliverymanTime.averageTime(total, totalTime);
+
+            blackListVM.AverageDeliveryTime = averagetime.ToString() + " minutes";
             blackListVM.TotalOrders = total;
 
             db.SaveChanges();
@@ -596,8 +600,7 @@ namespace DeliveryMan.Controllers
             db.SaveChanges();
 
             IEnumerable<Blacklist> blacklists = (from b in db.blacklists
-                                                 where b.Restaurant.Contact.Email == User.Identity.Name
-                                                 where b.RestaurantId == model.RestaurantId
+                                                 where b.RestaurantId == orderDetails.RestaurantId
                                                  select b);
 
             int count = blacklists.Count();
