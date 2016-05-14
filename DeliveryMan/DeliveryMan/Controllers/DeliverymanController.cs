@@ -204,13 +204,16 @@ namespace DeliveryMan.Controllers
         }
 
         // POST: Deliveryman/CancelPickup/5
-        public ActionResult CancelPickup(int id)
+        public ActionResult CancelPickup(int? id)
         {
             if (User.Identity.IsAuthenticated)
             {
                 ViewBag.UserType = GetRole();
             }
-
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             Deliveryman deliveryman = (from dm in db.deliverymen
                                        where dm.Contact.Email.Equals(User.Identity.Name)
                                        select dm).FirstOrDefault();
@@ -227,9 +230,10 @@ namespace DeliveryMan.Controllers
             {
                 return RedirectToAction("ErrorPage", "Home");
             }
-            //order.Status = Status.WAITING;
-            //order.DeliverymanId = 0;
-            //db.SaveChanges();
+            order.Status = Status.WAITING;
+            order.DeliverymanId = null;
+            order.Deliveryman = null;
+            db.SaveChanges();
             return RedirectToAction("MyOrders");
         }
 
