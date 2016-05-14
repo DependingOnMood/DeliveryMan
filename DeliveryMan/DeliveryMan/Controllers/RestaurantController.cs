@@ -53,6 +53,10 @@ namespace DeliveryMan.Controllers
                               select r).FirstOrDefault();
             if (res == null)
             {
+                throw new Exception("Error");
+            }
+            if (res.Balance.CompareTo(0.00M) < 0)
+            {
                 return RedirectToAction("ErrorPage", "Home");
             }
             Contact contact = (from c in db.contacts
@@ -140,7 +144,7 @@ namespace DeliveryMan.Controllers
                               select r).FirstOrDefault();
             if (res == null)
             {
-                return RedirectToAction("ErrorPage", "Home");
+                throw new Exception("Error");
             }
             IEnumerable<Order> wo = from o in db.orders
                                     where o.RestaurantId == res.Id
@@ -210,7 +214,7 @@ namespace DeliveryMan.Controllers
                               select r).FirstOrDefault();
             if (res == null)
             {
-                return RedirectToAction("ErrorPage", "Home");
+                throw new Exception("Error");
             }
             Order order = (from o in db.orders
                            where o.RestaurantId == res.Id
@@ -218,10 +222,8 @@ namespace DeliveryMan.Controllers
                            select o).FirstOrDefault();
             if (order == null)
             {
-                return RedirectToAction("ErrorPage", "Home");
+                throw new Exception("Error");
             }
-
-
 
             return View(order);
         }
@@ -243,7 +245,7 @@ namespace DeliveryMan.Controllers
                               select r).FirstOrDefault();
             if (res == null)
             {
-                return RedirectToAction("ErrorPage", "Home");
+                throw new Exception("Error");
             }
             Order order = (from o in db.orders
                            where o.RestaurantId == res.Id
@@ -279,7 +281,7 @@ namespace DeliveryMan.Controllers
                               select r).FirstOrDefault();
             if (res == null)
             {
-                return RedirectToAction("ErrorPage", "Home");
+                throw new Exception("Error");
             }
             Order order = (from o in db.orders
                            where o.RestaurantId == res.Id
@@ -336,12 +338,12 @@ namespace DeliveryMan.Controllers
 
             Order curOrder = (from o in db.orders
                               where o.Restaurant.Contact.Email == User.Identity.Name
-                              && o.Id == id
+                              where o.Id == id
                               select o).FirstOrDefault();
 
             if (curOrder == null)
             {
-                return RedirectToAction("ErrorPage", "Home");
+                throw new Exception("Error");
             }
 
             if (curOrder.Status != Status.DELIVERED)
@@ -379,6 +381,19 @@ namespace DeliveryMan.Controllers
             reviewOrderVM.DeliveredTime = orderDetails.DeliveredTime;
             reviewOrderVM.OrderId = orderDetails.Id;
 
+            var blacklist = (from b in db.blacklists
+                                where b.Restaurant.Contact.Email == User.Identity.Name
+                                where b.DeliverymanId == orderDetails.DeliverymanId
+                                select b).FirstOrDefault();
+
+            if (blacklist == null)
+            {
+                reviewOrderVM.Blacklist = false;
+            } else
+            {
+                reviewOrderVM.Blacklist = true;
+            }
+
             return View("ReviewOrder", reviewOrderVM);
         }
 
@@ -387,6 +402,11 @@ namespace DeliveryMan.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult ReviewOrder(ReviewOrderViewModel model, int? id)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.UserType = GetRole();
+            }
+
             if (ModelState.IsValid && id != null)
             { // check model state
               //   if (model.DeliveredTime != null)
@@ -398,6 +418,8 @@ namespace DeliveryMan.Controllers
 
                 // calculate deliveryman's current rating
                 var orderDeliveryman = (from o in db.orders
+                                        where o.Restaurant.Contact.Email == User.Identity.Name
+                                        where o.Id == id
                                         select o).FirstOrDefault();
 
                 Deliveryman deliveryman = db.deliverymen.Find(orderDeliveryman.DeliverymanId);
@@ -457,35 +479,144 @@ namespace DeliveryMan.Controllers
                               select r).FirstOrDefault();
             if (res == null)
             {
-                return RedirectToAction("ErrorPage", "Home");
+                throw new Exception("Error");
             }
             IEnumerable<Order> orders = (from o in db.orders
-                                        where o.RestaurantId == res.Id
-                                        where o.Status == Status.DELIVERED
-                                  orderby o.PlacedTime descending
-                                  select o).AsEnumerable<Order>();
-            return View(orders);
+                                         where o.RestaurantId == res.Id
+                                         where o.Status == Status.DELIVERED
+                                         orderby o.PlacedTime descending
+                                         select o).ToList<Order>();
+            List<RestaurantOrdersHistoryViewModel> models = new List<RestaurantOrdersHistoryViewModel>();
+            foreach (Order o in orders)
+            {
+                RestaurantOrdersHistoryViewModel model = new RestaurantOrdersHistoryViewModel()
+                {
+                    OrderId = o.Id,
+                    Name = o.Deliveryman.getName(),
+                    Note = o.Note,
+                    PlacedTime = o.PlacedTime,
+                    PickUpTime = (DateTime)o.PickUpTime,
+                    DeliveredTime = (DateTime)o.DeliveredTime,
+                    DeliveryFee = o.DeliveryFee,
+                };
+                Review rev = (from rv in db.reviews
+                              where rv.OrderId == o.Id
+                              select rv).FirstOrDefault();
+                if (rev == null)
+                {
+                    model.IsReviewed = false;
+                }
+                else
+                {
+                    model.IsReviewed = true;
+                }
+                models.Add(model);
+            }
+            return View(models);
         }
 
         // GET: Restaurant/Blacklist
-        public ActionResult Blacklist()
+        public ActionResult Blacklist(int? id)
         {
             if (User.Identity.IsAuthenticated)
             {
                 ViewBag.UserType = GetRole();
             }
 
-            Restaurant res = (from r in db.restaurants
-                              where r.Contact.Email.Equals(User.Identity.Name)
-                              select r).FirstOrDefault();
-            if (res == null)
+            var orderDetails = (from o in db.orders
+                                where o.Restaurant.Contact.Email == User.Identity.Name
+                                where o.Id == id
+                                select o).FirstOrDefault();
+
+            int dmanID = (int)orderDetails.DeliverymanId;
+
+            Deliveryman deliveryman = db.deliverymen.Find(dmanID);
+            Restaurant restaurant = db.restaurants.Find(orderDetails.RestaurantId);
+
+            BlackListViewModel blackListVM = new BlackListViewModel();
+
+            blackListVM.OrderId = id;
+            blackListVM.DeliverymanName = deliveryman.FirstName + " " + deliveryman.LastName;
+            blackListVM.Rating = deliveryman.Rating;
+            blackListVM.RestaurantId = orderDetails.RestaurantId;
+            blackListVM.DeliverymanId = orderDetails.DeliverymanId;
+
+            // calculate average delivery time
+            IEnumerable<Order> deliverymanOrders = (from o in db.orders
+                                                    where o.DeliverymanId == dmanID
+                                                    where o.Status == Status.DELIVERED
+                                                    select o);
+
+            int count = deliverymanOrders.Count();
+            int total = 0;
+            double deliveryTime = 0.0, totalTime = 0.0;
+
+            for (int i = 0; i < count; i++)
             {
-                return RedirectToAction("ErrorPage", "Home");
+                DateTime pickupTime = (DateTime)deliverymanOrders.Skip(i).First().PickUpTime;
+                DateTime deliveredTime = (DateTime)deliverymanOrders.Skip(i).First().DeliveredTime;
+
+                deliveryTime = deliveredTime.Subtract(pickupTime).TotalMinutes;
+
+                total++;
+                totalTime += deliveryTime;
             }
-            IEnumerable<Deliveryman> badGuys = from bl in db.blacklists
-                                               where bl.RestaurantId == res.Id
-                                               select bl.Deliveryman;
-            return View(badGuys);
+
+            blackListVM.AverageDeliveryTime = (int)DeliverymanTime.averageTime(total, totalTime);
+            blackListVM.TotalOrders = total;
+
+            db.SaveChanges();
+
+            return View("Blacklist", blackListVM);
+        }
+
+        // POST: Restaurant/Blacklist
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Blacklist(BlackListViewModel model, int? id)
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.UserType = GetRole();
+            }
+
+            var orderDetails = (from o in db.orders
+                                where o.Restaurant.Contact.Email == User.Identity.Name
+                                where o.Id == id
+                                select o).FirstOrDefault();
+
+            // add to blacklist
+            Blacklist newBlacklist = new Blacklist();
+
+            newBlacklist.DeliverymanId = (int)orderDetails.DeliverymanId;
+            newBlacklist.RestaurantId = orderDetails.RestaurantId;
+
+            db.blacklists.Add(newBlacklist);
+
+            db.SaveChanges();
+
+            IEnumerable<Blacklist> blacklists = (from b in db.blacklists
+                                                 where b.Restaurant.Contact.Email == User.Identity.Name
+                                                 where b.RestaurantId == model.RestaurantId
+                                                 select b);
+
+            int count = blacklists.Count();
+
+            List<BlackListViewModel> blacklistVMs =
+                new List<BlackListViewModel>(new BlackListViewModel[count]);
+
+            for (int i = 0; i < count; i++)
+            {
+                Blacklist blacklist = blacklists.Skip(i).First();
+                Deliveryman deliveryman = db.deliverymen.Find(blacklist.DeliverymanId);
+
+                blacklistVMs[i] = new BlackListViewModel();
+
+                blacklistVMs[i].DeliverymanName = deliveryman.FirstName + " " + deliveryman.LastName;
+                blacklistVMs[i].Rating = deliveryman.Rating;
+            }
+
+            return View("BlacklistView", blacklistVMs);
         }
 
         // GET: Restaurant/DeliverymanDetails/5
@@ -505,14 +636,14 @@ namespace DeliveryMan.Controllers
                               select r).FirstOrDefault();
             if (res == null)
             {
-                return RedirectToAction("ErrorPage", "Home");
+                throw new Exception("Error");
             }
             Deliveryman deliveryman = (from dm in db.deliverymen
                                        where dm.Id == id
                                        select dm).FirstOrDefault();
             if (deliveryman == null)
             {
-                return RedirectToAction("ErrorPage", "Home");
+                throw new Exception("Error");
             }
             Order order = (from o in db.orders
                            where o.DeliverymanId == deliveryman.Id
@@ -524,7 +655,7 @@ namespace DeliveryMan.Controllers
             }
             else
             {
-                return RedirectToAction("ErrorPage", "Home");
+                throw new Exception("Error");
             }
         }
 
@@ -558,14 +689,14 @@ namespace DeliveryMan.Controllers
                               select r).FirstOrDefault();
             if (res == null)
             {
-                return RedirectToAction("ErrorPage", "Home");
+                throw new Exception("Error");
             }
             if (ModelState.IsValid)
             {
                 Deliveryman badGuy = db.deliverymen.Find(id);
                 if (badGuy == null)
                 {
-                    return RedirectToAction("ErrorPage", "Home");
+                    throw new Exception("Error");
                 }
                 else
                 {

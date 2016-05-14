@@ -1,4 +1,5 @@
-﻿using DataLayer;
+﻿using BizLogic;
+using DataLayer;
 using DeliveryMan.Models;
 using System;
 using System.Collections.Generic;
@@ -33,14 +34,19 @@ namespace DeliveryMan.Controllers
             }
 
             // get deliveryman ranking
+            decimal zero = 0.0M;
+
+            // get all deliverymen
             IEnumerable<Deliveryman> deliveryman = (from d in db.deliverymen
-                                                    where d.Ranking != 0
+                                                    where d.Rating != zero
+                                                    where d.TotalDeliveryCount >= 5
                                                     select d).OrderByDescending(x => x.Ranking);
 
             int count = deliveryman.Count();
-            List<DeliverymanRankingViewModel> rankingVMs = 
+            List<DeliverymanRankingViewModel> rankingVMs =
                 new List<DeliverymanRankingViewModel>(new DeliverymanRankingViewModel[count]);
 
+            // retrieve details for the top 20 ranked deliverymen
             for (int i = 0; i < Math.Min(count, 20); i++)
             {
                 Deliveryman curDeliveryman = deliveryman.Skip(i).First();
@@ -54,15 +60,16 @@ namespace DeliveryMan.Controllers
                 rankingVMs[i].TotalOrders = curDeliveryman.TotalDeliveryCount;
                 rankingVMs[i].Rating = curDeliveryman.Rating;
 
-                Review DeliverymanReview = (from r in db.reviews
-                                            where r.order.Deliveryman.Id == curDeliveryman.Id
-                                            where r.order.Deliveryman.Rating == avgReview
-                                            select r).FirstOrDefault();
+                Review DmanReviewAvg = (from r in db.reviews
+                                        where r.order.Deliveryman.Id == curDeliveryman.Id
+                                        where r.order.Deliveryman.Rating == avgReview
+                                        select r).FirstOrDefault();
 
-                if (DeliverymanReview != null)
-                {
-                    rankingVMs[i].ReviewText = DeliverymanReview.ReviewText;
-                }
+                Review DmanReviewLast = (from r in db.reviews
+                                         where r.order.Deliveryman.Id == curDeliveryman.Id
+                                         select r).FirstOrDefault();
+
+                rankingVMs[i].ReviewText = DeliverymanRanking.getReview(DmanReviewAvg, DmanReviewLast);
             }
 
             return View("Ranking", rankingVMs);
@@ -95,13 +102,5 @@ namespace DeliveryMan.Controllers
             return View();
         }
 
-        public ActionResult ErrorPage()
-        {
-            if (User.Identity.IsAuthenticated)
-            {
-                ViewBag.UserType = GetRole();
-            }
-            return View();
-        }
     }
 }

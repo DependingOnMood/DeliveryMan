@@ -18,15 +18,16 @@ namespace BizLogic
 
         public static decimal calculateRating(this Deliveryman deliveryman, int curStars)
         {
-            decimal curRating = 0;
+            decimal curRating = 0M;
             decimal prevRating = deliveryman.Rating;
-            int totalStars = deliveryman.TotalStarsEarned;
-            int totalDelivery = deliveryman.TotalDeliveryCount;
+            decimal totalStars = deliveryman.TotalStarsEarned;
+            decimal totalDelivery = deliveryman.TotalDeliveryCount;
 
             if (prevRating == 0)
             { // meaning this is the deliveryman's first review
                 curRating = curStars;
-            } else
+            }
+            else
             { // calculate cumulative rating
                 curRating = (totalStars + curStars) / (totalDelivery + 1);
             }

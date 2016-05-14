@@ -12,7 +12,7 @@ namespace DeliveryMan.Models
         [Display(Name = "Deliveryman Name")]
         public string DeliverymanName { get; set; }
 
-        [Display(Name = "Orders delivered")]
+        [Display(Name = "Orders reviewed")]
         public int TotalOrders { get; set; }
 
         [Display(Name = "Rating")]

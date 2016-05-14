@@ -107,7 +107,7 @@ namespace DeliveryMan.Controllers
                               select o).FirstOrDefault();
             if (res == null)
             {
-                return RedirectToAction("ErrorPage", "Home");
+                throw new Exception("Error");
             }
             ViewBag.ifSuccessed = 0;
             return View(res);
@@ -123,7 +123,7 @@ namespace DeliveryMan.Controllers
             }
 
             if (o.Id == 0) {
-                return RedirectToAction("ErrorPage", "Home");
+                throw new Exception("Error");
                     }
             int id = o.Id;
             var res = (from o1 in db.orders
@@ -160,7 +160,7 @@ namespace DeliveryMan.Controllers
                            select o).FirstOrDefault();
             if (order == null)
             {
-                return RedirectToAction("ErrorPage", "Home");
+                throw new Exception("Error");
             }
             return View(order);
         }
@@ -177,7 +177,7 @@ namespace DeliveryMan.Controllers
                                 select dm).FirstOrDefault();
             if (deli == null)
             {
-                return RedirectToAction("ErrorPage", "Home");
+                throw new Exception("Error");
             }
             IEnumerable<Order> pendingO = from o in db.orders
                                                where o.DeliverymanId == deli.Id
@@ -204,19 +204,22 @@ namespace DeliveryMan.Controllers
         }
 
         // POST: Deliveryman/CancelPickup/5
-        public ActionResult CancelPickup(int id)
+        public ActionResult CancelPickup(int? id)
         {
             if (User.Identity.IsAuthenticated)
             {
                 ViewBag.UserType = GetRole();
             }
-
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             Deliveryman deliveryman = (from dm in db.deliverymen
                                        where dm.Contact.Email.Equals(User.Identity.Name)
                                        select dm).FirstOrDefault();
             if (deliveryman == null)
             {
-                return RedirectToAction("ErrorPage", "Home");
+                throw new Exception("Error");
             }
             Order order = (from o in db.orders
                            where o.Id == id
@@ -225,11 +228,14 @@ namespace DeliveryMan.Controllers
                            select o).FirstOrDefault();
             if (order == null)
             {
-                return RedirectToAction("ErrorPage", "Home");
+                throw new Exception("Error");
             }
-            //order.Status = Status.WAITING;
-            //order.DeliverymanId = 0;
-            //db.SaveChanges();
+            order.Status = Status.WAITING;
+            decimal cancellationFee = order.cancellationFee();
+            order.Deliveryman.Balance -= cancellationFee;
+            order.DeliverymanId = null;
+            order.Deliveryman = null;
+            db.SaveChanges();
             return RedirectToAction("MyOrders");
         }
 
@@ -245,7 +251,7 @@ namespace DeliveryMan.Controllers
                                        select dm).FirstOrDefault();
             if (deliveryman == null)
             {
-                return RedirectToAction("ErrorPage", "Home");
+                throw new Exception("Error");
             }
             Order order = (from o in db.orders
                            where o.Id == id
@@ -254,10 +260,12 @@ namespace DeliveryMan.Controllers
                            select o).FirstOrDefault();
             if (order == null)
             {
-                return RedirectToAction("ErrorPage", "Home");
+                throw new Exception("Error");
             }
             order.Status = Status.DELIVERED;
             order.DeliveredTime = DateTime.Now;
+            order.Deliveryman.Balance += order.DeliveryFee;
+            order.Restaurant.Balance -= order.DeliveryFee;
             db.SaveChanges();
             return RedirectToAction("MyOrders");
         }

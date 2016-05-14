@@ -1,0 +1,36 @@
+﻿@model IEnumerable<DeliveryMan.Models.BlackListViewModel>
+
+@{
+    ViewBag.Title = "Blacklist";
+}
+
+<h2>@ViewBag.Title.</h2>
+
+<h4>View your blacklist!</h4>
+<hr />
+
+<input type="button" value="Back to Orders" class="btn btn-danger"
+       onclick="location.href = '@(Url.Action("Orders", "Restaurant"))'" />
+
+@foreach (var item in Model)
+{
+    <div class="form-group">
+        <div class="col-md-10">
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.DeliverymanName)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(modelItem => item.DeliverymanName)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.Rating)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(modelItem => item.Rating)
+                </dd>
+            </dl>
+        </div>
+    </div>
+}
