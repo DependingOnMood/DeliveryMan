@@ -14,6 +14,8 @@ namespace DeliveryMan.Controllers
 {
     public class DeliverymanController : Controller
     {
+        private ApplicationDbContext db = new ApplicationDbContext();
+
         public int GetRole()
         {
             var q = (
@@ -22,8 +24,6 @@ namespace DeliveryMan.Controllers
             select c).FirstOrDefault();
             return (int)q.Role;
         }
-
-        private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Deliveryman/
         public ActionResult FindOrder()
@@ -291,5 +291,78 @@ namespace DeliveryMan.Controllers
             }
             base.Dispose(disposing);
         }
+
+        // GET: Deliveryman/ChangeDeliverymantUserInfo
+        public ActionResult ChangeDeliverymanUserInfo()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.UserType = GetRole();
+            }
+
+            Deliveryman del = (from d in db.deliverymen
+                              where d.Contact.Email.Equals(User.Identity.Name)
+                              select d).FirstOrDefault();
+            if (del == null)
+            {
+                throw new Exception("Error");
+            }
+
+            ChangeDeliverymanInfoModel model = new ChangeDeliverymanInfoModel()
+            {
+                FirstName = del.FirstName,
+                LastName = del.LastName,
+                PhoneNumber = del.Contact.PhoneNumber,
+                AddressLine1 = del.Contact.AddressLine1,
+                AddressLine2 = del.Contact.AddressLine2,
+                City = del.Contact.City,
+                State = del.Contact.State,
+                ZipCode = del.Contact.ZipCode,
+            };
+            return View(model);
+        }
+
+        // POST: Deliveryman/ChangeDeliverymanUserInfo
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ChangeDeliverymanUserInfo([Bind(Include = "FirstName, LastName, PhoneNumber, AddressLine1, AddressLine2, City, State, ZipCode")]
+            ChangeDeliverymanInfoModel model)
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.UserType = GetRole();
+            }
+
+            Deliveryman val = (from d in db.deliverymen
+                               where d.Contact.Email != User.Identity.Name
+                               where d.Contact.PhoneNumber == model.PhoneNumber
+                               select d).FirstOrDefault();
+            if (val != null)
+            {
+                throw new Exception("Phone number already exists error");
+            }
+
+            Deliveryman del = (from d in db.deliverymen
+                               where d.Contact.Email.Equals(User.Identity.Name)
+                               select d).FirstOrDefault();
+            if (del == null)
+            {
+                throw new Exception("Error");
+            }
+
+            del.FirstName = model.FirstName;
+            del.LastName = model.LastName;
+            del.Contact.PhoneNumber = model.PhoneNumber;
+            del.Contact.AddressLine1 = model.AddressLine1;
+            del.Contact.AddressLine2 = model.AddressLine2;
+            del.Contact.City = model.City;
+            del.Contact.State = model.State;
+            del.Contact.ZipCode = model.ZipCode;
+            db.SaveChanges();
+            return RedirectToAction("Index", "Manage");
+        }
+
     }
 }

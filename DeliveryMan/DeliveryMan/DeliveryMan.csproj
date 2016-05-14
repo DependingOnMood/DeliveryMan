@@ -220,6 +220,8 @@
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\CancelOrderViewModel.cs" />
+    <Compile Include="Models\ChangeDeliverymanInfoModel.cs" />
+    <Compile Include="Models\ChangeRestaurantInfoModel.cs" />
     <Compile Include="Models\DeliverymanOrdersViewModel.cs" />
     <Compile Include="Models\DeliverymanRankingViewModel.cs" />
     <Compile Include="Models\DeliverymanViewModels.cs" />
@@ -335,6 +337,8 @@
     <Content Include="Views\Restaurant\BlacklistView.cshtml" />
     <Content Include="Views\Shared\NotFound.cshtml" />
     <Content Include="Views\Shared\InternalServer.cshtml" />
+    <Content Include="Views\Deliveryman\ChangeDeliverymanUserInfo.cshtml" />
+    <Content Include="Views\Restaurant\ChangeRestaurantUserInfo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
