@@ -56,10 +56,6 @@
             <dd>
                 @Html.DisplayFor(model => model.DeliveryFee)
             </dd>
-
-            <dt>
-                @Html.DisplayNameFor(model => model.Deliveryman)
-            </dt>
         </dl>
     </div>
         using (Html.BeginForm("AcceptOrder", "Deliveryman", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))

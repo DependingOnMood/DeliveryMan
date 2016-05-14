@@ -141,20 +141,7 @@
             @Html.AntiForgeryToken()
            // @Html.ValidationSummary("", new { @class = "text-danger" })
 
-            <fieldset class="form-group">
-                <legend>Icon</legend>
-                <div class="editor-label">
-                    @Html.Label("Icon Image", new { @class = "col-md-2 control-label" })
-                </div>
-                <div class="col-md-10">
-                    <div class="editor-field">
-                        <input id="ImagePath" title="Upload a product image"
-                               type="file" name="file" class="btn btn-danger" />
-
-                    </div>
-                </div>
-
-            </fieldset>
+        
             <div class="form-group">
                 @Html.LabelFor(m => m.RestaurantName, new { @class = "col-md-2 control-label" })
                 <div class="col-md-10">
@@ -234,7 +221,19 @@
                     @Html.ValidationMessageFor(m => m.AddressZipCode, "", new { @class = "text-danger" })
                 </div>
             </div>
+            <fieldset class="form-group">
+                <div class="editor-label">
+                    @Html.Label("Icon Image", new { @class = "col-md-2 control-label" })
+                </div>
+                <div class="col-md-10">
+                    <div class="editor-field">
+                        <input id="ImagePath" title="Upload a product image"
+                               type="file" name="file" class="btn btn-danger" />
 
+                    </div>
+                </div>
+
+            </fieldset>
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
                     <input type="submit" name="command" class="btn btn-danger" value="Register Restaurant" />
