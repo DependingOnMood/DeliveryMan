@@ -68,13 +68,7 @@
                 <td>
                     @destination
                 </td>
-                <td>
-                    @if (item.Deliveryman != null)
-                    {
-                        string res = item.Deliveryman.getName();
-                        @res
-                    }
-                </td>
+                <td></td>
                 <td>
                     @Html.DisplayFor(model => item.Status)
                 </td>
@@ -119,7 +113,7 @@
                 <td>
                     @destination
                 </td>
-                <td>
+                <td onclick="location.href='@(Url.Action("DeliverymanDetails", "Restaurant", new { Id = item.Id }))'">
                     @{
                         if (item.Deliveryman != null)
                         {
@@ -172,7 +166,7 @@
                 <td>
                     @destination
                 </td>
-                <td>
+                <td onclick="location.href='@(Url.Action("DeliverymanDetails", "Restaurant", new { Id = item.Id }))'">
                     @if (item.Deliveryman != null)
                     {
                         string res = item.Deliveryman.getName();

@@ -22,18 +22,21 @@ namespace BizLogic
             int oldScore = deliveryman.Ranking;
             int newScore = oldScore;
             int curScore = 0;
-            //if (curStars)
+
+            if (curStars == 1) { curScore = -3; }
+            else if (curStars == 2) { curScore = -1; }
+            else if (curStars == 4) { curScore = 1; }
+            else if (curStars == 5) { curScore = 3; }
 
 
-
-            //if (prevRating == 0)
-            //{ // meaning this is the deliveryman's first review
-                curScore = curStars;
-            //}
-            //else
-            //{ // calculate cumulative rating
-                //curRating = (totalStars + curStars) / (totalDelivery + 1);
-           // }
+            if (oldScore == 0)
+            { // meaning this is the deliveryman's first review
+                newScore = 1500 + curScore;
+            }
+            else
+            { // calculate new score
+                newScore = oldScore + curScore;
+            }
 
             return newScore;
         }
