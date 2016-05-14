@@ -333,7 +333,7 @@
     <Content Include="Views\Deliveryman\Map.cshtml" />
     <Content Include="Views\Deliveryman\Direction.cshtml" />
     <Content Include="Views\Restaurant\OrdersHistory.cshtml" />
-    <Content Include="Views\Restaurant\Blacklist.cshtml" />
+    <Content Include="Views\Restaurant\AddToBlacklist.cshtml" />
     <Content Include="Views\Restaurant\BlacklistView.cshtml" />
     <Content Include="Views\Shared\NotFound.cshtml" />
     <Content Include="Views\Shared\InternalServer.cshtml" />
