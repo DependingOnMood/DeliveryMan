@@ -239,7 +239,7 @@ namespace DeliveryMan.Controllers
 
                         if (fileUrl == "")
                         {
-                  s          newRestaurant.IconImageUrl = "errorlogo.png";
+                           newRestaurant.IconImageUrl = "errorlogo.png";
                         }
                         else {
                             newRestaurant.IconImageUrl = model.Email + ".png";
