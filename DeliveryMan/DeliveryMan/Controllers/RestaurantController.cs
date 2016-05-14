@@ -675,7 +675,6 @@ namespace DeliveryMan.Controllers
             {
                 ViewBag.UserType = GetRole();
             }
-
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -687,25 +686,15 @@ namespace DeliveryMan.Controllers
             {
                 throw new Exception("Error");
             }
-            Deliveryman deliveryman = (from dm in db.deliverymen
-                                       where dm.Id == id
-                                       select dm).FirstOrDefault();
-            if (deliveryman == null)
-            {
-                throw new Exception("Error");
-            }
             Order order = (from o in db.orders
-                           where o.DeliverymanId == deliveryman.Id
+                           where o.Id == id
                            where o.RestaurantId == res.Id
                            select o).FirstOrDefault();
-            if (order != null)
-            {
-                return View(deliveryman);
-            }
-            else
+            if (order == null)
             {
                 throw new Exception("Error");
             }
+            return View(order.Deliveryman);
         }
 
         // GET: Restaurant/AddBalance
