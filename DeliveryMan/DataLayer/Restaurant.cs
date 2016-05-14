@@ -20,7 +20,6 @@ namespace DataLayer
 
         public string Name { get; set; }
 
-        [Url]
         [Display(Name = "Insert your icon image URL.")]
         public string IconImageUrl { get; set; }
 

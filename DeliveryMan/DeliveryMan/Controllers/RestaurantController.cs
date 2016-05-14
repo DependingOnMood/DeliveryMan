@@ -75,8 +75,16 @@ namespace DeliveryMan.Controllers
                     State = model.State,
                     ZipCode = model.ZipCode,
                 };
+
                 helper = new GoogleMapHelper();
-                String latAndLong = helper.getLatandLngByAddr(totalAddress);
+                String latAndLong = "";
+                try {
+                    latAndLong = helper.getLatandLngByAddr(totalAddress);
+                } catch (Exception e) {
+                    ModelState.AddModelError("location", "Pleas input a valid address!");
+                    return View("CreateOrder", model);
+                }
+              
                 contact.Latitude = Decimal.Parse(latAndLong.Split(' ')[0]);
                 contact.Longitude = Decimal.Parse(latAndLong.Split(' ')[1]);
                 db.contacts.Add(contact);
@@ -104,7 +112,18 @@ namespace DeliveryMan.Controllers
                 if (changed)
                 {
                     helper = new GoogleMapHelper();
-                    String latAndLong = helper.getLatandLngByAddr(totalAddress);
+                    String latAndLong = "";
+                    try
+                    {
+                        latAndLong = helper.getLatandLngByAddr(totalAddress);
+                    }
+                    catch (Exception e)
+                    {
+                        ModelState.AddModelError("location", "Pleas input a valid address!");
+                        return View("CreateOrder", model);
+                    }
+
+
                     contact.Latitude = Decimal.Parse(latAndLong.Split(' ')[0]);
                     contact.Longitude = Decimal.Parse(latAndLong.Split(' ')[1]);
                 }
