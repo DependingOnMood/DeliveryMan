@@ -10,6 +10,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using DeliveryMan.Models;
 using DataLayer;
+using System.Security.Policy;
 
 namespace DeliveryMan.Controllers
 {
@@ -180,23 +181,19 @@ namespace DeliveryMan.Controllers
                         
                         // add to deliveryman table 
                         Deliveryman newDeliveryman = new Deliveryman();
-
-
                         if (file != null)
-                        {
-                            file.SaveAs(HttpContext.Server.MapPath("~/Content/Img/userIcon")
-                                                                  + file.FileName);
-                            newDeliveryman.IconImageUrl = file.FileName;
+                        {   
+                            file.SaveAs(HttpContext.Server.MapPath("~/Content/UserIcon/")
+                                                                  +model.Email+file.FileName);
+                
+                            newDeliveryman.IconImageUrl = model.Email+file.FileName;
                         }
 
                         newDeliveryman.FirstName = model.FirstName;
                         newDeliveryman.LastName = model.LastName;
-
                         newDeliveryman.ContactId = newContact.PhoneNumber;
-
                         newDeliveryman.Contact = newContact;
-              
-
+   
                         db.deliverymen.Add(newDeliveryman);
                     }
                     else if (command == "Register Restaurant")
@@ -207,9 +204,9 @@ namespace DeliveryMan.Controllers
                         Restaurant newRestaurant = new Restaurant();
                         if (file != null)
                         {
-                            file.SaveAs(HttpContext.Server.MapPath("~/Content/Img/userIcon")
-                                                                  + file.FileName);
-                            newRestaurant.IconImageUrl = file.FileName;
+                            file.SaveAs(HttpContext.Server.MapPath("~/Content/UserIcon")
+                                                                 +model.Email + file.FileName);
+                            newRestaurant.IconImageUrl = model.Email + file.FileName;
                         }
                 
 
