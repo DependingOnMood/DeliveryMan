@@ -64,7 +64,7 @@ namespace DeliveryMan.Controllers
                 {
 
                     ModelState.AddModelError("location", "Pleas input a valid address!");
-                    return View(model);
+                    return View("FindOrder",model);
                 }
             }
 
@@ -99,6 +99,7 @@ namespace DeliveryMan.Controllers
                     {
 
                         ModelState.AddModelError("location", "Pleas input a valid address!");
+                        return View("FindOrder", model);
                     }
 
                     // check to see if deliveryman is in any blacklist
@@ -302,7 +303,9 @@ namespace DeliveryMan.Controllers
             Order order = db.orders.Find(model.OrderId);
             if ((order.Deliveryman.Balance - model.CancellationFee).CompareTo(0M) < 0)
             {
-                return View(model);
+                //ViewBag.Message = "You have insufficient balance to cancel!";
+                ModelState.AddModelError("CancellationFee", "You have insufficient balance to cancel!");
+                return View("CancelPickup", model);
             }
             else
             {
@@ -322,27 +325,34 @@ namespace DeliveryMan.Controllers
             {
                 ViewBag.UserType = GetRole();
             }
+
             Deliveryman deliveryman = (from dm in db.deliverymen
                                        where dm.Contact.Email.Equals(User.Identity.Name)
                                        select dm).FirstOrDefault();
+
             if (deliveryman == null)
             {
                 throw new Exception("Error");
             }
+
             Order order = (from o in db.orders
                            where o.Id == id
                            where o.Status == Status.INPROGRESS
                            where o.DeliverymanId == deliveryman.Id
                            select o).FirstOrDefault();
+
             if (order == null)
             {
                 throw new Exception("Error");
             }
+
             order.Status = Status.DELIVERED;
             order.DeliveredTime = DateTime.Now;
             order.Deliveryman.Balance += order.DeliveryFee;
             order.Restaurant.Balance -= order.DeliveryFee;
+
             db.SaveChanges();
+
             return RedirectToAction("MyOrders");
         }
 
@@ -417,35 +427,29 @@ namespace DeliveryMan.Controllers
                 ViewBag.UserType = GetRole();
             }
 
-           
+
 
             Deliveryman del = (from d in db.deliverymen
                                where d.Contact.Email.Equals(User.Identity.Name)
                                select d).FirstOrDefault();
+
             if (del == null)
             {
                 throw new Exception("Error");
             }
-            
+
 
 
             del.FirstName = model.FirstName;
             del.LastName = model.LastName;
 
             del.Contact.AddressLine1 = model.AddressLine1;
-            del.Contact.AddressLine1 = model.AddressLine2;
-            del.Contact.AddressLine1 = model.City;
-            del.Contact.AddressLine1 = model.State;
-            del.Contact.AddressLine1 = model.ZipCode;
-            if (model.file != null)
-            {
-                String fileUrl = HttpContext.Server.MapPath("~/Content/UserIcon/")
-                                                      + del.Contact.Email + ".png";
-                Bitmap b = (Bitmap)Bitmap.FromStream(model.file.InputStream);
-                b.Save(fileUrl, ImageFormat.Png);
-                del.IconImageUrl = del.Contact.Email + ".png";
-            }
+            del.Contact.AddressLine2 = model.AddressLine2;
+            del.Contact.City = model.City;
+            del.Contact.State = model.State;
+            del.Contact.ZipCode = model.ZipCode;
             db.SaveChanges();
+
             return RedirectToAction("Index", "Manage");
         }
 

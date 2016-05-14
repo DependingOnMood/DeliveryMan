@@ -48,60 +48,40 @@
                 <div class="form-group">
                     @Html.LabelFor(m => m.AddressLine2, new { @class = "col-md-2 control-label" })
                     <div class="col-md-10">
-                        @if (ViewData.ModelState.Count != 0 && ViewData.ModelState["location"] != null)
-                        {
-                            @Html.TextBoxFor(m => m.AddressLine2, new { @class = "form-control" })
-                            <label class="text-danger">Please input a valid address.</label>
-                        }
-                        else {
+                       
                             @Html.TextBoxFor(m => m.AddressLine2, new { @class = "form-control" })
                             @Html.ValidationMessageFor(m => m.AddressLine2, "", new { @class = "text-danger" })
-                        }
+           
                     </div>
                 </div>
 
                 <div class="form-group">
                     @Html.LabelFor(m => m.City, new { @class = "col-md-2 control-label" })
                     <div class="col-md-10">
-                        @if (ViewData.ModelState.Count != 0 && ViewData.ModelState["location"] != null)
-                        {
-                            @Html.TextBoxFor(m => m.City, new { @class = "form-control" })
-                            <label class="text-danger">Please input a valid city name.</label>
-                        }
-                        else {
+                  
                             @Html.TextBoxFor(m => m.City, new { @class = "form-control" })
                             @Html.ValidationMessageFor(m => m.City, "", new { @class = "text-danger" })
-                        }
+                 
                     </div>
                 </div>
 
                 <div class="form-group">
                     @Html.LabelFor(m => m.State, new { @class = "col-md-2 control-label" })
                     <div class="col-md-10">
-                        @if (ViewData.ModelState.Count != 0 && ViewData.ModelState["location"] != null)
-                        {
-                            @Html.TextBoxFor(m => m.State, new { @class = "form-control" })
-                            <label class="text-danger">Please input a valid state name.</label>
-                        }
-                        else {
+                       
                             @Html.TextBoxFor(m => m.State, new { @class = "form-control" })
                             @Html.ValidationMessageFor(m => m.State, "", new { @class = "text-danger" })
-                        }
+                        
                     </div>
                 </div>
 
                 <div class="form-group">
                     @Html.LabelFor(m => m.ZipCode, new { @class = "col-md-2 control-label" })
                     <div class="col-md-10">
-                        @if (ViewData.ModelState.Count != 0 && ViewData.ModelState["location"] != null)
-                        {
-                            @Html.TextBoxFor(m => m.ZipCode, new { @class = "form-control" })
-                            <label class="text-danger">Please input a valid zipcode.</label>
-                        }
-                        else {
+                      
                             @Html.TextBoxFor(m => m.ZipCode, new { @class = "form-control" })
                             @Html.ValidationMessageFor(m => m.ZipCode, "", new { @class = "text-danger" })
-                        }
+                        
                     </div>
                 </div>
 

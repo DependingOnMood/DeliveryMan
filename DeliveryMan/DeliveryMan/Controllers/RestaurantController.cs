@@ -88,8 +88,8 @@ namespace DeliveryMan.Controllers
                 }
                 catch (Exception e)
                 {
-                    ModelState.AddModelError("location", "Pleas input a valid address!");
-                    return View("CreateOrder", new RestaurantCreateOrderViewModel());
+                    ModelState.AddModelError("Addressline1", "Pleas input a valid address!");
+                    return View("CreateOrder", model);
                 }
 
                 contact.Latitude = Decimal.Parse(latAndLong.Split(' ')[0]);
@@ -126,7 +126,7 @@ namespace DeliveryMan.Controllers
                     }
                     catch (Exception e)
                     {
-                        ModelState.AddModelError("location", "Pleas input a valid address!");
+                        ModelState.AddModelError("Addressline1", "Pleas input a valid address!");
                         return View("CreateOrder", model);
                     }
 
