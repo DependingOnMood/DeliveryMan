@@ -366,7 +366,8 @@ namespace DeliveryMan.Controllers
         // POST: Restaurant/CancelOrder/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CancelOrder(CancelOrderViewModel model)
+        public ActionResult CancelOrder([Bind(Include = "OrderId, OrderName, OrderStatus, ETA, PlacedTime, PickUpTime, DeliveryFee, CancellationFee")]
+            CancelOrderViewModel model)
         {
             if (User.Identity.IsAuthenticated)
             {
