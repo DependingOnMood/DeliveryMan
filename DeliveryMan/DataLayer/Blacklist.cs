@@ -10,6 +10,7 @@ namespace DataLayer
 {
     public class Blacklist
     {
+
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
