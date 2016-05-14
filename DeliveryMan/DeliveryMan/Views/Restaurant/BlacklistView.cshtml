@@ -1,65 +1,36 @@
-﻿@model DeliveryMan.Models.BlackListViewModel
+﻿@model IEnumerable<DeliveryMan.Models.BlackListViewModel>
 
-<!DOCTYPE html>
+@{
+    ViewBag.Title = "Blacklist";
+}
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Your Blacklist</title>
-</head>
-<body>
-    <br />
-    <p>
-        <input type="button" value="Back to Review" class="btn btn-danger"
-               onclick="location.href = '@(Url.Action("ReviewOrder", "Restaurant"))'" />
-    </p>
-    <table class="table">
-        <tr>
-            <th>
-            </th>
-            <th>
-                Deliveryman Name
-            </th>
-            <th>
-                Orders Delivered
-            </th>
-            <th>
-                Average delivery time
-            </th>
-            <th>
-                Average Rating
-            </th>
-        </tr>
+<h2>@ViewBag.Title.</h2>
 
-        @foreach (var item in Model.ToList())
-        {
-            <tr>
-                <td></td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Note)
-                </td>
-                <td>
-                    @destination
-                </td>
-                <td>
-                    @if (item.Deliveryman != null)
-                    {
-                        string res = item.Deliveryman.getName();
-                        @res
-                    }
-                </td>
-                <td>
-                    @Html.DisplayFor(model => item.Status)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ETA)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DeliveryFee)
-                </td>
-            </tr>
-        }
-    </table>
+<h4>View your blacklist!</h4>
+<hr />
 
-</body>
-</html>
+<input type="button" value="Back to Orders" class="btn btn-danger"
+       onclick="location.href = '@(Url.Action("Orders", "Restaurant"))'" />
+
+@foreach (var item in Model)
+{
+    <div class="form-group">
+        <div class="col-md-10">
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.DeliverymanName)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(modelItem => item.DeliverymanName)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.Rating)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(modelItem => item.Rating)
+                </dd>
+            </dl>
+        </div>
+    </div>
+}

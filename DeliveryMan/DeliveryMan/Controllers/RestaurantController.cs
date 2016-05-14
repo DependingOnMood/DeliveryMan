@@ -377,6 +377,19 @@ namespace DeliveryMan.Controllers
             reviewOrderVM.DeliveredTime = orderDetails.DeliveredTime;
             reviewOrderVM.OrderId = orderDetails.Id;
 
+            var blacklist = (from b in db.blacklists
+                                where b.Restaurant.Contact.Email == User.Identity.Name
+                                where b.DeliverymanId == orderDetails.DeliverymanId
+                                select b).FirstOrDefault();
+
+            if (blacklist == null)
+            {
+                reviewOrderVM.Blacklist = false;
+            } else
+            {
+                reviewOrderVM.Blacklist = true;
+            }
+
             return View("ReviewOrder", reviewOrderVM);
         }
 
@@ -578,7 +591,28 @@ namespace DeliveryMan.Controllers
 
             db.SaveChanges();
 
-            return View("BlacklistView", model);
+            IEnumerable<Blacklist> blacklists = (from b in db.blacklists
+                                                 where b.Restaurant.Contact.Email == User.Identity.Name
+                                                 where b.RestaurantId == model.RestaurantId
+                                                 select b);
+
+            int count = blacklists.Count();
+
+            List<BlackListViewModel> blacklistVMs =
+                new List<BlackListViewModel>(new BlackListViewModel[count]);
+
+            for (int i = 0; i < count; i++)
+            {
+                Blacklist blacklist = blacklists.Skip(i).First();
+                Deliveryman deliveryman = db.deliverymen.Find(blacklist.DeliverymanId);
+
+                blacklistVMs[i] = new BlackListViewModel();
+
+                blacklistVMs[i].DeliverymanName = deliveryman.FirstName + " " + deliveryman.LastName;
+                blacklistVMs[i].Rating = deliveryman.Rating;
+            }
+
+            return View("BlacklistView", blacklistVMs);
         }
 
         // GET: Restaurant/DeliverymanDetails/5

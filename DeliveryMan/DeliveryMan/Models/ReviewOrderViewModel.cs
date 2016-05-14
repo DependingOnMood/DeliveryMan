@@ -30,5 +30,7 @@ namespace DeliveryMan.Models
 
         [Required]
         public int Rating { get; set; }
+
+        public bool Blacklist { get; set; }
     }
 }
