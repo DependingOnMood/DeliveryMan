@@ -679,61 +679,6 @@ namespace DeliveryMan.Controllers
             }
         }
 
-        // GET: Restaurant/AddToBlacklist/5
-        public ActionResult AddToBlacklist(int? id)
-        {
-            if (User.Identity.IsAuthenticated)
-            {
-                ViewBag.UserType = GetRole();
-            }
-
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            return View();
-        }
-
-        // POST: Restaurant/AddToBlacklist/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult AddToBlacklist(int id)
-        {
-            if (User.Identity.IsAuthenticated)
-            {
-                ViewBag.UserType = GetRole();
-            }
-
-            Restaurant res = (from r in db.restaurants
-                              where r.Name.Equals(User.Identity.Name)
-                              select r).FirstOrDefault();
-            if (res == null)
-            {
-                throw new Exception("Error");
-            }
-            if (ModelState.IsValid)
-            {
-                Deliveryman badGuy = db.deliverymen.Find(id);
-                if (badGuy == null)
-                {
-                    throw new Exception("Error");
-                }
-                else
-                {
-                    Blacklist bl = new Blacklist()
-                    {
-                        RestaurantId = res.Id,
-                        DeliverymanId = badGuy.Id,
-                    };
-                    db.blacklists.Add(bl);
-                    db.SaveChanges();
-                }
-                return RedirectToAction("Blacklist");
-            }
-            //ViewBag.CId = new SelectList(db.contact, "CId", "Name", restaurant.CId);
-            return View();
-        }
-
         // GET: Restaurant/AddBalance
         public ActionResult AddBalance()
         {
@@ -771,6 +716,75 @@ namespace DeliveryMan.Controllers
             res.Balance = model.Balance;
             db.SaveChanges();
             return RedirectToAction("Orders");
+        }
+
+        // GET: Restaurant/ChangeRestaurantUserInfo
+        public ActionResult ChangeRestaurantUserInfo()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.UserType = GetRole();
+            }
+
+            Restaurant res = (from r in db.restaurants
+                              where r.Contact.Email == User.Identity.Name
+                              select r).FirstOrDefault();
+            if (res == null)
+            {
+                throw new Exception("Error");
+            }
+
+            ChangeRestaurantInfoModel model = new ChangeRestaurantInfoModel()
+            {
+                Name = res.Name,
+                PhoneNumber = res.Contact.PhoneNumber,
+                AddressLine1 = res.Contact.AddressLine1,
+                AddressLine2 = res.Contact.AddressLine2,
+                City = res.Contact.City,
+                State = res.Contact.State,
+                ZipCode = res.Contact.ZipCode,
+            };
+            return View(model);
+        }
+
+        // POST: Restaurant/ChangeRestaurantUserInfo
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ChangeRestaurantUserInfo([Bind(Include = "Name, PhoneNumber, AddressLine1, AddressLine2, City, State, ZipCode")]
+            ChangeRestaurantInfoModel model)
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.UserType = GetRole();
+            }
+
+            Restaurant val = (from r in db.restaurants
+                              where r.Contact.Email != User.Identity.Name
+                              where r.Contact.PhoneNumber == model.PhoneNumber
+                              select r).FirstOrDefault();
+            if (val != null)
+            {
+                throw new Exception("Phone number already exists error");
+            }
+
+            Restaurant res = (from r in db.restaurants
+                              where r.Contact.Email.Equals(User.Identity.Name)
+                              select r).FirstOrDefault();
+            if (res == null)
+            {
+                throw new Exception("Error");
+            }
+            res.Name = model.Name;
+            res.Contact.PhoneNumber = model.PhoneNumber;
+            res.Contact.AddressLine1 = model.AddressLine1;
+            res.Contact.AddressLine2 = model.AddressLine2;
+            res.Contact.City = model.City;
+            res.Contact.State = model.State;
+            res.Contact.ZipCode = model.ZipCode;
+            db.SaveChanges();
+            return RedirectToAction("Index", "Manage");
         }
 
         protected override void Dispose(bool disposing)
