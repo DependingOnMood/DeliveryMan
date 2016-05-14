@@ -157,6 +157,27 @@ namespace DeliveryMan.Controllers
             {
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
                 var result = await UserManager.CreateAsync(user, model.Password);
+                var c = (from pc in db.contacts
+                         where pc.PhoneNumber == model.PhoneNumber
+                         select pc).FirstOrDefault();
+                if (c != null)
+                {
+                    ModelState.AddModelError("PhoneNumber", "PhoneNumber exists.");
+                    return View(model);
+                }
+
+                if ((model.FirstName == null || model.LastName == null) && model.RestaurantName == null) {
+                    ModelState.AddModelError("FirstName", "FirstName and LastName is required.");
+                    return View(model);
+                }
+
+                if (model.RestaurantName == null && (model.FirstName != null || model.LastName !=null))
+                {
+                    ModelState.AddModelError("FirstName", "FirstName and LastName is required.");
+                    return View(model);
+                }
+
+
 
                 if (result.Succeeded)
                 {
@@ -165,6 +186,10 @@ namespace DeliveryMan.Controllers
 
                     // add user to database
                     Contact newContact = new Contact();
+                 
+
+
+
 
                     // add to contact table
                     newContact.PhoneNumber = model.PhoneNumber;

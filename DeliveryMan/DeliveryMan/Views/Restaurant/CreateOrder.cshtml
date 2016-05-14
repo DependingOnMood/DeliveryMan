@@ -7,87 +7,132 @@
     <meta name="viewport" content="width=device-width" />
     <title>Create Order</title>
 </head>
-<body>
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/jqueryval")
-    @using (Html.BeginForm("CreateOrder", "Restaurant", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-    {
-        @Html.AntiForgeryToken()
+@{
+ 
 
-        <h4>Create order.</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(m => m.Note, new { @class = "col-md-2 control-label" })
-            <div class="col-md-10">
-                @Html.TextBoxFor(m => m.Note, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.Note, "", new { @class = "text-danger" })
-            </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(m => m.AddressLine1, new { @class = "col-md-2 control-label" })
-            <div class="col-md-10">
-                @Html.TextBoxFor(m => m.AddressLine1, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.AddressLine1, "", new { @class = "text-danger" })
-            </div>
-        </div>
+        <body>
+            @Scripts.Render("~/bundles/jquery")
+            @Scripts.Render("~/bundles/jqueryval")
+            @using (Html.BeginForm("CreateOrder", "Restaurant", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                @Html.AntiForgeryToken()
 
-        <div class="form-group">
-            @Html.LabelFor(m => m.AddressLine2, new { @class = "col-md-2 control-label" })
-            <div class="col-md-10">
-                @Html.TextBoxFor(m => m.AddressLine2, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.AddressLine2, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                <h4>Create order.</h4>
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Note, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(m => m.Note, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Note, "", new { @class = "text-danger" })
+                    </div>
+                </div>
 
-        <div class="form-group">
-            @Html.LabelFor(m => m.City, new { @class = "col-md-2 control-label" })
-            <div class="col-md-10">
-                @Html.TextBoxFor(m => m.City, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.City, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                <div class="form-group">
 
-        <div class="form-group">
-            @Html.LabelFor(m => m.State, new { @class = "col-md-2 control-label" })
-            <div class="col-md-10">
-                @Html.TextBoxFor(m => m.State, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.State, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                    @Html.LabelFor(m => m.AddressLine1, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">                 
+                        @if (ViewData.ModelState.Count != 0 && ViewData.ModelState["location"] != null)
+                        {
+                        @Html.TextBoxFor(m => m.AddressLine1, new { @class = "form-control" })
+                        <label class="text-danger">Please input a valid address.</label>
+                        }
+                        else {
+                        @Html.TextBoxFor(m => m.AddressLine1, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.AddressLine1, "", new { @class = "text-danger" })
+                        }
+                    </div>
+                </div>
 
-        <div class="form-group">
-            @Html.LabelFor(m => m.ZipCode, new { @class = "col-md-2 control-label" })
-            <div class="col-md-10">
-                @Html.TextBoxFor(m => m.ZipCode, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.ZipCode, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.AddressLine2, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @if (ViewData.ModelState.Count != 0 && ViewData.ModelState["location"] != null)
+                        {
+                            @Html.TextBoxFor(m => m.AddressLine2, new { @class = "form-control" })
+                            <label class="text-danger">Please input a valid address.</label>
+                        }
+                        else {
+                            @Html.TextBoxFor(m => m.AddressLine2, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.AddressLine2, "", new { @class = "text-danger" })
+                        }
+                    </div>
+                </div>
 
-        <div class="form-group">
-            @Html.LabelFor(m => m.PhoneNumber, new { @class = "col-md-2 control-label" })
-            <div class="col-md-10">
-                @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.City, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @if (ViewData.ModelState.Count != 0 && ViewData.ModelState["location"] != null)
+                        {
+                            @Html.TextBoxFor(m => m.City, new { @class = "form-control" })
+                            <label class="text-danger">Please input a valid city name.</label>
+                        }
+                        else {
+                            @Html.TextBoxFor(m => m.City, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.City, "", new { @class = "text-danger" })
+                        }
+                    </div>
+                </div>
 
-        <div class="form-group">
-            @Html.LabelFor(m => m.OrderFee, new { @class = "col-md-2 control-label" })
-            <div class="col-md-10">
-                @Html.TextBoxFor(m => m.OrderFee, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.OrderFee, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.State, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @if (ViewData.ModelState.Count != 0 && ViewData.ModelState["location"] != null)
+                        {
+                            @Html.TextBoxFor(m => m.State, new { @class = "form-control" })
+                            <label class="text-danger">Please input a valid state name.</label>
+                        }
+                        else {
+                            @Html.TextBoxFor(m => m.State, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.State, "", new { @class = "text-danger" })
+                        }
+                    </div>
+                </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create Order" class="btn btn-danger" />
-                <input type="button" value="Back to My Orders" class="btn btn-danger"
-                       onclick="location.href = '@(Url.Action("Orders", "Restaurant"))'" />
-            </div>
-        </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.ZipCode, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @if (ViewData.ModelState.Count != 0 && ViewData.ModelState["location"] != null)
+                        {
+                            @Html.TextBoxFor(m => m.ZipCode, new { @class = "form-control" })
+                            <label class="text-danger">Please input a valid zipcode.</label>
+                        }
+                        else {
+                            @Html.TextBoxFor(m => m.ZipCode, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.ZipCode, "", new { @class = "text-danger" })
+                        }
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.PhoneNumber, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.OrderFee, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(m => m.OrderFee, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.OrderFee, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Create Order" class="btn btn-danger" />
+                        <input type="button" value="Back to My Orders" class="btn btn-danger"
+                               onclick="location.href = '@(Url.Action("Orders", "Restaurant"))'" />
+                    </div>
+                </div>
+            }
+        </body>
+
     }
-</body>
+
+
+
 </html>

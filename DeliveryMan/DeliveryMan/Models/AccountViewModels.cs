@@ -64,7 +64,7 @@ namespace DeliveryMan.Models
     }
 
     public class RegisterViewModel
-    {
+    { 
         [Display(Name = "First Name")]
         public string FirstName { get; set; }
 
@@ -116,6 +116,8 @@ namespace DeliveryMan.Models
 
         [Required]
         public HttpPostedFileBase file { get; set; }
+
+
 
     }
 
