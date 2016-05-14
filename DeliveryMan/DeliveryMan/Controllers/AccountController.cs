@@ -171,9 +171,9 @@ namespace DeliveryMan.Controllers
                     return View(model);
                 }
 
-                if (model.RestaurantName == null && (model.FirstName != null || model.LastName !=null))
+                if (model.RestaurantName == null && (model.FirstName == null || model.LastName ==null))
                 {
-                    ModelState.AddModelError("FirstName", "FirstName and LastName is required.");
+                    ModelState.AddModelError("Restaurant", "Restaurant Name is required.");
                     return View(model);
                 }
 

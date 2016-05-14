@@ -160,7 +160,7 @@ namespace DeliveryMan.Controllers
             res.Deliveryman = user;
             db.SaveChanges();
             ViewBag.ifSuccessed = 1;
-            return View();
+            return RedirectToAction("MyOrders");
         }
 
         // GET: Deliveryman/OrderDetails/5

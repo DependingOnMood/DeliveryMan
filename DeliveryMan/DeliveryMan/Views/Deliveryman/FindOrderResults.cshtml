@@ -41,15 +41,11 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.ETA)
                 </td>
-
                 <td>
-                    @Html.ActionLink("Accept","AcceptOrder", new { id = item.Id })
-
+                    @Html.ActionLink("Accept","AcceptOrder", new { id = item.Id})
                 </td>
             </tr>
         }
-
-
     }
 
 

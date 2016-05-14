@@ -66,23 +66,16 @@
         {
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Accept it" class="btn btn-default" />
+                    <input type="submit" value="Accept it" class="btn btn-danger" />
+                    <input type="button" value="Direction" class="btn btn-danger"
+                           onclick="location.href = '@(Url.Action("Direction", "Deliveryman"))'" />
                 </div>
-                @Html.ActionLink("Direction", "Direction")
+
             </div>
 
         }
 
 
-    }
-    else {
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                @Html.Label("Order has been accepted successfully!")
-                @Html.ActionLink("Direction", "Direction")
-                @Html.ActionLink("My Orders", "MyOrders")
-            </div>
-        </div>
     }
 
 </body>
