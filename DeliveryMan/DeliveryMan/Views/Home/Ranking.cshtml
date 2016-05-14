@@ -9,9 +9,9 @@
 <h4>Here's a ranking of our top deliverymen!</h4>
 <hr />
 
-@foreach (var item in Model.OrderBy(x => x.Rank))
+@foreach (var item in Model.OrderByDescending(x => x.Rank))
 {
-    if (item.TotalOrders >= 5)
+    if (item.TotalOrders >= 1)
     {
         <div class="form-group">
             <div class="col-md-10">
