@@ -430,11 +430,14 @@ namespace DeliveryMan.Controllers
             {
                 ViewBag.UserType = GetRole();
             }
-
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             Order orderDetails = (from o in db.orders
-                                where o.Restaurant.Contact.Email == User.Identity.Name
-                                where o.Id == id
-                                select o).FirstOrDefault();
+                                  where o.Restaurant.Contact.Email == User.Identity.Name
+                                  where o.Id == id
+                                  select o).FirstOrDefault();
 
             ReviewOrderViewModel reviewOrderVM = new ReviewOrderViewModel()
             {

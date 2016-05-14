@@ -1,0 +1,109 @@
+﻿@model DeliveryMan.Models.DeliverymanCancelPickupViewModel
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Cancel Pickup</title>
+</head>
+<body>
+    <h3>Are you sure you want to cancel this pick-up?</h3>
+    <div>
+        <hr />
+        @using (Html.BeginForm("CancelPickup", "Deliveryman", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.OrderId)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.OrderId)
+                    @Html.HiddenFor(model => model.OrderId)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.OrderNote)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.OrderNote)
+                    @Html.HiddenFor(model => model.OrderNote)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.RestaurantName)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.RestaurantName)
+                    @Html.HiddenFor(model => model.RestaurantName)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.OrderStatus)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.OrderStatus)
+                    @Html.HiddenFor(model => model.OrderStatus)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.ETA)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.ETA)
+                    @Html.HiddenFor(model => model.ETA)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.PlacedTime)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.PlacedTime)
+                    @Html.HiddenFor(model => model.PlacedTime)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.PickUpTime)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.PickUpTime)
+                    @Html.HiddenFor(model => model.PickUpTime)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.DeliveryFee)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.DeliveryFee)
+                    @Html.HiddenFor(model => model.DeliveryFee)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.CancellationFee)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.CancellationFee)
+                    @Html.HiddenFor(model => model.CancellationFee)
+                </dd>
+
+            </dl>
+
+            <div class="form-actions no-color">
+                <input type="submit" value="Cancel it!" class="btn btn-default" />
+                <input type="button" value="Back to My Orders" class="btn btn-danger"
+                       onclick="location.href = '@(Url.Action("MyOrders", "Deliveryman"))'" />
+            </div>
+        }
+    </div>
+</body>
+</html>

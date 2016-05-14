@@ -244,7 +244,7 @@ namespace DeliveryMan.Controllers
             return View(model);
         }
 
-        // POST: Deliveryman/CancelPickup/5
+        // GET: Deliveryman/CancelPickup/5
         public ActionResult CancelPickup(int? id)
         {
             if (User.Identity.IsAuthenticated)
@@ -259,7 +259,6 @@ namespace DeliveryMan.Controllers
             Deliveryman deliveryman = (from dm in db.deliverymen
                                        where dm.Contact.Email.Equals(User.Identity.Name)
                                        select dm).FirstOrDefault();
-
             if (deliveryman == null)
             {
                 throw new Exception("Error");
@@ -275,22 +274,43 @@ namespace DeliveryMan.Controllers
                 throw new Exception("Error");
             }
 
-            decimal cancellationFee = order.cancellationFee();
-
-            if ((order.Deliveryman.Balance - cancellationFee).CompareTo(0M) < 0)
+            DeliverymanCancelPickupViewModel model = new DeliverymanCancelPickupViewModel()
             {
-                //Unable to cancel pickup with insufficient balance
+                OrderId = order.Id,
+                OrderNote = order.Note,
+                OrderStatus = order.Status,
+                RestaurantName = order.Restaurant.Name,
+                ETA = order.ETA,
+                PlacedTime = order.PlacedTime,
+                PickUpTime = order.PickUpTime,
+                DeliveryFee = order.DeliveryFee,
+                CancellationFee = order.cancellationFee(),
+            };
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CancelPickup(DeliverymanCancelPickupViewModel model)
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.UserType = GetRole();
+            }
+            Order order = db.orders.Find(model.OrderId);
+            if ((order.Deliveryman.Balance - model.CancellationFee).CompareTo(0M) < 0)
+            {
+                return View(model);
+            }
+            else
+            {
+                order.Deliveryman.Balance -= model.CancellationFee;
+                order.Status = Status.WAITING;
+                order.DeliverymanId = null;
+                order.Deliveryman = null;
+                db.SaveChanges();
                 return RedirectToAction("MyOrders");
             }
-
-            order.Deliveryman.Balance -= cancellationFee;
-            order.Status = Status.WAITING;
-            order.DeliverymanId = null;
-            order.Deliveryman = null;
-
-            db.SaveChanges();
-
-            return RedirectToAction("MyOrders");
         }
 
         // GET: Deliveryman/CompleteOrder/5
