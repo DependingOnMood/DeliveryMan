@@ -89,7 +89,8 @@
         </dl>
     </div>
     <p>
-        @Html.ActionLink("My Orders", "MyOrders")   
+        <input type="button" value="My Orders" class="btn btn-danger"
+               onclick="location.href = '@(Url.Action("MyOrders", "Deliveryman"))'" />
     </p>
 </body>
 </html>

@@ -57,7 +57,7 @@ namespace DeliveryMan.Controllers
             }
             if (res.Balance.CompareTo(0.00M) < 0)
             {
-                return RedirectToAction("ErrorPage", "Home");
+                throw new ApplicationException("Error");
             }
             Contact contact = (from c in db.contacts
                                where c.PhoneNumber.Equals(model.PhoneNumber)
@@ -185,6 +185,7 @@ namespace DeliveryMan.Controllers
                 WaitingOrders = wo,
                 PendingOrders = po,
                 InProgressOrders = io,
+                Balance = res.Balance,
             };
             return View(rovm);
         }
@@ -731,6 +732,45 @@ namespace DeliveryMan.Controllers
             }
             //ViewBag.CId = new SelectList(db.contact, "CId", "Name", restaurant.CId);
             return View();
+        }
+
+        // GET: Restaurant/AddBalance
+        public ActionResult AddBalance()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.UserType = GetRole();
+            }
+
+            Restaurant res = (from r in db.restaurants
+                              where r.Contact.Email.Equals(User.Identity.Name)
+                              select r).FirstOrDefault();
+            if (res == null)
+            {
+                throw new Exception("Error");
+            }
+            RestaurantAddBalanceViewModel model = new RestaurantAddBalanceViewModel()
+            {
+                RestaurantId = res.Id,
+                Balance = res.Balance,
+            };
+            return View(model);
+        }
+
+        // POST: Restaurant/AddBalance
+        [HttpPost]
+        public ActionResult AddBalance([Bind(Include = "RestaurantId, Balance")] RestaurantAddBalanceViewModel model)
+        {
+            Restaurant res = (from r in db.restaurants
+                              where model.RestaurantId == r.Id
+                              select r).FirstOrDefault();
+            if (res == null)
+            {
+                throw new Exception("Error");
+            }
+            res.Balance = model.Balance;
+            db.SaveChanges();
+            return RedirectToAction("Orders");
         }
 
         protected override void Dispose(bool disposing)

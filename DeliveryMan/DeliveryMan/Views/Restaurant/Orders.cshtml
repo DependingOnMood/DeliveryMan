@@ -37,7 +37,12 @@
             <th>
                 DeliveryFee
             </th>
-            <th></th>
+            <th>
+                <input type="button" value="Balance" class="btn btn-danger"
+                       onclick="location.href = '@(Url.Action("AddBalance", "Restaurant"))'" />
+                @*@Html.DisplayNameFor(model => model.Balance)*@
+                @Html.DisplayFor(model => model.Balance)
+            </th>
         </tr>
 
         <tr>

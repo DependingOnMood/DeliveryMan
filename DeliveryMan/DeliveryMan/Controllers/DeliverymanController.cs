@@ -25,7 +25,7 @@ namespace DeliveryMan.Controllers
 
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: Deliveryman/
+        // GET: Deliveryman/FindOrder
         public ActionResult FindOrder()
         {
             if (User.Identity.IsAuthenticated)
@@ -217,6 +217,7 @@ namespace DeliveryMan.Controllers
                                                  select o;
             DeliverymanMyOrdersViewModel model = new DeliverymanMyOrdersViewModel()
             {
+                Balance = deli.Balance,
                 pendingOrders = pendingO,
                 inProgressOrders = inProgressO,
                 deliveredOrders = deliveredO,
@@ -251,9 +252,14 @@ namespace DeliveryMan.Controllers
             {
                 throw new Exception("Error");
             }
-            order.Status = Status.WAITING;
             decimal cancellationFee = order.cancellationFee();
+            if ((order.Deliveryman.Balance - cancellationFee).CompareTo(0M) < 0)
+            {
+                //Unable to cancel pickup with insufficient balance
+                return RedirectToAction("MyOrders");
+            }
             order.Deliveryman.Balance -= cancellationFee;
+            order.Status = Status.WAITING;
             order.DeliverymanId = null;
             order.Deliveryman = null;
             db.SaveChanges();
