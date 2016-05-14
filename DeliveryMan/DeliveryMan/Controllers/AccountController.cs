@@ -10,6 +10,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using DeliveryMan.Models;
 using DataLayer;
+using System.Security.Policy;
 
 namespace DeliveryMan.Controllers
 {
@@ -150,7 +151,7 @@ namespace DeliveryMan.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterViewModel model, string command)
+        public async Task<ActionResult> Register(RegisterViewModel model, HttpPostedFileBase file, string command)
         {
             if (ModelState.IsValid)
             {
@@ -159,6 +160,7 @@ namespace DeliveryMan.Controllers
 
                 if (result.Succeeded)
                 {
+
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
                     // add user to database
@@ -176,17 +178,23 @@ namespace DeliveryMan.Controllers
                     if (command == "Register Deliveryman")
                     {
                         newContact.Role = Role.DELIVERYMAN;
-
+                        
                         // add to deliveryman table 
                         Deliveryman newDeliveryman = new Deliveryman();
+                        if (file != null)
+                        {
+                            String fileUrl = HttpContext.Server.MapPath("~/Content/UserIcon/")
+                                                                  + model.Email + file.FileName;
+                            file.SaveAs(fileUrl);
+
+                            newDeliveryman.IconImageUrl = fileUrl;
+                        }
 
                         newDeliveryman.FirstName = model.FirstName;
                         newDeliveryman.LastName = model.LastName;
-
                         newDeliveryman.ContactId = newContact.PhoneNumber;
-
                         newDeliveryman.Contact = newContact;
-
+   
                         db.deliverymen.Add(newDeliveryman);
                     }
                     else if (command == "Register Restaurant")
@@ -195,6 +203,14 @@ namespace DeliveryMan.Controllers
 
                         // add to restaurant table 
                         Restaurant newRestaurant = new Restaurant();
+                        if (file != null)
+                        {
+                            String fileUrl = HttpContext.Server.MapPath("~/Content/UserIcon/")
+                                                                        + model.Email + file.FileName;
+                            file.SaveAs(fileUrl);
+                            newRestaurant.IconImageUrl = fileUrl;
+                        }
+                
 
                         newRestaurant.Name = model.RestaurantName;
 
