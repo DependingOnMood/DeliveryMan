@@ -252,11 +252,13 @@ namespace DeliveryMan.Controllers
                     return RedirectToAction("Index", "Home");
                 }
 
-                AddErrors(result);
+                // AddErrors(result);
+                ModelState.AddModelError("Email", "Email exists.");
+                return View("Register", model);
             }
 
             // If we got this far, something failed, redisplay form
-            return View(model);
+            return View("Register", model);
         }
 
         //
