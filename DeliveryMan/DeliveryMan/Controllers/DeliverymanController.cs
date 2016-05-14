@@ -63,7 +63,7 @@ namespace DeliveryMan.Controllers
                 catch (Exception e)
                 {
 
-                    ModelState.AddModelError("location", "Pleas input a valid address!");
+                    ModelState.AddModelError("line1", "Pleas input a valid address!");
                     return View("FindOrder",model);
                 }
             }
@@ -98,7 +98,7 @@ namespace DeliveryMan.Controllers
                     catch (Exception e)
                     {
 
-                        ModelState.AddModelError("location", "Pleas input a valid address!");
+                        ModelState.AddModelError("line1", "Pleas input a valid address!");
                         return View("FindOrder", model);
                     }
 

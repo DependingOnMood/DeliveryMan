@@ -15,7 +15,7 @@ namespace BizLogic
 
             var address = addr;
             //var address = "110 Riverdrive south";
-            var requestUri = string.Format("http://maps.googleapis.com/maps/api/geocode/xml?address={0}&sensor=false&key=AIzaSyDmB4eLtli6pKAk5-dd8hyZRamya2_OS3E", Uri.EscapeDataString(address));
+            var requestUri = string.Format("http://maps.googleapis.com/maps/api/geocode/xml?address={0}&sensor=false", Uri.EscapeDataString(address));
 
             var request = WebRequest.Create(requestUri);
             var response = request.GetResponse();
@@ -35,7 +35,7 @@ namespace BizLogic
         public String getAddrByLatandLng(string info)
         {
 
-            var requestUri = string.Format("https://maps.googleapis.com/maps/api/geocode/xml?latlng={0}&key=AIzaSyDmB4eLtli6pKAk5-dd8hyZRamya2_OS3E", info);
+            var requestUri = string.Format("https://maps.googleapis.com/maps/api/geocode/xml?latlng={0}", info);
 
             var request = WebRequest.Create(requestUri);
             var response = request.GetResponse();
@@ -59,7 +59,7 @@ namespace BizLogic
 
         public String getRoute(String addr1, String addr2)
         {
-            var requestUri = string.Format("https://maps.googleapis.com/maps/api/directions/xml?origin={0}&destination={1}&key=AIzaSyDmB4eLtli6pKAk5-dd8hyZRamya2_OS3E", addr1, addr2);
+            var requestUri = string.Format("https://maps.googleapis.com/maps/api/directions/xml?origin={0}&destination={1}", addr1, addr2);
           
 
             var request = WebRequest.Create(requestUri);
