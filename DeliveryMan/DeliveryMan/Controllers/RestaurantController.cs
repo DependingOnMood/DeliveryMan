@@ -367,18 +367,6 @@ namespace DeliveryMan.Controllers
                 DeliveryFee = order.DeliveryFee,
                 CancellationFee = Decimal.Parse(order.cancellationFee().ToString("F")),
             };
-
-            //cancelOrderVM.OrderId = order.Id;
-            //cancelOrderVM.OrderName = order.Note;
-            //cancelOrderVM.OrderStatus = order.Status;
-
-            //cancelOrderVM.ETA = order.ETA;
-            //cancelOrderVM.PlacedTime = order.PlacedTime;
-            //cancelOrderVM.PickUpTime = order.PickUpTime;
-            //cancelOrderVM.DeliveryFee = order.DeliveryFee;
-
-            //// calculate cancellation fee
-            //cancelOrderVM.CancellationFee = RestaurantCancelOrder.cancellationFee(order);
             return View(cancelOrderVM);
         }
 
