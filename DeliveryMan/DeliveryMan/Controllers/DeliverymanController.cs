@@ -157,10 +157,13 @@ namespace DeliveryMan.Controllers
             {
                 throw new Exception("Error");
             }
+
             int id = o.Id;
+
             var res = (from o1 in db.orders
                        where o1.Id == id
                        select o1).FirstOrDefault();
+
             res.Status = Status.PENDING;
             res.PickUpTime = DateTime.Now;
 
@@ -172,6 +175,7 @@ namespace DeliveryMan.Controllers
             res.Deliveryman = user;
             db.SaveChanges();
             ViewBag.ifSuccessed = 1;
+
             return RedirectToAction("MyOrders");
         }
 
@@ -182,18 +186,22 @@ namespace DeliveryMan.Controllers
             {
                 ViewBag.UserType = GetRole();
             }
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             Order order = (from o in db.orders
                            where o.Id == id
                            where o.Deliveryman.Contact.Email.Equals(User.Identity.Name)
                            select o).FirstOrDefault();
+
             if (order == null)
             {
                 throw new Exception("Error");
             }
+
             return View(order);
         }
 
@@ -247,13 +255,16 @@ namespace DeliveryMan.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             Deliveryman deliveryman = (from dm in db.deliverymen
                                        where dm.Contact.Email.Equals(User.Identity.Name)
                                        select dm).FirstOrDefault();
+
             if (deliveryman == null)
             {
                 throw new Exception("Error");
             }
+
             Order order = (from o in db.orders
                            where o.Id == id
                            where o.Status == Status.PENDING
@@ -263,17 +274,22 @@ namespace DeliveryMan.Controllers
             {
                 throw new Exception("Error");
             }
+
             decimal cancellationFee = order.cancellationFee();
+
             if ((order.Deliveryman.Balance - cancellationFee).CompareTo(0M) < 0)
             {
                 //Unable to cancel pickup with insufficient balance
                 return RedirectToAction("MyOrders");
             }
+
             order.Deliveryman.Balance -= cancellationFee;
             order.Status = Status.WAITING;
             order.DeliverymanId = null;
             order.Deliveryman = null;
+
             db.SaveChanges();
+
             return RedirectToAction("MyOrders");
         }
 
