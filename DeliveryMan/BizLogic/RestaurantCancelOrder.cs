@@ -16,7 +16,8 @@ namespace BizLogic
                 case Status.WAITING:
                     return 0M;
                 case Status.PENDING:
-                    if (order.PlacedTime.AddMinutes(5) <= DateTime.Now)
+                    DateTime pickUpTime = order.PickUpTime.Value;
+                    if (pickUpTime.AddMinutes(5) >= DateTime.Now)
                     {
                         return 0M;
                     }
@@ -25,7 +26,7 @@ namespace BizLogic
                         return pendingFeeCalculation(order.DeliveryFee);
                     }
                 case Status.INPROGRESS:
-                    return inprogressFeeCalculation(order.DeliveryFee); ;
+                    return inprogressFeeCalculation(order.DeliveryFee);
                 case Status.DELIVERED:
                     return 0M;
                 default:

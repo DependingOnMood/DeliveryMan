@@ -14,6 +14,8 @@ namespace DeliveryMan.Controllers
 {
     public class DeliverymanController : Controller
     {
+        private ApplicationDbContext db = new ApplicationDbContext();
+
         public int GetRole()
         {
             var q = (
@@ -23,9 +25,7 @@ namespace DeliveryMan.Controllers
             return (int)q.Role;
         }
 
-        private ApplicationDbContext db = new ApplicationDbContext();
-
-        // GET: Deliveryman/
+        // GET: Deliveryman/FindOrder
         public ActionResult FindOrder()
         {
             if (User.Identity.IsAuthenticated)
@@ -53,8 +53,19 @@ namespace DeliveryMan.Controllers
             }
             else {
                 GoogleMapHelper map = new GoogleMapHelper();
-                add1 = map.getAddrByLatandLng(model.latlng);
+
+                try
+                {
+                    add1 = map.getAddrByLatandLng(model.latlng);
+                }
+                catch (Exception e)
+                {
+
+                    ModelState.AddModelError("location", "Pleas input a valid address!");
+                    return View(model);
+                }
             }
+
 
             FindOrderLogic helper = new FindOrderLogic();
 
@@ -76,7 +87,17 @@ namespace DeliveryMan.Controllers
                 {
                     Contact c = o.Contact;
                     String addr2 = c.AddressLine1 + " " + c.AddressLine2 + " " + c.City + " " + c.State + " " + c.ZipCode;
-                    double dis = helper.ComputeDistanceBetweenAandB(add1, addr2);
+                    double dis = 0;
+
+                    try
+                    {
+                        dis = helper.ComputeDistanceBetweenAandB(add1, addr2);
+                    }
+                    catch (Exception e)
+                    {
+
+                        ModelState.AddModelError("location", "Pleas input a valid address!");
+                    }
 
                     // check to see if deliveryman is in any blacklist
                     var deliveryman = (from d in db.deliverymen
@@ -207,6 +228,7 @@ namespace DeliveryMan.Controllers
                                             select o;
             DeliverymanMyOrdersViewModel model = new DeliverymanMyOrdersViewModel()
             {
+                Balance = deli.Balance,
                 pendingOrders = pendingO,
                 inProgressOrders = inProgressO,
                 deliveredOrders = deliveredO,
@@ -241,9 +263,14 @@ namespace DeliveryMan.Controllers
             {
                 throw new Exception("Error");
             }
-            order.Status = Status.WAITING;
             decimal cancellationFee = order.cancellationFee();
+            if ((order.Deliveryman.Balance - cancellationFee).CompareTo(0M) < 0)
+            {
+                //Unable to cancel pickup with insufficient balance
+                return RedirectToAction("MyOrders");
+            }
             order.Deliveryman.Balance -= cancellationFee;
+            order.Status = Status.WAITING;
             order.DeliverymanId = null;
             order.Deliveryman = null;
             db.SaveChanges();
@@ -302,5 +329,78 @@ namespace DeliveryMan.Controllers
             }
             base.Dispose(disposing);
         }
+
+        // GET: Deliveryman/ChangeDeliverymantUserInfo
+        public ActionResult ChangeDeliverymanUserInfo()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.UserType = GetRole();
+            }
+
+            Deliveryman del = (from d in db.deliverymen
+                               where d.Contact.Email.Equals(User.Identity.Name)
+                               select d).FirstOrDefault();
+            if (del == null)
+            {
+                throw new Exception("Error");
+            }
+
+            ChangeDeliverymanInfoModel model = new ChangeDeliverymanInfoModel()
+            {
+                FirstName = del.FirstName,
+                LastName = del.LastName,
+                PhoneNumber = del.Contact.PhoneNumber,
+                AddressLine1 = del.Contact.AddressLine1,
+                AddressLine2 = del.Contact.AddressLine2,
+                City = del.Contact.City,
+                State = del.Contact.State,
+                ZipCode = del.Contact.ZipCode,
+            };
+            return View(model);
+        }
+
+        // POST: Deliveryman/ChangeDeliverymanUserInfo
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ChangeDeliverymanUserInfo([Bind(Include = "FirstName, LastName, PhoneNumber, AddressLine1, AddressLine2, City, State, ZipCode")]
+            ChangeDeliverymanInfoModel model)
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.UserType = GetRole();
+            }
+
+            Deliveryman val = (from d in db.deliverymen
+                               where d.Contact.Email != User.Identity.Name
+                               where d.Contact.PhoneNumber == model.PhoneNumber
+                               select d).FirstOrDefault();
+            if (val != null)
+            {
+                throw new Exception("Phone number already exists error");
+            }
+
+            Deliveryman del = (from d in db.deliverymen
+                               where d.Contact.Email.Equals(User.Identity.Name)
+                               select d).FirstOrDefault();
+            if (del == null)
+            {
+                throw new Exception("Error");
+            }
+
+            del.FirstName = model.FirstName;
+            del.LastName = model.LastName;
+            del.Contact.PhoneNumber = model.PhoneNumber;
+            del.Contact.AddressLine1 = model.AddressLine1;
+            del.Contact.AddressLine2 = model.AddressLine2;
+            del.Contact.City = model.City;
+            del.Contact.State = model.State;
+            del.Contact.ZipCode = model.ZipCode;
+            db.SaveChanges();
+            return RedirectToAction("Index", "Manage");
+        }
+
     }
 }

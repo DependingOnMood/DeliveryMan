@@ -10,6 +10,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using DeliveryMan.Models;
 using DataLayer;
+using System.Security.Policy;
 
 namespace DeliveryMan.Controllers
 {
@@ -150,19 +151,45 @@ namespace DeliveryMan.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterViewModel model, string command)
+        public async Task<ActionResult> Register(RegisterViewModel model, HttpPostedFileBase file, string command)
         {
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
                 var result = await UserManager.CreateAsync(user, model.Password);
+                var c = (from pc in db.contacts
+                         where pc.PhoneNumber == model.PhoneNumber
+                         select pc).FirstOrDefault();
+                if (c != null)
+                {
+                    ModelState.AddModelError("PhoneNumber", "PhoneNumber exists.");
+                    return View(model);
+                }
+
+                if ((model.FirstName == null || model.LastName == null) && model.RestaurantName == null) {
+                    ModelState.AddModelError("FirstName", "FirstName and LastName is required.");
+                    return View(model);
+                }
+
+                if (model.RestaurantName == null && (model.FirstName != null || model.LastName !=null))
+                {
+                    ModelState.AddModelError("FirstName", "FirstName and LastName is required.");
+                    return View(model);
+                }
+
+
 
                 if (result.Succeeded)
                 {
+
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
                     // add user to database
                     Contact newContact = new Contact();
+                 
+
+
+
 
                     // add to contact table
                     newContact.PhoneNumber = model.PhoneNumber;
@@ -176,17 +203,23 @@ namespace DeliveryMan.Controllers
                     if (command == "Register Deliveryman")
                     {
                         newContact.Role = Role.DELIVERYMAN;
-
+                        
                         // add to deliveryman table 
                         Deliveryman newDeliveryman = new Deliveryman();
+                        if (file != null)
+                        {
+                            String fileUrl = HttpContext.Server.MapPath("~/Content/UserIcon/")
+                                                                  + model.Email + file.FileName;
+                            file.SaveAs(fileUrl);
+
+                            newDeliveryman.IconImageUrl = fileUrl;
+                        }
 
                         newDeliveryman.FirstName = model.FirstName;
                         newDeliveryman.LastName = model.LastName;
-
                         newDeliveryman.ContactId = newContact.PhoneNumber;
-
                         newDeliveryman.Contact = newContact;
-
+   
                         db.deliverymen.Add(newDeliveryman);
                     }
                     else if (command == "Register Restaurant")
@@ -195,6 +228,14 @@ namespace DeliveryMan.Controllers
 
                         // add to restaurant table 
                         Restaurant newRestaurant = new Restaurant();
+                        if (file != null)
+                        {
+                            String fileUrl = HttpContext.Server.MapPath("~/Content/UserIcon/")
+                                                                        + model.Email + file.FileName;
+                            file.SaveAs(fileUrl);
+                            newRestaurant.IconImageUrl = fileUrl;
+                        }
+                
 
                         newRestaurant.Name = model.RestaurantName;
 
