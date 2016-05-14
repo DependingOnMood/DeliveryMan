@@ -117,13 +117,12 @@
                 <td>
                     @destination
                 </td>
-                <td onclick="location.href='@(Url.Action("DeliverymanDetails", "Restaurant", new { Id = item.Id }))'">
+                <td>
                     @{
                         if (item.Deliveryman != null)
                         {
                             string res = item.Deliveryman.getName();
-                            <a href="@(Url.Action("DeliverymanDetails", "Restaurant", new { Id = item.Id }))">@res</a>
-                          
+                            <a href="@(Url.Action("DeliverymanDetails", "Restaurant", new { Id = item.Id }))">@res</a>                     
                         }
                     }
                 </td>
@@ -171,11 +170,11 @@
                 <td>
                     @destination
                 </td>
-                <td onclick="location.href='@(Url.Action("DeliverymanDetails", "Restaurant", new { Id = item.Id }))'">
+                <td>
                     @if (item.Deliveryman != null)
                     {
                         string res = item.Deliveryman.getName();
-                        @res
+                        <a href="@(Url.Action("DeliverymanDetails", "Restaurant", new { Id = item.Id }))">@res</a>
                     }
                 </td>
                 <td>
