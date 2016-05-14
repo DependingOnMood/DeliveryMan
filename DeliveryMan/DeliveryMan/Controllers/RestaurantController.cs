@@ -415,16 +415,24 @@ namespace DeliveryMan.Controllers
             }
             else if (order.Status == Status.PENDING || order.Status == Status.INPROGRESS)
             {
-                order.Restaurant.Balance -= model.CancellationFee;
-                order.Deliveryman.Balance += model.CancellationFee;
-                db.orders.Remove(order);
-                db.SaveChanges();
-                return RedirectToAction("Orders");
+                if ((order.Restaurant.Balance - model.CancellationFee).CompareTo(0M) < 0)
+                {
+                    ModelState.AddModelError("CancellationFee", "You have insufficient balance to cancel it!");
+                    return View("CancelOrder", model);
+                }
+                else
+                {
+                    order.Restaurant.Balance -= model.CancellationFee;
+                    order.Deliveryman.Balance += model.CancellationFee;
+                    db.orders.Remove(order);
+                    db.SaveChanges();
+                    return RedirectToAction("Orders");
+                }
             }
             else
             {
-                ModelState.AddModelError("", "A Delivered Order can not be cancelled");
-                return View(model);
+                ModelState.AddModelError("OrderStatus", "A Delivered Order can not be cancelled");
+                return View("CancelOrder", model);
             }
         }
 

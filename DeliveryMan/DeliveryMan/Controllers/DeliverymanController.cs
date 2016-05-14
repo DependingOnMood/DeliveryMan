@@ -300,7 +300,9 @@ namespace DeliveryMan.Controllers
             Order order = db.orders.Find(model.OrderId);
             if ((order.Deliveryman.Balance - model.CancellationFee).CompareTo(0M) < 0)
             {
-                return View(model);
+                //ViewBag.Message = "You have insufficient balance to cancel!";
+                ModelState.AddModelError("CancellationFee", "You have insufficient balance to cancel!");
+                return View("CancelPickup", model);
             }
             else
             {
