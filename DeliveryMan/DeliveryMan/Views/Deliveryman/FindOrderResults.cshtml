@@ -8,6 +8,9 @@
 <table class="table">
     <tr>
         <th>
+            Restaurant Image
+        </th>
+        <th>
             Restaurant
         </th>
         <th>
@@ -29,6 +32,9 @@
         {
             string address = item.Contact.AddressToString();
             <tr>
+                <td>
+                    <img src="~/Content/UserIcon/@item.Restaurant.IconImageUrl" alt="" style="width: 150px; height: 150px;"/>
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Restaurant.Name)
                 </td>
