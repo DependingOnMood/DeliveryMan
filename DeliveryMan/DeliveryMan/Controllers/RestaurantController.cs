@@ -715,6 +715,45 @@ namespace DeliveryMan.Controllers
             return View();
         }
 
+        // GET: Restaurant/AddBalance
+        public ActionResult AddBalance()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.UserType = GetRole();
+            }
+
+            Restaurant res = (from r in db.restaurants
+                              where r.Contact.Email.Equals(User.Identity.Name)
+                              select r).FirstOrDefault();
+            if (res == null)
+            {
+                throw new Exception("Error");
+            }
+            RestaurantAddBalanceViewModel model = new RestaurantAddBalanceViewModel()
+            {
+                RestaurantId = res.Id,
+                Balance = res.Balance,
+            };
+            return View(model);
+        }
+
+        // POST: Restaurant/AddBalance
+        [HttpPost]
+        public ActionResult AddBalance([Bind(Include = "RestaurantId, Balance")] RestaurantAddBalanceViewModel model)
+        {
+            Restaurant res = (from r in db.restaurants
+                              where model.RestaurantId == r.Id
+                              select r).FirstOrDefault();
+            if (res == null)
+            {
+                throw new Exception("Error");
+            }
+            res.Balance = model.Balance;
+            db.SaveChanges();
+            return RedirectToAction("Orders");
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

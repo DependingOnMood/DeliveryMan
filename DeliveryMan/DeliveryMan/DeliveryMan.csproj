@@ -335,6 +335,7 @@
     <Content Include="Views\Restaurant\BlacklistView.cshtml" />
     <Content Include="Views\Shared\NotFound.cshtml" />
     <Content Include="Views\Shared\InternalServer.cshtml" />
+    <Content Include="Views\Restaurant\AddBalance.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

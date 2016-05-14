@@ -25,7 +25,7 @@ namespace DeliveryMan.Controllers
 
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: Deliveryman/
+        // GET: Deliveryman/FindOrder
         public ActionResult FindOrder()
         {
             if (User.Identity.IsAuthenticated)

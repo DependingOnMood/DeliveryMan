@@ -99,4 +99,13 @@ namespace DeliveryMan.Models
         [Display(Name = "Delivery Fee")]
         public decimal DeliveryFee { get; set; }
     }
+
+    public class RestaurantAddBalanceViewModel
+    {
+        [Required]
+        public int RestaurantId { get; set; }
+
+        [Required]
+        public decimal Balance { get; set; }
+    }
 }
