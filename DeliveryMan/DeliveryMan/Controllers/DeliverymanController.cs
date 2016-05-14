@@ -107,7 +107,7 @@ namespace DeliveryMan.Controllers
                               select o).FirstOrDefault();
             if (res == null)
             {
-                return RedirectToAction("ErrorPage", "Home");
+                throw new Exception("Error");
             }
             ViewBag.ifSuccessed = 0;
             return View(res);
@@ -123,7 +123,7 @@ namespace DeliveryMan.Controllers
             }
 
             if (o.Id == 0) {
-                return RedirectToAction("ErrorPage", "Home");
+                throw new Exception("Error");
                     }
             int id = o.Id;
             var res = (from o1 in db.orders
@@ -160,7 +160,7 @@ namespace DeliveryMan.Controllers
                            select o).FirstOrDefault();
             if (order == null)
             {
-                return RedirectToAction("ErrorPage", "Home");
+                throw new Exception("Error");
             }
             return View(order);
         }
@@ -177,7 +177,7 @@ namespace DeliveryMan.Controllers
                                 select dm).FirstOrDefault();
             if (deli == null)
             {
-                return RedirectToAction("ErrorPage", "Home");
+                throw new Exception("Error");
             }
             IEnumerable<Order> pendingO = from o in db.orders
                                                where o.DeliverymanId == deli.Id
@@ -216,7 +216,7 @@ namespace DeliveryMan.Controllers
                                        select dm).FirstOrDefault();
             if (deliveryman == null)
             {
-                return RedirectToAction("ErrorPage", "Home");
+                throw new Exception("Error");
             }
             Order order = (from o in db.orders
                            where o.Id == id
@@ -225,7 +225,7 @@ namespace DeliveryMan.Controllers
                            select o).FirstOrDefault();
             if (order == null)
             {
-                return RedirectToAction("ErrorPage", "Home");
+                throw new Exception("Error");
             }
             //order.Status = Status.WAITING;
             //order.DeliverymanId = 0;
@@ -245,7 +245,7 @@ namespace DeliveryMan.Controllers
                                        select dm).FirstOrDefault();
             if (deliveryman == null)
             {
-                return RedirectToAction("ErrorPage", "Home");
+                throw new Exception("Error");
             }
             Order order = (from o in db.orders
                            where o.Id == id
@@ -254,7 +254,7 @@ namespace DeliveryMan.Controllers
                            select o).FirstOrDefault();
             if (order == null)
             {
-                return RedirectToAction("ErrorPage", "Home");
+                throw new Exception("Error");
             }
             order.Status = Status.DELIVERED;
             order.DeliveredTime = DateTime.Now;
