@@ -42,6 +42,7 @@
                        onclick="location.href = '@(Url.Action("AddBalance", "Restaurant"))'" />
                 @*@Html.DisplayNameFor(model => model.Balance)*@
                 @Html.DisplayFor(model => model.Balance)
+
             </th>
         </tr>
 
@@ -118,7 +119,8 @@
                         if (item.Deliveryman != null)
                         {
                             string res = item.Deliveryman.getName();
-                            @res
+                            <a href="@(Url.Action("DeliverymanDetails", "Restaurant", new { Id = item.Id }))">@res</a>
+                          
                         }
                     }
                 </td>
