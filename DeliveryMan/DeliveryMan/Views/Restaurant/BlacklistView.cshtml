@@ -32,9 +32,9 @@
                 </dd>
 
             </dl>
-        </div>
 
-        <input type="button" value="Cancel" class="btn btn-danger"
-               onclick="location.href = '@(Url.Action("DeleteFromBlacklist", "Restaurant", new { id = item.Id }))'" />
+            <input type="button" value="Remove" class="btn btn-danger"
+                   onclick="location.href = '@(Url.Action("DeleteFromBlacklist", "Restaurant", new { id = item.DeliverymanId }))'" />
+        </div>      
     </div>
 }
