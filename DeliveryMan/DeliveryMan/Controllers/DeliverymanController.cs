@@ -325,10 +325,12 @@ namespace DeliveryMan.Controllers
         }
 
         //Get
-        public ActionResult Direction()
+        public ActionResult Direction(String s1, String s2)
         {
-            ViewBag.source = "110 riverdrive south 07310";
-            ViewBag.desti = "55 riverdrive south 07310";
+            //ViewBag.source = "110 riverdrive south 07310";
+            //ViewBag.desti = "55 riverdrive south 07310";
+            ViewBag.source = s1;
+            ViewBag.desti = s2;
             return View();
         }
 
