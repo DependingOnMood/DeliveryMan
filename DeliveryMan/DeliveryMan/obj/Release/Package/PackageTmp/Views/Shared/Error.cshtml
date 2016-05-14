@@ -4,6 +4,25 @@
     ViewBag.Title = "Error";
 }
 
-<h1 class="text-danger">Error.</h1>
-<h2 class="text-danger">An error occurred while processing your request.</h2>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    @Styles.Render("~/Content/ErrorPage.css")
+</head>
 
+<h2>Error</h2>
+
+<p>
+    <ins>An error just happened.</ins>
+</p>
+
+<div>
+    <a href="~/Home/Index" class="errorlogo"></a>
+</div>
+
+<p>
+    The request was not found.
+</p>
+<p>
+    <ins>That’s all we know.</ins>
+</p>

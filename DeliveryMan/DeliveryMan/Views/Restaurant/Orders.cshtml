@@ -6,15 +6,24 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Orders</title>
+    @Styles.Render("~/Content/RestaurantOrders.css")
 </head>
 <body>
     <br />
-    <p>
-        <input type="button" value="Create A New Order" class="btn btn-danger"
-               onclick="location.href = '@(Url.Action("CreateOrder", "Restaurant"))'" />
-        <input type="button" value="View Order History" class="btn btn-danger"
-               onclick="location.href = '@(Url.Action("OrdersHistory", "Restaurant"))'" />
-    </p>
+    <div>
+        <div>
+            <input type="button" value="Create A New Order" class="btn btn-danger"
+                   onclick="location.href = '@(Url.Action("CreateOrder", "Restaurant"))'" />
+            <input type="button" value="View Order History" class="btn btn-danger"
+                   onclick="location.href = '@(Url.Action("OrdersHistory", "Restaurant"))'" />
+            </div>
+                <div class="balance">
+                    <input type="button" value="Balance" class="btn btn-danger"
+                           onclick="location.href = '@(Url.Action("AddBalance", "Restaurant"))'" />
+                    @*@Html.DisplayNameFor(model => model.Balance)*@
+                    @Html.DisplayFor(model => model.Balance)
+                </div>
+</div>
     <table class="table">
         <tr>
             <th>
@@ -36,12 +45,6 @@
             </th>
             <th>
                 DeliveryFee
-            </th>
-            <th>
-                <input type="button" value="Balance" class="btn btn-danger"
-                       onclick="location.href = '@(Url.Action("AddBalance", "Restaurant"))'" />
-                @*@Html.DisplayNameFor(model => model.Balance)*@
-                @Html.DisplayFor(model => model.Balance)
             </th>
         </tr>
 
