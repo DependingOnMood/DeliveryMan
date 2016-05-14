@@ -13,7 +13,7 @@ namespace DeliveryMan.Models
         public int TotalOrders { get; set; }
 
         [Display(Name = "Average delivery time")]
-        public int AverageDeliveryTime { get; set; }
+        public string AverageDeliveryTime { get; set; }
 
         [Display(Name = "Average Rating")]
         public decimal Rating { get; set; }

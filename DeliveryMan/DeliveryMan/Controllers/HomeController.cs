@@ -39,6 +39,7 @@ namespace DeliveryMan.Controllers
             // get all deliverymen
             IEnumerable<Deliveryman> deliveryman = (from d in db.deliverymen
                                                     where d.Rating != zero
+                                                    where d.Ranking != 0
                                                     where d.TotalDeliveryCount >= 5
                                                     select d).OrderByDescending(x => x.Ranking);
 

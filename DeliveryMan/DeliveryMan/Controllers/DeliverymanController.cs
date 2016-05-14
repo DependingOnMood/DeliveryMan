@@ -34,7 +34,7 @@ namespace DeliveryMan.Controllers
             }
             return View();
         }
-        
+
         // POST: Deliveryman/FindOrder
         [HttpPost]
         public ActionResult FindOrder(FindOrderViewModel model)
@@ -56,11 +56,12 @@ namespace DeliveryMan.Controllers
 
                 try
                 {
-                add1 = map.getAddrByLatandLng(model.latlng);
-            }
-                catch (Exception e) {
+                    add1 = map.getAddrByLatandLng(model.latlng);
+                }
+                catch (Exception e)
+                {
 
-                    ModelState.AddModelError("location","Pleas input a valid address!");
+                    ModelState.AddModelError("location", "Pleas input a valid address!");
                     return View(model);
                 }
             }
@@ -74,43 +75,53 @@ namespace DeliveryMan.Controllers
                 distance = model.distance;
             }
 
+            var q = (from o in db.orders
+                     where o.Status == Status.WAITING
+                     orderby o.DeliveryFee descending
+                     select o
+                     );
 
-                var q = (from o in db.orders
-                         where o.Status == Status.WAITING
-                         orderby o.DeliveryFee descending
-                         select o
-                         );
-                if (q != null)
+            if (q != null)
+            {
+                foreach (Order o in q.ToList())
                 {
-                    foreach (Order o in q.ToList())
-                    {
-                        Contact c = o.Contact;
-                        String addr2 = c.AddressLine1 + " " + c.AddressLine2 + " " + c.City + " " + c.State + " " + c.ZipCode;
+                    Contact c = o.Contact;
+                    String addr2 = c.AddressLine1 + " " + c.AddressLine2 + " " + c.City + " " + c.State + " " + c.ZipCode;
                     double dis = 0;
+
                     try
                     {
-                       dis = helper.ComputeDistanceBetweenAandB(add1, addr2);
-                    } catch (Exception e)
+                        dis = helper.ComputeDistanceBetweenAandB(add1, addr2);
+                    }
+                    catch (Exception e)
                     {
 
                         ModelState.AddModelError("location", "Pleas input a valid address!");
                     }
 
+                    // check to see if deliveryman is in any blacklist
+                    var deliveryman = (from d in db.deliverymen
+                                       where d.Contact.Email == User.Identity.Name
+                                       select d).FirstOrDefault();
 
-                    
-                        if (helper.selectOrderByDistance(distance, dis))
-                        {
-                            orders.Add(o);
-                        }
+                    var blacklist = (from b in db.blacklists
+                                     where b.RestaurantId == o.RestaurantId
+                                     where b.DeliverymanId == deliveryman.Id
+                                     select b).FirstOrDefault();
+
+                    if (helper.selectOrderByDistance(distance, dis) && blacklist == null)
+                    {
+                        orders.Add(o);
                     }
                 }
-            
+            }
+
             ViewBag.res = orders;
             return View("FindOrderResults");
         }
 
         // GET: 
-        public ActionResult AcceptOrder(int? id )
+        public ActionResult AcceptOrder(int? id)
         {
             if (User.Identity.IsAuthenticated)
             {
@@ -122,9 +133,9 @@ namespace DeliveryMan.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             var res = (from o in db.orders
-                         where o.Id == id
-                         where o.Status == Status.WAITING
-                              select o).FirstOrDefault();
+                       where o.Id == id
+                       where o.Status == Status.WAITING
+                       select o).FirstOrDefault();
             if (res == null)
             {
                 throw new Exception("Error");
@@ -142,9 +153,10 @@ namespace DeliveryMan.Controllers
                 ViewBag.UserType = GetRole();
             }
 
-            if (o.Id == 0) {
+            if (o.Id == 0)
+            {
                 throw new Exception("Error");
-                    }
+            }
             int id = o.Id;
             var res = (from o1 in db.orders
                        where o1.Id == id
@@ -200,20 +212,20 @@ namespace DeliveryMan.Controllers
                 throw new Exception("Error");
             }
             IEnumerable<Order> pendingO = from o in db.orders
-                                               where o.DeliverymanId == deli.Id
-                                               where o.Status == Status.PENDING
-                                               orderby o.PlacedTime descending
-                                               select o;
+                                          where o.DeliverymanId == deli.Id
+                                          where o.Status == Status.PENDING
+                                          orderby o.PlacedTime descending
+                                          select o;
             IEnumerable<Order> inProgressO = from o in db.orders
-                                                  where o.DeliverymanId == deli.Id
-                                                  where o.Status == Status.INPROGRESS
-                                                  orderby o.PickUpTime descending
-                                                  select o;
+                                             where o.DeliverymanId == deli.Id
+                                             where o.Status == Status.INPROGRESS
+                                             orderby o.PickUpTime descending
+                                             select o;
             IEnumerable<Order> deliveredO = from o in db.orders
-                                                 where o.DeliverymanId == deli.Id
-                                                 where o.Status == Status.DELIVERED
-                                                 orderby o.DeliveredTime descending
-                                                 select o;
+                                            where o.DeliverymanId == deli.Id
+                                            where o.Status == Status.DELIVERED
+                                            orderby o.DeliveredTime descending
+                                            select o;
             DeliverymanMyOrdersViewModel model = new DeliverymanMyOrdersViewModel()
             {
                 Balance = deli.Balance,
@@ -327,8 +339,8 @@ namespace DeliveryMan.Controllers
             }
 
             Deliveryman del = (from d in db.deliverymen
-                              where d.Contact.Email.Equals(User.Identity.Name)
-                              select d).FirstOrDefault();
+                               where d.Contact.Email.Equals(User.Identity.Name)
+                               select d).FirstOrDefault();
             if (del == null)
             {
                 throw new Exception("Error");
