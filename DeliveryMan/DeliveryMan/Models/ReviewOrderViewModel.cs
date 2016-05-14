@@ -10,8 +10,11 @@ namespace DeliveryMan.Models
         [Display(Name = "Order ID")]
         public int OrderId { get; set; }
 
-        [Display(Name = "Order Name")]
-        public string OrderName { get; set; }
+        [Display(Name = "Deliveryman Name")]
+        public string DeliverymanName { get; set; }
+
+        public string IconUrl { get; set; }
+
 
         [Display(Name = "Placed Time")]
         [DataType(DataType.DateTime)]

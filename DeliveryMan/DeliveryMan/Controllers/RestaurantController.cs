@@ -437,10 +437,11 @@ namespace DeliveryMan.Controllers
             ReviewOrderViewModel reviewOrderVM = new ReviewOrderViewModel()
             {
                 OrderId = orderDetails.Id,
-                OrderName = orderDetails.Note,
+                DeliverymanName = orderDetails.Deliveryman.getName(),
                 PlacedTime = orderDetails.PlacedTime,
                 PickUpTime = orderDetails.PickUpTime,
                 DeliveredTime = orderDetails.DeliveredTime,
+                IconUrl = orderDetails.Deliveryman.IconImageUrl,
             };
             var blacklist = (from b in db.blacklists
                              where b.Restaurant.Contact.Email == User.Identity.Name
@@ -488,6 +489,7 @@ namespace DeliveryMan.Controllers
 
                 // calculate cumulative rating
                 Deliveryman deliveryman = db.deliverymen.Find(order.DeliverymanId);
+
                 decimal rating = ReviewRating.calculateRating(deliveryman, newReview.Rating);
 
                 // update deliveryman table
