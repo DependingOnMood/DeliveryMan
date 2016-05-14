@@ -5,7 +5,7 @@
 
 <h3>Order</h3>
 
-<table class="table" style="text-align : center">
+<table class="table" >
     <tr>
         <th>
             Restaurant Image
@@ -31,9 +31,9 @@
         foreach (Order item in (List<Order>)ViewBag.res)
         {
             string address = item.Contact.AddressToString();
-            <tr>
+            <tr style="vertical-align: central">
                 <td>
-                    <img src="~/Content/UserIcon/@item.Restaurant.IconImageUrl" alt="" style="width: 150px; height: 150px;"/>
+                    <img src="~/Content/UserIcon/@item.Restaurant.IconImageUrl" alt="" style="width: 75px; height: 75px;"/>
                 </td>
                 <td >
                     @Html.DisplayFor(modelItem => item.Restaurant.Name)
