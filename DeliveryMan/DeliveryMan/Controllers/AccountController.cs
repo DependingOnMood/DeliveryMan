@@ -216,7 +216,7 @@ namespace DeliveryMan.Controllers
                         Deliveryman newDeliveryman = new Deliveryman();
                         if (fileUrl == "")
                         {
-                            newDeliveryman.IconImageUrl = "~/Content/Img/errorlogo.png";
+                            newDeliveryman.IconImageUrl = "errorlogo.png";
                         }
                         else {
                             newDeliveryman.IconImageUrl = model.Email + ".png";
@@ -239,7 +239,7 @@ namespace DeliveryMan.Controllers
 
                         if (fileUrl == "")
                         {
-                            newRestaurant.IconImageUrl = "~/Content/Img/errorlogo.png";
+                  s          newRestaurant.IconImageUrl = "errorlogo.png";
                         }
                         else {
                             newRestaurant.IconImageUrl = model.Email + ".png";

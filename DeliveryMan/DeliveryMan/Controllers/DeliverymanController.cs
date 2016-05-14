@@ -349,6 +349,11 @@ namespace DeliveryMan.Controllers
         {
             //ViewBag.source = "110 riverdrive south 07310";
             //ViewBag.desti = "55 riverdrive south 07310";
+
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.UserType = GetRole();
+            }
             ViewBag.source = s1;
             ViewBag.desti = s2;
             return View();

@@ -256,6 +256,7 @@
     <Content Include="Content\Index.css" />
     <Content Include="Content\RestaurantOrders.css" />
     <Content Include="Content\StarsRating.css" />
+    <Content Include="Content\UserIcon\errorlogo.png" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -346,7 +347,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Content\UserIcon\" />
     <Folder Include="Views\Error\" />
   </ItemGroup>
   <ItemGroup>
