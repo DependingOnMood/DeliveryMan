@@ -17,4 +17,25 @@ namespace DeliveryMan.Models
         public IEnumerable<Order> deliveredOrders { get; set; }
 
     }
+
+    public class DeliverymanCancelPickupViewModel
+    {
+        public int OrderId { get; set; }
+
+        public string OrderNote { get; set; }
+
+        public string RestaurantName { get; set; }
+
+        public Status OrderStatus { get; set; }
+
+        public string ETA { get; set; }
+
+        public DateTime PlacedTime { get; set; }
+
+        public DateTime? PickUpTime { get; set; }
+
+        public decimal DeliveryFee { get; set; }
+
+        public decimal CancellationFee { get; set; }
+    }
 }
