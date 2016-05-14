@@ -61,7 +61,7 @@ namespace DeliveryMan.Controllers
                 catch (Exception e) {
 
                     ModelState.AddModelError("location","Pleas input a valid address!");
-
+                    return View(model);
                 }
             }
 
