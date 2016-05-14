@@ -341,6 +341,10 @@ namespace DeliveryMan.Controllers
         // GET: Restaurant/CancelOrder/5
         public ActionResult CancelOrder(int? id)
         {
+            if (id == null)
+            {
+                throw new Exception("Error");
+            }
             if (User.Identity.IsAuthenticated)
             {
                 ViewBag.UserType = GetRole();
@@ -425,19 +429,19 @@ namespace DeliveryMan.Controllers
                 ViewBag.UserType = GetRole();
             }
 
-            var orderDetails = (from o in db.orders
+            Order orderDetails = (from o in db.orders
                                 where o.Restaurant.Contact.Email == User.Identity.Name
                                 where o.Id == id
                                 select o).FirstOrDefault();
 
-            ReviewOrderViewModel reviewOrderVM = new ReviewOrderViewModel();
-
-            reviewOrderVM.OrderName = orderDetails.Note;
-            reviewOrderVM.PlacedTime = orderDetails.PlacedTime;
-            reviewOrderVM.PickUpTime = orderDetails.PickUpTime;
-            reviewOrderVM.DeliveredTime = orderDetails.DeliveredTime;
-            reviewOrderVM.OrderId = orderDetails.Id;
-
+            ReviewOrderViewModel reviewOrderVM = new ReviewOrderViewModel()
+            {
+                OrderId = orderDetails.Id,
+                OrderName = orderDetails.Note,
+                PlacedTime = orderDetails.PlacedTime,
+                PickUpTime = orderDetails.PickUpTime,
+                DeliveredTime = orderDetails.DeliveredTime,
+            };
             var blacklist = (from b in db.blacklists
                              where b.Restaurant.Contact.Email == User.Identity.Name
                              where b.DeliverymanId == orderDetails.DeliverymanId
@@ -452,66 +456,47 @@ namespace DeliveryMan.Controllers
                 reviewOrderVM.Blacklist = true;
             }
 
-            return View("ReviewOrder", reviewOrderVM);
+            return View(reviewOrderVM);
         }
 
         // POST: Restaurant/ReviewOrder/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ReviewOrder(ReviewOrderViewModel model, int? id)
+        public ActionResult ReviewOrder(ReviewOrderViewModel model)
         {
             if (User.Identity.IsAuthenticated)
             {
                 ViewBag.UserType = GetRole();
             }
 
-            if (ModelState.IsValid && id != null)
+            if (ModelState.IsValid)
             { // check model state
               //   if (model.DeliveredTime != null)
               //  { // only allow delivered order to be reviewed
-                Review newReview = new Review();
-                newReview.OrderId = (int)id;
-                newReview.ReviewText = model.ReviewText;
-                newReview.Rating = model.Rating;
+                Order order = (from o in db.orders
+                               where o.Restaurant.Contact.Email.Equals(User.Identity.Name)
+                               where o.Id == model.OrderId
+                               select o).FirstOrDefault();
 
-                // calculate deliveryman's current rating
-                var orderDeliveryman = (from o in db.orders
-                                        where o.Restaurant.Contact.Email == User.Identity.Name
-                                        where o.Id == id
-                                        select o).FirstOrDefault();
-
-                Deliveryman deliveryman = db.deliverymen.Find(orderDeliveryman.DeliverymanId);
+                Review newReview = new Review()
+                {
+                    OrderId = order.Id,
+                    Order = order,
+                    ReviewText = model.ReviewText,
+                    Rating = model.Rating,
+                };
 
                 // calculate cumulative rating
+                Deliveryman deliveryman = db.deliverymen.Find(order.DeliverymanId);
                 decimal rating = ReviewRating.calculateRating(deliveryman, newReview.Rating);
 
                 // update deliveryman table
                 deliveryman.Rating = rating;
-                deliveryman.TotalStarsEarned = deliveryman.TotalStarsEarned + newReview.Rating;
-                deliveryman.TotalDeliveryCount = deliveryman.TotalDeliveryCount + 1;
+                deliveryman.TotalStarsEarned += newReview.Rating;
+                deliveryman.TotalDeliveryCount += 1;
+                deliveryman.Ranking = newReview.calculateScore();
 
                 db.reviews.Add(newReview);
-
-                db.SaveChanges();
-
-                // update deliveryman ranking
-                var rankedDmans = (from d in db.deliverymen
-                                   where d.TotalDeliveryCount >= 1
-                                   select d).OrderByDescending(x => x.Rating);
-
-                Deliveryman prevDman = new Deliveryman();
-
-                for (int i = 0; i < rankedDmans.Count(); i++)
-                {
-                    Deliveryman curDman = rankedDmans.Skip(i).First();
-
-                    Deliveryman rankedDman = db.deliverymen.Find(curDman.Id);
-
-                    rankedDman.Ranking = DeliverymanRanking.getRank(i, curDman, prevDman);
-
-                    prevDman = curDman;
-                }
-
                 db.SaveChanges();
 
                 return RedirectToAction("Orders");
