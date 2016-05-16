@@ -131,6 +131,7 @@ namespace DeliveryMan.Controllers
                     contact.ZipCode = model.ZipCode;
                     changed = true;
                 }
+
                 if (changed)
                 {
                     helper = new GoogleMapHelper();
