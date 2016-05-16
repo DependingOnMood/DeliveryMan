@@ -4,7 +4,6 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using DataLayer;
 using BizLogic;
@@ -68,13 +67,14 @@ namespace DeliveryMan.Controllers
             }
             if (res.Balance.CompareTo(0.00M) < 0)
             {
-                // throw new ApplicationException("Error");
                 ModelState.AddModelError("OrderFee", "Your balance is less than 0.");
                 return View("CreateOrder", model);
             }
+
             Contact contact = (from c in db.contacts
                                where c.PhoneNumber.Equals(model.PhoneNumber)
                                select c).FirstOrDefault();
+
             String totalAddress = model.AddressLine1 + " " + model.AddressLine2 + " " + model.City + " " + model.State + " " + model.ZipCode;
             if (contact == null)
             {
@@ -107,6 +107,11 @@ namespace DeliveryMan.Controllers
             }
             else
             {
+                if (contact.Role == Role.RESTAUTANT) {
+                    ModelState.AddModelError("PhoneNumber","This phone number belongs to a restaurant.");
+                    return View("CreateOrder", model);
+                }
+
                 bool changed = false;
                 if (!contact.AddressLine1.Equals(model.AddressLine1))
                 {
@@ -138,8 +143,7 @@ namespace DeliveryMan.Controllers
                         ModelState.AddModelError("Addressline1", "Pleas input a valid address!");
                         return View("CreateOrder", model);
                     }
-
-
+                
                     contact.Latitude = Decimal.Parse(latAndLong.Split(' ')[0]);
                     contact.Longitude = Decimal.Parse(latAndLong.Split(' ')[1]);
                 }
