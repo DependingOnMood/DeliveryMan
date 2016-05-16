@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width" />
     <title>Orders</title>
     @Styles.Render("~/Content/RestaurantOrders.css")
+    @Styles.Render("~/Content/Table.css")
 </head>
 
 <body>
@@ -28,7 +29,7 @@
 </div>
     <table class="table">
         <tr>
-            <th>
+            <th style="vertical-align:middle">
             </th>
             <th style="vertical-align:middle" >
                 Note
@@ -48,42 +49,42 @@
             <th style="vertical-align:middle" >
                 DeliveryFee
             </th>
-            <th></th>
+            <th style="vertical-align:middle"></th>
         </tr>
         <tr>
-            <td>
+            <td style="vertical-align:middle">
                 Waiting Orders
             </td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td style="vertical-align:middle"></td>
+            <td style="vertical-align:middle"></td>
+            <td style="vertical-align:middle"></td>
+            <td style="vertical-align:middle"></td>
+            <td style="vertical-align:middle"></td>
+            <td style="vertical-align:middle"></td>
+            <td style="vertical-align:middle"></td>
         </tr>
         @foreach (var item in Model.WaitingOrders.ToList())
         {
             string destination = item.Contact.getFullAddress();
             <tr>
-                <td></td>
-                <td style="vertical-align : middle">
+                <td style="vertical-align:middle"></td>
+                <td style="vertical-align:middle">
                     @Html.DisplayFor(modelItem => item.Note)
                 </td>
-                <td style="vertical-align : middle" >
+                <td style="vertical-align:middle">
                     @destination
                 </td>
-                <td></td>
-                <td style="vertical-align : middle" >
+                <td style="vertical-align:middle"></td>
+                <td style="vertical-align:middle">
                     @Html.DisplayFor(model => item.Status)
                 </td>
-                <td  style="vertical-align : middle">
+                <td style="vertical-align:middle">
                     @Html.DisplayFor(modelItem => item.ETA)
                 </td>
-                <td style="vertical-align : middle">
+                <td style="vertical-align:middle">
                     @Html.DisplayFor(modelItem => item.DeliveryFee)
                 </td>
-                <td>
+                <td style="vertical-align:middle">
                     <input type="button" value="Edit" class="btn btn-danger"
                            onclick="location.href = '@(Url.Action("EditOrder", "Restaurant", new { id = item.Id }))'" />
                     <input type="button" value="Details" class="btn btn-danger"
@@ -95,30 +96,30 @@
         }
 
         <tr>
-            <td>
+            <td style="vertical-align:middle">
                 Pending Orders
             </td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td style="vertical-align:middle"></td>
+            <td style="vertical-align:middle"></td>
+            <td style="vertical-align:middle"></td>
+            <td style="vertical-align:middle"></td>
+            <td style="vertical-align:middle"></td>
+            <td style="vertical-align:middle"></td>
+            <td style="vertical-align:middle"></td>
         </tr>
 
         @foreach (var item in Model.PendingOrders.ToList())
         {
             string destination = item.Contact.getFullAddress();
             <tr>
-                <td></td>
-                <td style="vertical-align : middle">
+                <td style="vertical-align:middle"></td>
+                <td style="vertical-align:middle">
                     @Html.DisplayFor(modelItem => item.Note)
                 </td>
-                <td style="vertical-align : middle">
+                <td style="vertical-align:middle">
                     @destination
                 </td>
-                <td style="vertical-align : middle">
+                <td style="vertical-align:middle">
                     @{
                         if (item.Deliveryman != null)
                         {
@@ -127,16 +128,16 @@
                         }
                     }
                 </td>
-                <td style="vertical-align : middle">
+                <td style="vertical-align:middle">
                     @Html.DisplayFor(model => item.Status)
                 </td>
-                <td style="vertical-align : middle">
+                <td style="vertical-align:middle">
                     @Html.DisplayFor(modelItem => item.ETA)
                 </td>
-                <td style="vertical-align : middle">
+                <td style="vertical-align:middle">
                     @Html.DisplayFor(modelItem => item.DeliveryFee)
                 </td>
-                <td>
+                <td style="vertical-align:middle">
                     <input type="button" value="Pick Up" class="btn btn-danger"
                            onclick="location.href = '@(Url.Action("PickUpOrder", "Restaurant", new { id = item.Id }))'" />
                     <input type="button" value="Details" class="btn btn-danger"
@@ -148,46 +149,46 @@
         }
 
         <tr>
-            <td>
+            <td style="vertical-align:middle">
                 In Progress Orders
             </td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td style="vertical-align:middle"></td>
+            <td style="vertical-align:middle"></td>
+            <td style="vertical-align:middle"></td>
+            <td style="vertical-align:middle"></td>
+            <td style="vertical-align:middle"></td>
+            <td style="vertical-align:middle"></td>
+            <td style="vertical-align:middle"></td>
         </tr>
 
         @foreach (var item in Model.InProgressOrders.ToList())
         {
             string destination = item.Contact.getFullAddress();
             <tr>
-                <td></td>
-                <td style="vertical-align : middle">
+                <td style="vertical-align:middle"></td>
+                <td style="vertical-align:middle">
                     @Html.DisplayFor(modelItem => item.Note)
                 </td>
-                <td style="vertical-align : middle">
+                <td style="vertical-align:middle">
                     @destination
                 </td>
-                <td style="vertical-align : middle">
+                <td style="vertical-align:middle">
                     @if (item.Deliveryman != null)
                     {
                         string res = item.Deliveryman.getName();
                         <a href="@(Url.Action("DeliverymanDetails", "Restaurant", new { Id = item.Id }))">@res</a>
                     }
                 </td>
-                <td style="vertical-align : middle">
+                <td style="vertical-align:middle">
                     @Html.DisplayFor(model => item.Status)
                 </td>
-                <td style="vertical-align : middle">
+                <td style="vertical-align:middle">
                     @Html.DisplayFor(modelItem => item.ETA)
                 </td>
-                <td style="vertical-align : middle">
+                <td style="vertical-align:middle">
                     @Html.DisplayFor(modelItem => item.DeliveryFee)
                 </td>
-                <td>
+                <td style="vertical-align:middle">
                     <input type="button" value="Details" class="btn btn-danger"
                            onclick="location.href = '@(Url.Action("OrderDetails", "Restaurant", new { id = item.Id }))'" />
                     <input type="button" value="Cancel" class="btn btn-danger"

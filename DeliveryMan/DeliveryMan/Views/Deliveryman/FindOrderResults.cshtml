@@ -2,27 +2,31 @@
 @{
     ViewBag.Title = "Find Order Results";
 }
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
 
 <h3>Order</h3>
 
 <table class="table" >
     <tr>
-        <th style="margin: auto">
+        <th style="vertical-align:middle">
             Restaurant Image
         </th>
-        <th style="margin: auto">
+        <th style="vertical-align:middle">
             Restaurant
         </th>
-        <th>
+        <th style="vertical-align:middle">
             Destination
         </th>
-        <th>
+        <th style="vertical-align:middle">
             Delivery Fee
         </th>
-        <th>
+        <th style="vertical-align:middle">
             ETA
         </th>
-        <th>
+        <th style="vertical-align:middle">
             
         </th>
     </tr>
@@ -32,7 +36,7 @@
         {
             string address = item.Contact.AddressToString();
             <tr >
-                <td>
+                <td style="vertical-align:middle">
                     <img src="~/Content/UserIcon/@item.Restaurant.IconImageUrl" alt="" style="width: 50px; height: 50px;"/>
                 </td>
                 <td style="vertical-align:middle" >
