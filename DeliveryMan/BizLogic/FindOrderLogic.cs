@@ -23,8 +23,6 @@ namespace BizLogic
             else {
                 return true;
             }
-         
-            //need database connection
         }
 
         public double ComputeDistanceBetweenAandB(String addrA, String addrB) {
