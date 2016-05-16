@@ -95,7 +95,7 @@ namespace DeliveryMan.Controllers
                 foreach (Order o in q.ToList())
                 {
                     Contact c = o.Restaurant.Contact;
-                    String addr2 = c.AddressLine1 + " " + c.AddressLine2 + " " + c.City + " " + c.State + " " + c.ZipCode;
+                    String addr2 = c.getFullAddress();
                     double dis = 0;
 
                     try

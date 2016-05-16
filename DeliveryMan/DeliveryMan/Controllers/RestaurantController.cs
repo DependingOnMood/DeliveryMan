@@ -148,7 +148,7 @@ namespace DeliveryMan.Controllers
             db.SaveChanges();
 
             helper = new GoogleMapHelper();
-            string loc1 = res.Contact.getAddress();
+            string loc1 = res.Contact.getFullAddress();
             string loc2 = totalAddress;
             double distance = CreateOrderLogic.getRealDistance(loc1, loc2);
 

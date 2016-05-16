@@ -64,7 +64,7 @@
         </tr>
         @foreach (var item in Model.WaitingOrders.ToList())
         {
-            string destination = ContactAddress.getAddress(item.Contact);
+            string destination = item.Contact.getFullAddress();
             <tr>
                 <td></td>
                 <td style="vertical-align : middle">
@@ -109,7 +109,7 @@
 
         @foreach (var item in Model.PendingOrders.ToList())
         {
-            string destination = ContactAddress.getAddress(item.Contact);
+            string destination = item.Contact.getFullAddress();
             <tr>
                 <td></td>
                 <td style="vertical-align : middle">
@@ -162,7 +162,7 @@
 
         @foreach (var item in Model.InProgressOrders.ToList())
         {
-            string destination = ContactAddress.getAddress(item.Contact);
+            string destination = item.Contact.getFullAddress();
             <tr>
                 <td></td>
                 <td style="vertical-align : middle">
