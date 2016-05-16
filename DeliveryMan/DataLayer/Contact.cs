@@ -39,6 +39,18 @@ namespace DataLayer
 
         public decimal Longitude { get; set; }
 
+        public string AddressToStringSimple()
+        {
+            if (AddressLine2 != null)
+            {
+                return AddressLine1 + ", " + AddressLine2;
+            }
+            else
+            {
+                return AddressLine1;
+            }
+        }
+
         public string AddressToString()
         {
             if (AddressLine2 != null)
@@ -46,7 +58,8 @@ namespace DataLayer
                 //return AddressLine1 + ", " + AddressLine2 + ", " + City + ", " + State + ", " + ZipCode;
                 return AddressLine1 + ", " + AddressLine2 + City + ", " + State + ", " + ZipCode; ;
             }
-            else {
+            else
+            {
                 return AddressLine1 + ", " + City + ", " + State + ", " + ZipCode; ;
             }           
         }
