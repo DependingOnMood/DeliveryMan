@@ -125,7 +125,7 @@
                 </div>
                 <div class="form-group">
                     @Html.LabelFor(m => m.zipCode, new { @class = "col-md-2 control-label" })
-                    <div class="col-md-10">
+                    <div class="col-md-offset-1 col-md-10">
                         @Html.TextBoxFor(m => m.zipCode, new { @id = "zipcode", @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.zipCode, "", new { @class = "text-danger" })
                         <input type="submit" class="btn btn-danger" value="Find Order" style="margin-top:20px"/>

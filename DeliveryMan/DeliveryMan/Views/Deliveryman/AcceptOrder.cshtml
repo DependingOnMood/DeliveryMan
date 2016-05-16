@@ -61,7 +61,7 @@
         using (Html.BeginForm("AcceptOrder", "Deliveryman", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
         {
             <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
+                <div class="col-md-offset-1 col-md-10">
                     <input type="submit" value="Accept it" class="btn btn-danger" />
                     <input type="button" value="Direction" class="btn btn-danger"
                            onclick="location.href = '@(Url.Action("Direction", "Deliveryman", new { s1 = Model.Restaurant.Contact.getFullAddress(), s2 = Model.Contact.getFullAddress() }))'" />
