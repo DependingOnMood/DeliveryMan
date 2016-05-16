@@ -240,13 +240,16 @@ namespace DeliveryMan.Controllers
                     throw new Exception("NotADeliveryman");
                 }
             }
+
             Deliveryman deli = (from dm in db.deliverymen
                                 where dm.Contact.Email.Equals(User.Identity.Name)
                                 select dm).FirstOrDefault();
+
             if (deli == null)
             {
                 throw new Exception("Error");
             }
+
             IEnumerable<Order> pendingO = from o in db.orders
                                           where o.DeliverymanId == deli.Id
                                           where o.Status == Status.PENDING
@@ -269,6 +272,7 @@ namespace DeliveryMan.Controllers
                 inProgressOrders = inProgressO,
                 deliveredOrders = deliveredO,
             };
+
             return View(model);
         }
 
@@ -333,7 +337,9 @@ namespace DeliveryMan.Controllers
                     throw new Exception("NotADeliveryman");
                 }
             }
+
             Order order = db.orders.Find(model.OrderId);
+
             if ((order.Deliveryman.Balance - model.CancellationFee).CompareTo(0M) < 0)
             {
                 //ViewBag.Message = "You have insufficient balance to cancel!";
@@ -395,8 +401,6 @@ namespace DeliveryMan.Controllers
         //Get
         public ActionResult Direction(String s1, String s2)
         {
-
-
             if (User.Identity.IsAuthenticated)
             {
                 ViewBag.UserType = GetRole();

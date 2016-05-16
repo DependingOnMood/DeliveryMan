@@ -403,9 +403,11 @@ namespace DeliveryMan.Controllers
             {
                 throw new Exception("Error");
             }
+
             if (User.Identity.IsAuthenticated)
             {
                 ViewBag.UserType = GetRole();
+
                 if (GetRole() != 1)
                 {
                     throw new Exception("NotARestaurant");
@@ -504,6 +506,7 @@ namespace DeliveryMan.Controllers
 
                 return View("CancelOrder", model);
             }
+
         }
 
         // GET: Restaurant/ReviewOrder/5
@@ -517,10 +520,12 @@ namespace DeliveryMan.Controllers
                     throw new Exception("NotARestaurant");
                 }
             }
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             Order orderDetails = (from o in db.orders
                                   where o.Restaurant.Contact.Email == User.Identity.Name
                                   where o.Id == id
