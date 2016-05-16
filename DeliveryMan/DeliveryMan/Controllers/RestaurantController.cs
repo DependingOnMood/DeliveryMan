@@ -36,6 +36,10 @@ namespace DeliveryMan.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 ViewBag.UserType = GetRole();
+                if (GetRole() != 1)
+                {
+                    throw new Exception("NotARestaurant");
+                }
             }
 
             return View();
@@ -53,9 +57,13 @@ namespace DeliveryMan.Controllers
             Restaurant res = (from r in db.restaurants
                               where r.Contact.Email.Equals(User.Identity.Name)
                               select r).FirstOrDefault();
-            if (res == null)
+            if (User.Identity.IsAuthenticated)
             {
-                throw new Exception("Error");
+                ViewBag.UserType = GetRole();
+                if (GetRole() != 1)
+                {
+                    throw new Exception("NotARestaurant");
+                }
             }
             if (res.Balance.CompareTo(0.00M) < 0)
             {
@@ -163,6 +171,10 @@ namespace DeliveryMan.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 ViewBag.UserType = GetRole();
+                if (GetRole() != 1)
+                {
+                    throw new Exception("NotARestaurant");
+                }
             }
 
             Restaurant res = (from r in db.restaurants
@@ -204,6 +216,15 @@ namespace DeliveryMan.Controllers
         // GET: Restaurant/PickUpOrder/5
         public ActionResult PickUpOrder(int? id)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.UserType = GetRole();
+                if (GetRole() != 1)
+                {
+                    throw new Exception("NotARestaurant");
+                }
+            }
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -240,8 +261,11 @@ namespace DeliveryMan.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 ViewBag.UserType = GetRole();
+                if (GetRole() != 1)
+                {
+                    throw new Exception("NotARestaurant");
+                }
             }
-
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -275,8 +299,11 @@ namespace DeliveryMan.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 ViewBag.UserType = GetRole();
+                if (GetRole() != 1)
+                {
+                    throw new Exception("NotARestaurant");
+                }
             }
-
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -321,6 +348,10 @@ namespace DeliveryMan.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 ViewBag.UserType = GetRole();
+                if (GetRole() != 1)
+                {
+                    throw new Exception("NotARestaurant");
+                }
             }
 
             Restaurant res = (from r in db.restaurants
@@ -358,6 +389,10 @@ namespace DeliveryMan.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 ViewBag.UserType = GetRole();
+                if (GetRole() != 1)
+                {
+                    throw new Exception("NotARestaurant");
+                }
             }
             Restaurant res = (from r in db.restaurants
                               where r.Contact.Email.Equals(User.Identity.Name)
@@ -393,6 +428,10 @@ namespace DeliveryMan.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 ViewBag.UserType = GetRole();
+                if (GetRole() != 1)
+                {
+                    throw new Exception("NotARestaurant");
+                }
             }
             Restaurant res = (from r in db.restaurants
                               where r.Contact.Email.Equals(User.Identity.Name)
@@ -445,6 +484,10 @@ namespace DeliveryMan.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 ViewBag.UserType = GetRole();
+                if (GetRole() != 1)
+                {
+                    throw new Exception("NotARestaurant");
+                }
             }
             if (id == null)
             {
@@ -489,6 +532,10 @@ namespace DeliveryMan.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 ViewBag.UserType = GetRole();
+                if (GetRole() != 1)
+                {
+                    throw new Exception("NotARestaurant");
+                }
             }
 
             if (ModelState.IsValid)
@@ -539,6 +586,10 @@ namespace DeliveryMan.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 ViewBag.UserType = GetRole();
+                if (GetRole() != 1)
+                {
+                    throw new Exception("NotARestaurant");
+                }
             }
 
             Restaurant res = (from r in db.restaurants
@@ -589,6 +640,10 @@ namespace DeliveryMan.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 ViewBag.UserType = GetRole();
+                if (GetRole() != 1)
+                {
+                    throw new Exception("NotARestaurant");
+                }
             }
 
             var orderDetails = (from o in db.orders
@@ -648,6 +703,10 @@ namespace DeliveryMan.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 ViewBag.UserType = GetRole();
+                if (GetRole() != 1)
+                {
+                    throw new Exception("NotARestaurant");
+                }
             }
 
             var orderDetails = (from o in db.orders
@@ -697,8 +756,11 @@ namespace DeliveryMan.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 ViewBag.UserType = GetRole();
+                if (GetRole() != 1)
+                {
+                    throw new Exception("NotARestaurant");
+                }
             }
-
             IEnumerable<Blacklist> blacklists = (from b in db.blacklists
                                                  where b.Restaurant.Contact.Email == User.Identity.Name
                                                  select b);
@@ -731,6 +793,10 @@ namespace DeliveryMan.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 ViewBag.UserType = GetRole();
+                if (GetRole() != 1)
+                {
+                    throw new Exception("NotARestaurant");
+                }
             }
 
             // remove deliveryman from blacklist
@@ -773,6 +839,10 @@ namespace DeliveryMan.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 ViewBag.UserType = GetRole();
+                if (GetRole() != 1)
+                {
+                    throw new Exception("NotARestaurant");
+                }
             }
 
             if (id == null)
@@ -808,8 +878,11 @@ namespace DeliveryMan.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 ViewBag.UserType = GetRole();
+                if (GetRole() != 1)
+                {
+                    throw new Exception("NotARestaurant");
+                }
             }
-
             Restaurant res = (from r in db.restaurants
                               where r.Contact.Email.Equals(User.Identity.Name)
                               select r).FirstOrDefault();
@@ -832,6 +905,14 @@ namespace DeliveryMan.Controllers
         [HttpPost]
         public ActionResult AddBalance([Bind(Include = "RestaurantId, Balance")] RestaurantAddBalanceViewModel model)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.UserType = GetRole();
+                if (GetRole() != 1)
+                {
+                    throw new Exception("NotARestaurant");
+                }
+            }
             Restaurant res = (from r in db.restaurants
                               where model.RestaurantId == r.Id
                               select r).FirstOrDefault();
@@ -854,8 +935,11 @@ namespace DeliveryMan.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 ViewBag.UserType = GetRole();
+                if (GetRole() != 1)
+                {
+                    throw new Exception("NotARestaurant");
+                }
             }
-
             Restaurant res = (from r in db.restaurants
                               where r.Contact.Email == User.Identity.Name
                               select r).FirstOrDefault();
@@ -892,6 +976,10 @@ namespace DeliveryMan.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 ViewBag.UserType = GetRole();
+                if (GetRole() != 1)
+                {
+                    throw new Exception("NotARestaurant");
+                }
             }
 
             Restaurant res = (from r in db.restaurants

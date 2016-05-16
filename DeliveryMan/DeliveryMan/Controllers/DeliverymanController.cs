@@ -31,8 +31,12 @@ namespace DeliveryMan.Controllers
         public ActionResult FindOrder()
         {
             if (User.Identity.IsAuthenticated)
-            {
+            {     
                 ViewBag.UserType = GetRole();
+                if (GetRole() != 0)
+                {
+                    throw new Exception("NotADeliveryman");
+                }
             }
             return View();
         }
@@ -44,9 +48,11 @@ namespace DeliveryMan.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 ViewBag.UserType = GetRole();
+                if (GetRole() != 0)
+                {
+                    throw new Exception("NotADeliveryman");
+                }      
             }
-
-            //   String location = model;
             List<Order> orders = new List<Order>();
             String add1 = "";
             if (model.latlng == null)
@@ -129,8 +135,11 @@ namespace DeliveryMan.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 ViewBag.UserType = GetRole();
+                if (GetRole() != 0)
+                {
+                    throw new Exception("NotADeliveryman");
+                }
             }
-
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -154,6 +163,10 @@ namespace DeliveryMan.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 ViewBag.UserType = GetRole();
+                if (GetRole() != 0)
+                {
+                    throw new Exception("NotADeliveryman");
+                }
             }
 
             if (o.Id == 0)
@@ -188,8 +201,11 @@ namespace DeliveryMan.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 ViewBag.UserType = GetRole();
+                if (GetRole() != 0)
+                {
+                    throw new Exception("NotADeliveryman");
+                }
             }
-
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -214,6 +230,10 @@ namespace DeliveryMan.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 ViewBag.UserType = GetRole();
+                if (GetRole() != 0)
+                {
+                    throw new Exception("NotADeliveryman");
+                }
             }
             Deliveryman deli = (from dm in db.deliverymen
                                 where dm.Contact.Email.Equals(User.Identity.Name)
@@ -253,6 +273,10 @@ namespace DeliveryMan.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 ViewBag.UserType = GetRole();
+                if (GetRole() != 0)
+                {
+                    throw new Exception("NotADeliveryman");
+                }
             }
             if (id == null)
             {
@@ -299,6 +323,10 @@ namespace DeliveryMan.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 ViewBag.UserType = GetRole();
+                if (GetRole() != 0)
+                {
+                    throw new Exception("NotADeliveryman");
+                }
             }
             Order order = db.orders.Find(model.OrderId);
             if ((order.Deliveryman.Balance - model.CancellationFee).CompareTo(0M) < 0)
@@ -324,8 +352,11 @@ namespace DeliveryMan.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 ViewBag.UserType = GetRole();
+                if (GetRole() != 0)
+                {
+                    throw new Exception("NotADeliveryman");
+                }
             }
-
             Deliveryman deliveryman = (from dm in db.deliverymen
                                        where dm.Contact.Email.Equals(User.Identity.Name)
                                        select dm).FirstOrDefault();
@@ -365,6 +396,10 @@ namespace DeliveryMan.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 ViewBag.UserType = GetRole();
+                if (GetRole() != 0)
+                {
+                    throw new Exception("NotADeliveryman");
+                }
             }
             ViewBag.source = s1;
             ViewBag.desti = s2;
@@ -376,6 +411,10 @@ namespace DeliveryMan.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 ViewBag.UserType = GetRole();
+                if (GetRole() != 0)
+                {
+                    throw new Exception("NotADeliveryman");
+                }
             }
 
             if (disposing)
@@ -391,8 +430,11 @@ namespace DeliveryMan.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 ViewBag.UserType = GetRole();
+                if (GetRole() != 0)
+                {
+                    throw new Exception("NotADeliveryman");
+                }
             }
-
             Deliveryman del = (from d in db.deliverymen
                                where d.Contact.Email.Equals(User.Identity.Name)
                                select d).FirstOrDefault();
@@ -425,9 +467,11 @@ namespace DeliveryMan.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 ViewBag.UserType = GetRole();
+                if (GetRole() != 0)
+                {
+                    throw new Exception("NotADeliveryman");
+                }
             }
-
-
 
             Deliveryman del = (from d in db.deliverymen
                                where d.Contact.Email.Equals(User.Identity.Name)
