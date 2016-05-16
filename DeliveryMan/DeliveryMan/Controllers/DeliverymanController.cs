@@ -490,7 +490,7 @@ namespace DeliveryMan.Controllers
             if (model.file != null)
             {
                 fileUrl = HttpContext.Server.MapPath("~/Content/UserIcon/")
-                                                    + User.Identity.Name + ".png";
+                                                        + User.Identity.Name + ".png";
 
 
                 Bitmap b = (Bitmap)Bitmap.FromStream(file.InputStream);
@@ -498,6 +498,8 @@ namespace DeliveryMan.Controllers
                 {
                     System.IO.File.Delete(fileUrl);
                 }
+                fileUrl = HttpContext.Server.MapPath("~/Content/UserIcon/")
+                                        + User.Identity.Name + "new" + ".png";
                 b.Save(fileUrl, ImageFormat.Png);
 
             }
@@ -511,7 +513,8 @@ namespace DeliveryMan.Controllers
             del.Contact.City = model.City;
             del.Contact.State = model.State;
             del.Contact.ZipCode = model.ZipCode;
-            del.IconImageUrl = User.Identity.Name+".png";
+            del.IconImageUrl = User.Identity.Name + "new" + ".png";
+
             db.SaveChanges();
 
             return RedirectToAction("Index", "Manage");
