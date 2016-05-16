@@ -36,7 +36,7 @@ namespace BizLogic
                     curScore = 1;
                     break;
                 case 5:
-                    curScore = 5;
+                    curScore = 3;
                     break;
                 default:
                     curScore = 0;
