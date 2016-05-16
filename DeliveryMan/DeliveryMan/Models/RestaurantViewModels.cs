@@ -52,6 +52,9 @@ namespace DeliveryMan.Models
         public int OrderId { get; set; }
 
         [Required]
+        public string Note { get; set; }
+
+        [Required]
         public string AddressLine1 { get; set; }
 
         public string AddressLine2 { get; set; }

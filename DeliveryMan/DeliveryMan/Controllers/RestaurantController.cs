@@ -336,6 +336,7 @@ namespace DeliveryMan.Controllers
             RestaurantEditOrderViewModel model = new RestaurantEditOrderViewModel()
             {
                 OrderId = order.Id,
+                Note = order.Note,
                 AddressLine1 = order.Contact.AddressLine1,
                 AddressLine2 = order.Contact.AddressLine2,
                 City = order.Contact.City,
@@ -351,7 +352,7 @@ namespace DeliveryMan.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditOrder([Bind(Include = "OrderId, AddressLine1, AddressLine2, City, State, ZipCode")]
+        public ActionResult EditOrder([Bind(Include = "OrderId, Note, AddressLine1, AddressLine2, City, State, ZipCode")]
         RestaurantEditOrderViewModel model)
         {
 
@@ -378,6 +379,7 @@ namespace DeliveryMan.Controllers
                            where o.Id == model.OrderId
                            select o).FirstOrDefault();
 
+            order.Note = model.Note;
             order.Contact.AddressLine1 = model.AddressLine1;
             order.Contact.AddressLine2 = model.AddressLine2;
             order.Contact.City = model.City;
