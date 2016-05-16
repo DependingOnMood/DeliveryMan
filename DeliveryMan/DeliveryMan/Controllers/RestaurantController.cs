@@ -768,6 +768,10 @@ namespace DeliveryMan.Controllers
                 blacklistVMs[i].DeliverymanId = deliveryman.Id;
             }
 
+            ViewBag.orderId = id;
+
+            TempData["orderId"] = id;
+
             return View("BlacklistView", blacklistVMs);
         }
 
