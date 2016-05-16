@@ -6,7 +6,9 @@
 
 <h2>@ViewBag.Title.</h2>
 
-<h4>Rate the deliveryman who recently delivered your order.</h4>
+<h4>Rate the deliveryman who recently delivered your order. 
+    If you are very unsatisfied with their delivery, you
+    can choose to add them to your blacklist.</h4>
 <hr />
 
 @using (Html.BeginForm("ReviewOrder", "Restaurant", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
