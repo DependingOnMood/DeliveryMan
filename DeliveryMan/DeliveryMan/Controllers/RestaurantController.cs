@@ -14,6 +14,7 @@ using System.Drawing.Imaging;
 
 namespace DeliveryMan.Controllers
 {
+    [Authorize]
     public class RestaurantController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -767,6 +768,10 @@ namespace DeliveryMan.Controllers
 
                 blacklistVMs[i].DeliverymanId = deliveryman.Id;
             }
+
+            ViewBag.orderId = id;
+
+            TempData["orderId"] = id;
 
             return View("BlacklistView", blacklistVMs);
         }

@@ -14,6 +14,7 @@ using System.Drawing.Imaging;
 
 namespace DeliveryMan.Controllers
 {
+    [Authorize]
     public class DeliverymanController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
