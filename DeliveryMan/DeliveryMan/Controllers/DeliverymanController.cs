@@ -70,8 +70,8 @@ namespace DeliveryMan.Controllers
                 catch (Exception e)
                 {
 
-                    ModelState.AddModelError("line1", "Pleas input a valid address!");
-                    return View("FindOrder",model);
+                    ModelState.AddModelError("line1", "Please input a valid address!");
+                    return View("FindOrder", model);
                 }
             }
 
