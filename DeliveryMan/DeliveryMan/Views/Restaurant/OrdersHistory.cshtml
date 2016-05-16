@@ -3,9 +3,11 @@
 <!DOCTYPE html>
 
 <html>
+
 <head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Orders History</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    @Styles.Render("~/Content/Table.css")
 </head>
 <body>
     <p>
@@ -14,25 +16,25 @@
     </p>
     <table class="table">
         <tr>
-            <th>
+            <th style="vertical-align:middle">
                 Deliveryman Name
             </th>
-            <th>
+            <th style="vertical-align:middle; width: 15em">
                 Description
             </th>
-            <th>
+            <th style="vertical-align:middle">
                 Placed Time
             </th>
-            <th>
+            <th style="vertical-align:middle">
                 Pickup Time
             </th>
-            <th>
+            <th style="vertical-align:middle">
                 Delivered Time
             </th>
-            <th>
+            <th style="vertical-align:middle">
                 Delivery Fee
             </th>
-            <th></th>
+            <th style="vertical-align:middle"></th>
         </tr>
     
     @foreach (var item in Model) {
@@ -41,22 +43,22 @@
          
                 <a href="@(Url.Action("DeliverymanDetails", "Restaurant", new { Id = item.OrderId }))">@Html.DisplayFor(modelItem => item.Name)</a>
             </td>
-            <td>
+            <td style="vertical-align:middle">
                 @Html.DisplayFor(modelItem => item.Note)
             </td>
-            <td>
+            <td style="vertical-align:middle">
                 @Html.DisplayFor(modelItem => item.PlacedTime)
             </td>
-            <td>
+            <td style="vertical-align:middle">
                 @Html.DisplayFor(modelItem => item.PickUpTime)
             </td>
-            <td>
+            <td style="vertical-align:middle">
                 @Html.DisplayFor(modelItem => item.DeliveredTime)
             </td>
-            <td>
+            <td style="vertical-align:middle">
                 @Html.DisplayFor(modelItem => item.DeliveryFee)
             </td>
-            <td>
+            <td style="vertical-align:middle">
                 @if (!item.IsReviewed)
                 {
                     <input type="button" value="Review" class="btn btn-danger"
