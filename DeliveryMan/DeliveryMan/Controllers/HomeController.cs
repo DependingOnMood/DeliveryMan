@@ -44,6 +44,7 @@ namespace DeliveryMan.Controllers
                                                     select d).OrderByDescending(x => x.Ranking);
 
             int count = deliveryman.Count();
+
             List<DeliverymanRankingViewModel> rankingVMs =
                 new List<DeliverymanRankingViewModel>(new DeliverymanRankingViewModel[count]);
 
@@ -53,7 +54,7 @@ namespace DeliveryMan.Controllers
                 Deliveryman curDeliveryman = deliveryman.Skip(i).First();
                 rankingVMs[i] = new DeliverymanRankingViewModel();
 
-                int avgReview = Convert.ToInt32(curDeliveryman.Rating);
+                int avgReview = (int)Math.Round(curDeliveryman.Rating);
 
                 // get a review reflecting the deliveryman's current rating
                 rankingVMs[i].Rank = curDeliveryman.Ranking;
@@ -63,7 +64,7 @@ namespace DeliveryMan.Controllers
 
                 Review DmanReviewAvg = (from r in db.reviews
                                         where r.Order.Deliveryman.Id == curDeliveryman.Id
-                                        where r.Order.Deliveryman.Rating == avgReview
+                                        where r.Rating == avgReview
                                         select r).FirstOrDefault();
 
                 Review DmanReviewLast = (from r in db.reviews

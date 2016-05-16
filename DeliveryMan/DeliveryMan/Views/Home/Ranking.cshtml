@@ -41,7 +41,50 @@
                         @Html.DisplayNameFor(model => model.Rating)
                     </dt>
                     <dd>
-                        @Html.DisplayFor(modelItem => item.Rating)
+                        @if (Math.Round(item.Rating) == 1)
+                        {
+                            <input type="radio" checked>
+                            <input type="radio" disabled>
+                            <input type="radio" disabled>
+                            <input type="radio" disabled>
+                            <input type="radio" disabled>
+                        }
+
+                        @if (Math.Round(item.Rating) == 2)
+                        {
+                            <input type="radio" disabled>
+                            <input type="radio" checked>
+                            <input type="radio" disabled>
+                            <input type="radio" disabled>
+                            <input type="radio" disabled>
+                        }
+
+                        @if (Math.Round(item.Rating) == 3)
+                        {
+                            <input type="radio" disabled>
+                            <input type="radio" disabled>
+                            <input type="radio" checked>
+                            <input type="radio" disabled>
+                            <input type="radio" disabled>
+                        }
+
+                        @if (Math.Round(item.Rating) == 4)
+                        {
+                            <input type="radio" disabled>
+                            <input type="radio" disabled>
+                            <input type="radio" disabled>
+                            <input type="radio" checked>
+                            <input type="radio" disabled>
+                        }
+
+                        @if (Math.Round(item.Rating) == 5)
+                        {
+                            <input type="radio" disabled>
+                            <input type="radio" disabled>
+                            <input type="radio" disabled>
+                            <input type="radio" disabled>
+                            <input type="radio" checked />
+                        }
                     </dd>
 
                     <dt>
