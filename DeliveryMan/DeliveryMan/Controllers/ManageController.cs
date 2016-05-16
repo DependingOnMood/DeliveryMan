@@ -7,6 +7,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using DeliveryMan.Models;
+using DataLayer;
 
 namespace DeliveryMan.Controllers
 {
@@ -89,6 +90,23 @@ namespace DeliveryMan.Controllers
                 Logins = await UserManager.GetLoginsAsync(userId),
                 BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId)
             };
+            String iconUrl = "";
+            if (GetRole() == 0)
+            {
+                var q = (from d in db.deliverymen
+                         where d.Contact.Email.Equals(User.Identity.Name)
+                         select d).FirstOrDefault();
+                iconUrl = q.IconImageUrl;
+
+            }
+            else if (GetRole() == 1) {
+                var q = (from r in db.restaurants
+                         where r.Contact.Email.Equals(User.Identity.Name)
+                         select r).FirstOrDefault();
+                iconUrl = q.IconImageUrl;
+            }
+
+            ViewBag.IconUrl = iconUrl;
             return View(model);
         }
 
