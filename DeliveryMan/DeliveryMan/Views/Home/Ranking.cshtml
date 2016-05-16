@@ -3,110 +3,111 @@
 @{
     ViewBag.Title = "Deliveryman Ranking";
 }
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    @Styles.Render("~/Content/Ranking.css")
+</head>
 
 <h2>@ViewBag.Title.</h2>
 
 <h4>Here's a ranking of our top deliverymen!</h4>
 <hr />
+<table class="table">
+    <tr>
+        <th style="vertical-align:middle">
+            Image
+        </th>
+        <th style="vertical-align:middle">
+            Name
+        </th>
+        <th style="vertical-align:middle">
+            Order Reviewed
+        </th>
+        <th style="vertical-align:middle">
+            Sample Review 
+        </th>
+        <th style="vertical-align:middle">
+            Rating
+        </th>
+        <th style="vertical-align:middle">
+            Score
+        </th>
 
-@foreach (var item in Model.OrderByDescending(x => x.Rank))
-{
-    if (item.TotalOrders >= 1)
-    {
-        <div class="form-group">
-            <div class="col-md-10">
+    </tr>
+    @foreach (var item in Model.OrderByDescending(x => x.Rank))
+        {
+            if (item.TotalOrders >= 1)
+            {
+            <tr>
+                <td style="vertical-align:middle">
+                    <img src="~/Content/UserIcon/@item.IconUrl" style="width: 50px; height:50px">
+                </td>
+                <td style="vertical-align:middle">
+                   @Html.DisplayFor(modelItem => item.DeliverymanName)
+                </td>
+                <td style="vertical-align:middle">
+                    @Html.DisplayFor(modelItem => item.TotalOrders)
+                </td>
+                <td style="vertical-align:middle">
+                    @Html.DisplayFor(modelItem => item.ReviewText)
+                </td>
+                <td style="vertical-align:middle">
+                    @if (Math.Round(item.Rating) == 1)
+                    {
+                        <input type="radio" checked>
+                        <input type="radio" disabled>
+                        <input type="radio" disabled>
+                        <input type="radio" disabled>
+                        <input type="radio" disabled>
+                    }
 
-                <dl class="dl-horizontal">
-                    <dt>
-                        @Html.Label("Icon")
-                    </dt>
-                    <dd>
-                        <img src="~/Content/UserIcon/@item.IconUrl" style="width: 80px; height:80px">
-                    </dd>
-                    <dt>
-                        @Html.DisplayNameFor(model => model.DeliverymanName)
-                    </dt>
-                    <dd>
-                        @Html.DisplayFor(modelItem => item.DeliverymanName)
-                    </dd>
+                    @if (Math.Round(item.Rating) == 2)
+                    {
+                        <input type="radio" disabled>
+                        <input type="radio" checked>
+                        <input type="radio" disabled>
+                        <input type="radio" disabled>
+                        <input type="radio" disabled>
+                    }
 
-                    <dt>
-                        @Html.DisplayNameFor(model => model.Rank)
-                    </dt>
-                    <dd>
-                        @Html.DisplayFor(modelItem => item.Rank)
-                    </dd>
+                    @if (Math.Round(item.Rating) == 3)
+                    {
+                        <input type="radio" disabled>
+                        <input type="radio" disabled>
+                        <input type="radio" checked>
+                        <input type="radio" disabled>
+                        <input type="radio" disabled>
+                    }
 
-                    <dt>
-                        @Html.DisplayNameFor(model => model.TotalOrders)
-                    </dt>
-                    <dd>
-                        @Html.DisplayFor(modelItem => item.TotalOrders)
-                    </dd>
+                    @if (Math.Round(item.Rating) == 4)
+                    {
+                        <input type="radio" disabled>
+                        <input type="radio" disabled>
+                        <input type="radio" disabled>
+                        <input type="radio" checked>
+                        <input type="radio" disabled>
+                    }
 
-                    <dt>
-                        @Html.DisplayNameFor(model => model.Rating)
-                    </dt>
-                    <dd>
-                        @if (Math.Round(item.Rating) == 1)
-                        {
-                            <input type="radio" checked>
-                            <input type="radio" disabled>
-                            <input type="radio" disabled>
-                            <input type="radio" disabled>
-                            <input type="radio" disabled>
-                        }
-
-                        @if (Math.Round(item.Rating) == 2)
-                        {
-                            <input type="radio" disabled>
-                            <input type="radio" checked>
-                            <input type="radio" disabled>
-                            <input type="radio" disabled>
-                            <input type="radio" disabled>
-                        }
-
-                        @if (Math.Round(item.Rating) == 3)
-                        {
-                            <input type="radio" disabled>
-                            <input type="radio" disabled>
-                            <input type="radio" checked>
-                            <input type="radio" disabled>
-                            <input type="radio" disabled>
-                        }
-
-                        @if (Math.Round(item.Rating) == 4)
-                        {
-                            <input type="radio" disabled>
-                            <input type="radio" disabled>
-                            <input type="radio" disabled>
-                            <input type="radio" checked>
-                            <input type="radio" disabled>
-                        }
-
-                        @if (Math.Round(item.Rating) == 5)
-                        {
-                            <input type="radio" disabled>
-                            <input type="radio" disabled>
-                            <input type="radio" disabled>
-                            <input type="radio" disabled>
-                            <input type="radio" checked />
-                        }
-                    </dd>
-
-                    <dt>
-                        @Html.LabelFor(modelItem => item.ReviewText)
-                    </dt>
-                    <dd>
-                        @Html.DisplayFor(modelItem => item.ReviewText)
-                    </dd>
-
-                </dl>
-            </div>
-        </div>
+                    @if (Math.Round(item.Rating) == 5)
+                    {
+                        <input type="radio" disabled>
+                        <input type="radio" disabled>
+                        <input type="radio" disabled>
+                        <input type="radio" disabled>
+                        <input type="radio" checked />
+                    }
+                </td>
+                <td style="vertical-align:middle">
+                    @Html.DisplayFor(modelItem => item.Rank)
+                </td>
+            </tr>
+        }
     }
-}
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+
+</table>
+
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+    }

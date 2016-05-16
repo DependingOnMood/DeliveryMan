@@ -241,6 +241,7 @@
     <Content Include="Content\ErrorPage.css" />
     <Content Include="Content\Img\about_banner.jpg" />
     <Content Include="Content\Img\errorlogo.png" />
+    <Content Include="Content\Ranking.css" />
     <Content Include="Content\RegisterTabs.css" />
     <Content Include="Content\Contact.css" />
     <Content Include="Content\Details.css" />
