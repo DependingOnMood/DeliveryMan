@@ -11,11 +11,11 @@ namespace BizLogic
         public static decimal computePrice( double distance, decimal orderFee)
         {
             decimal price = 0;
-            if (distance >= 0 && distance < 5)
+            if (distance >= 0 && distance < 1)
             {
                 price = 0.15M * orderFee;
             }
-            else if (distance >= 5 && distance < 10)
+            else if (distance >= 1 && distance < 3.01)
             {
                 price = 0.20M * orderFee;
             }
