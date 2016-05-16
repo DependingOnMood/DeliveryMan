@@ -29,12 +29,12 @@
 
             @if (ViewBag.UserType == 0 )
             {
-                <input type="button" value="Change My Contact Info" class="btn btn-danger"
+                <input type="button" value="Change My Profile" class="btn btn-danger"
                        onclick="location.href = '@(Url.Action("ChangeDeliverymanUserInfo", "Deliveryman"))'" />
             }
             else if (ViewBag.UserType == 1)
             {
-                <input type="button" value="Change My Contact Info" class="btn btn-danger"
+                <input type="button" value="Change My Profile" class="btn btn-danger"
                        onclick="location.href = '@(Url.Action("ChangeRestaurantUserInfo", "Restaurant"))'" />
             }
 
