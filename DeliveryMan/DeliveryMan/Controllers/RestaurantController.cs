@@ -315,8 +315,9 @@ namespace DeliveryMan.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult EditOrder([Bind(Include = "OrderId, AddressLine1, AddressLine2, City, State, ZipCode")]
-            RestaurantEditOrderViewModel model)
+        RestaurantEditOrderViewModel model)
         {
+
             if (User.Identity.IsAuthenticated)
             {
                 ViewBag.UserType = GetRole();
@@ -773,6 +774,7 @@ namespace DeliveryMan.Controllers
             {
                 ViewBag.UserType = GetRole();
             }
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -786,14 +788,17 @@ namespace DeliveryMan.Controllers
             {
                 throw new Exception("Error");
             }
+
             Order order = (from o in db.orders
                            where o.Id == id
                            where o.RestaurantId == res.Id
                            select o).FirstOrDefault();
+
             if (order == null)
             {
                 throw new Exception("Error");
             }
+
             return View(order.Deliveryman);
         }
 
@@ -863,13 +868,13 @@ namespace DeliveryMan.Controllers
             ChangeRestaurantInfoModel model = new ChangeRestaurantInfoModel()
             {
                 Name = res.Name,
-               
+
                 AddressLine1 = res.Contact.AddressLine1,
                 AddressLine2 = res.Contact.AddressLine2,
                 City = res.Contact.City,
                 State = res.Contact.State,
                 ZipCode = res.Contact.ZipCode,
-               
+
 
             };
 
@@ -889,7 +894,6 @@ namespace DeliveryMan.Controllers
                 ViewBag.UserType = GetRole();
             }
 
-
             Restaurant res = (from r in db.restaurants
                               where r.Contact.Email.Equals(User.Identity.Name)
                               select r).FirstOrDefault();
@@ -897,9 +901,8 @@ namespace DeliveryMan.Controllers
             {
                 throw new Exception("Error");
             }
-            res.Name = model.Name;
-            
 
+            res.Name = model.Name;
 
             res.Contact.AddressLine1 = model.AddressLine1;
             res.Contact.AddressLine2 = model.AddressLine2;
@@ -908,7 +911,7 @@ namespace DeliveryMan.Controllers
             res.Contact.ZipCode = model.ZipCode;
             if (model.file != null)
             {
-              String  fileUrl = HttpContext.Server.MapPath("~/Content/UserIcon/")
+                String fileUrl = HttpContext.Server.MapPath("~/Content/UserIcon/")
                                                     + res.Contact.Email + ".png";
                 Bitmap b = (Bitmap)Bitmap.FromStream(model.file.InputStream);
                 b.Save(fileUrl, ImageFormat.Png);

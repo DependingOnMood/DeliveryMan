@@ -15,7 +15,7 @@ namespace DeliveryMan.Models
         [Display(Name = "Orders reviewed")]
         public int TotalOrders { get; set; }
 
-        [Display(Name = "Rating")]
+        [Display(Name = "Average Rating")]
         public decimal Rating { get; set; }
 
         [Display(Name = "Sample reviews")]

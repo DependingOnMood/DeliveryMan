@@ -15,7 +15,7 @@
 @if (User.Identity.IsAuthenticated) {
     if (ViewBag.UserType == 0)
     {
-    <p class="feed">Welcome to DeliveryMan Web Application, DeliveryMan!</p>
+    <p class="feed">Welcome DeliveryMan! Find an order to deliver</p>
     <div class="row">
         <div>
             <p class="center-button"><a href="@(Url.Action("FindOrder", "Deliveryman"))" class="btn btn-danger">Find Orders</a></p>
@@ -29,7 +29,7 @@
     }
     else
     {
-        <p class="feed">Welcome to DeliveryMan Web Application, Restaurant!</p>
+        <p class="feed">Welcome Restaurant! Post an order for our deliveryman to find</p>
         <div class="row">
             <div>
                 <p class="center-button"><a href="@(Url.Action("CreateOrder", "Restaurant"))" class="btn btn-danger">Create Order</a></p>
@@ -59,22 +59,27 @@ else {
         <div class="row">
             <div class="col-md-4">
                 <h2>DeliveryMan</h2>
-                <p class="member-info">DeliverMan is a web application that can provide a local delivery solution for restaurants. It’s a platform for local restaurants such that they can deliver food orders to their customers with registered Deliveryman.</p>
-                <p><a class="btn btn-danger"  href="~/Home/About">Learn more &raquo;</a></p>
+                <p class="member-info">DeliveryMan is a web application that can provide a local delivery solution for restaurants. 
+                It’s a platform for local restaurants such that they can deliver food orders to their customers with registered Deliveryman.</p>
+                <p>
+                <p class="member-info">
+                    Registered restaurants can post food orders for delivery and registered deliveryman can find and deliver orders posted by restaurants.      
+                </p>
+                <a class="btn btn-danger" href="~/Home/About">Learn more &raquo;</a>
             </div>
             <div class="col-md-4">
                 <h2>Team Members</h2>
                 <p class="member-info">
-                    Dongbo Xiao, Master of Science in Computer Science at NYU Courant
-                </p>
-                <p class="member-info">
                     Taiyan Hao, Master of Science in Computer Science at NYU Courant
                 </p>
                 <p class="member-info">
-                    WeiHang Song, Master of Science in Computer Science at NYU Courant
+                    Weihang Song, Master of Science in Computer Science at NYU Courant
                 </p>
                 <p class="member-info">
                     Huiyu Sun, Master of science in computer science at NYU Courant
+                </p>
+                <p class="member-info">
+                    Dongbo Xiao, Master of Science in Computer Science at NYU Courant
                 </p>
                 <p><a class="btn btn-danger" href="~/Home/Contact">Learn more &raquo;</a></p>
             </div>
