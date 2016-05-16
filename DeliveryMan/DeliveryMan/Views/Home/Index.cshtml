@@ -12,6 +12,8 @@
     <br />
     <br />
     <br />
+    <br />
+    <br />
 @if (User.Identity.IsAuthenticated) {
     if (ViewBag.UserType == 0)
     {
@@ -56,10 +58,16 @@ else {
     </div>
 }
 </div>
+
+<div class="row">
+
+</div>
+
+
         <div class="row">
             <div class="col-md-4">
-                <h2>DeliveryMan</h2>
-                <p class="member-info">DeliveryMan is a web application that can provide a local delivery solution for restaurants. 
+                <h2>About DeliveryMan</h2>
+                <p class="member-info" style="text-align:justify">DeliveryMan is a web application that can provide a local delivery solution for restaurants. 
                 It’s a platform for local restaurants such that they can deliver food orders to their customers with registered Deliveryman.</p>
                 <p>
                 <p class="member-info">
@@ -69,24 +77,24 @@ else {
             </div>
             <div class="col-md-4">
                 <h2>Team Members</h2>
-                <p class="member-info">
-                    Taiyan Hao, Master of Science in Computer Science at NYU Courant
+                <p >              
+                    <b> Dongbo Xiao</b>, <br />Master of Science in Computer Science at NYU Courant               
                 </p>
-                <p class="member-info">
-                    Weihang Song, Master of Science in Computer Science at NYU Courant
+                <p >
+                    <b>Taiyan Hao</b>,<br /> Master of Science in Computer Science at NYU Courant                 
                 </p>
-                <p class="member-info">
-                    Huiyu Sun, Master of science in computer science at NYU Courant
+                <p >             
+                    <b>Huiyu Sun</b>, <br />Master of science in computer science at NYU Courant
                 </p>
-                <p class="member-info">
-                    Dongbo Xiao, Master of Science in Computer Science at NYU Courant
+                <p > 
+                    <b>Weihang Song</b>, <br />Master of Science in Computer Science at NYU Courant
                 </p>
                 <p><a class="btn btn-danger" href="~/Home/Contact">Learn more &raquo;</a></p>
             </div>
             <div class="col-md-4">
                 <h2>Instructor</h2>
-                <p class="member-info">Cory Plock</p>
-                <p class="member-info">Twenty one (21) years of industry and consulting experience in software engineering and research. Software technology strategist and advisor, code review expert, subject matter expert for IP valuation and patent prosecution, expert witness, Adjunct Associate Professor at New York University.</p>
+                <p class="member-info"><b>Cory Plock</b></p>
+                <p class="member-info" style="text-align:justify">Twenty one (21) years of industry and consulting experience in software engineering and research. <br /><br />Software technology strategist and advisor, code review expert, subject matter expert for IP valuation and patent prosecution, expert witness, Adjunct Associate Professor at New York University.</p>
                 <p><a class="btn btn-danger" href="http://www.coryplock.com" target="blank">Learn more &raquo;</a></p>
             </div>
         </div>
