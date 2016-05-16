@@ -9,6 +9,7 @@
 <script type="text/javascript">
     function findMyLocation() {
         document.getElementById("1").style.display = "none";
+        document.getElementById("2").style.display ="block"
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(success);
         } else {
@@ -19,13 +20,11 @@
             var long = position.coords.longitude;
             var city = position.coords.locality;
     
-           // dvDistance.innerHTML += "lat: " + lat + " long: " + long + "<br />";
             document.getElementById("line1").value = "xxx";
             document.getElementById("line2").value = "xxx";
             document.getElementById("city").value = "xxx";
             document.getElementById("state").value = "xxx";
             document.getElementById("zipcode").value = "xxxxxx";
-           // document.getElementById("code").textContent = lat + "," + long;
             document.getElementById("code").value = lat + "," + long;
 
         }
@@ -47,7 +46,7 @@
 
 </script>
 <h2>@ViewBag.Title.</h2>
-<body>
+<body onload="findMyLocation()">
     @using (Html.BeginForm("FindOrder", "Deliveryman", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
     {
 
@@ -58,15 +57,13 @@
         <div class="form-group">
             
         </div>
-        <div class="form-group">
-            <input type="button" value="Current Location" onclick="findMyLocation()" class="btn btn-danger" />
-        </div>
+        
         <div id="2">
         <div class="form-group">
           @Html.Label("Current Location:", new { @class = "col-md-2 control-label" })
           <div class="col-md-10">
           @Html.TextBoxFor(m => m.latlng, new { @id = "code", @class = "form-control", @readonly = "readonly" })                   
-              <input type="submit" class="btn btn-danger" value="Find Order" />                  
+              <input type="submit" class="btn btn-danger" value="Find Order" style="margin-top:20px"/>                  
          </div>
              
          
@@ -91,6 +88,7 @@
         <div class="form-group">
             <div class="col-md-10">
                 <input type="button" value="Input An Address" onclick="showElem()" class="btn btn-danger" style="margin-left:80px" />
+                <input type="button" value="Current Location" onclick="findMyLocation()" class="btn btn-danger"  />
             </div>
             </div>
             <div id="1" style="display:none">
@@ -130,7 +128,7 @@
                     <div class="col-md-10">
                         @Html.TextBoxFor(m => m.zipCode, new { @id = "zipcode", @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.zipCode, "", new { @class = "text-danger" })
-                        <input type="submit" class="btn btn-danger" value="Find Order" style="align-self:center" />
+                        <input type="submit" class="btn btn-danger" value="Find Order" style="margin-top:20px"/>
                     </div>
                    
                 </div>

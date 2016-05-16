@@ -7,10 +7,10 @@
 
 <table class="table" >
     <tr>
-        <th>
+        <th style="margin: auto">
             Restaurant Image
         </th>
-        <th>
+        <th style="margin: auto">
             Restaurant
         </th>
         <th>
@@ -31,24 +31,24 @@
         foreach (Order item in (List<Order>)ViewBag.res)
         {
             string address = item.Contact.AddressToString();
-            <tr style="vertical-align: central">
+            <tr >
                 <td>
-                    <img src="~/Content/UserIcon/@item.Restaurant.IconImageUrl" alt="" style="width: 75px; height: 75px;"/>
+                    <img src="~/Content/UserIcon/@item.Restaurant.IconImageUrl" alt="" style="width: 50px; height: 50px;"/>
                 </td>
-                <td >
+                <td style="vertical-align:middle" >
                     @Html.DisplayFor(modelItem => item.Restaurant.Name)
                 </td>
-                <td>
+                <td style="vertical-align:middle" >
                     @address
                 </td>
-                <td>
+                <td style="vertical-align:middle" >
                     @Html.DisplayFor(modelItem => item.DeliveryFee)
                 </td>
-                <td>
+                <td style="vertical-align:middle" >
                     @Html.DisplayFor(modelItem => item.ETA)
                 </td>
-                <td>
-                    @Html.ActionLink("Accept","AcceptOrder", new { id = item.Id})
+                <td style="vertical-align:middle" >
+                    @Html.ActionLink("Accept","AcceptOrder", new { id = item.Id},new { @class = "btn btn-danger"})
                 </td>
             </tr>
         }
