@@ -8,7 +8,7 @@
 </script>
 <script type="text/javascript">
     function findMyLocation() {
-        document.getElementById("1").style.visibility = "hidden";
+        document.getElementById("1").style.display = "none";
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(success);
         } else {
@@ -31,17 +31,18 @@
         }
     }
     function hideElem() {
-        document.getElementById("1").style.visibility = "hidden";
+        document.getElementById("1").style.display = "none";
     }
 
     function showElem() {
-        document.getElementById("1").style.visibility = "visible";
+        document.getElementById("1").style.display = "block";
         document.getElementById("line1").value = "";
         document.getElementById("line2").value = "";
         document.getElementById("city").value = "";
         document.getElementById("state").value = "";
         document.getElementById("zipcode").value = "";
         document.getElementById("code").value = "";
+        document.getElementById("2").style.display = "none";
     }
 
 </script>
@@ -55,68 +56,27 @@
         <h4>Create a new order</h4>
         <hr />
         <div class="form-group">
-            <div class="col-md-10">
-                <input type="button" value="Input An Address" onclick ="showElem()" class="btn btn-danger" />
-                <input type="button" value="Current Location" onclick="findMyLocation()" class="btn btn-danger" />
-                <input type="submit" class="btn btn-danger" value="Find" />
-            </div>
+            
         </div>
         <div class="form-group">
+            <input type="button" value="Current Location" onclick="findMyLocation()" class="btn btn-danger" />
         </div>
-     //   @Html.ValidationSummary("", new { @class = "text-danger" })
-
+        <div id="2">
         <div class="form-group">
-            @Html.Label("Current Location:", new { @class = "col-md-2 control-label" })
-            <div class="col-md-10">
-                @Html.TextBoxFor(m => m.latlng, new { @id = "code", @class = "form-control" })
-            </div>
-        </div>
-        <div id="1">
-            <div class="form-group">
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(m => m.line1, new { @class = "col-md-2 control-label" })
-                <div class="col-md-10">
-                    @Html.TextBoxFor(m => m.line1, new { @id = "line1", @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.line1, "", new { @class = "text-danger" })
-                </div>
-            </div>
-            <div class="form-group">
-                @Html.LabelFor(m => m.line2, new { @class = "col-md-2 control-label" })
-                <div class="col-md-10">
-                    @Html.TextBoxFor(m => m.line2, new { @id = "line2", @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.line2, "", new { @class = "text-danger" })
-                </div>
-            </div>
-            <div class="form-group">
-                @Html.LabelFor(m => m.city, new { @class = "col-md-2 control-label" })
-                <div class="col-md-10">
-                    @Html.TextBoxFor(m => m.city, new { @id = "city", @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.city, "", new { @class = "text-danger" })
-                </div>
-            </div>
-            <div class="form-group">
-                @Html.LabelFor(m => m.state, new { @class = "col-md-2 control-label" })
-                <div class="col-md-10">
-                    @Html.TextBoxFor(m => m.state, new { @id = "state", @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.state, "", new { @class = "text-danger" })
-                </div>
-            </div>
-            <div class="form-group">
-                @Html.LabelFor(m => m.zipCode, new { @class = "col-md-2 control-label" })
-                <div class="col-md-10">
-                    @Html.TextBoxFor(m => m.zipCode, new { @id = "zipcode", @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.zipCode, "", new { @class = "text-danger" })
-                </div>
-            </div>
+          @Html.Label("Current Location:", new { @class = "col-md-2 control-label" })
+          <div class="col-md-10">
+          @Html.TextBoxFor(m => m.latlng, new { @id = "code", @class = "form-control", @readonly = "readonly" })                   
+              <input type="submit" class="btn btn-danger" value="Find Order" />                  
+         </div>
+             
+         
+          </div>
         </div>
         <div class="form-group">
             @Html.Label("Distance", new { @class = "col-md-2 control-label" })
-            @Html.ValidationMessageFor(m => m.distance, "", new { @class = "text-danger" })
-
             <div class="radio-inline">
                 @Html.RadioButtonFor(m => m.distance, 1.0) < 1 mile
+            
             </div>
             <div class="radio-inline">
                 @Html.RadioButtonFor(m => m.distance, 3.0) < 3 miles
@@ -124,10 +84,60 @@
             <div class="radio-inline">
                 @Html.RadioButtonFor(m => m.distance, 3.01) > 3 miles
             </div>
+            <div>@Html.ValidationMessageFor(m => m.distance, "", new { @class = "text-danger" })</div>
+     
+   
         </div>
+        <div class="form-group">
+            <div class="col-md-10">
+                <input type="button" value="Input An Address" onclick="showElem()" class="btn btn-danger" style="margin-left:80px" />
+            </div>
+            </div>
+            <div id="1" style="display:none">
+                <div class="form-group">
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.line1, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(m => m.line1, new { @id = "line1", @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.line1, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.line2, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(m => m.line2, new { @id = "line2", @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.line2, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.city, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(m => m.city, new { @id = "city", @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.city, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.state, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(m => m.state, new { @id = "state", @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.state, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.zipCode, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(m => m.zipCode, new { @id = "zipcode", @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.zipCode, "", new { @class = "text-danger" })
+                        <input type="submit" class="btn btn-danger" value="Find Order" style="align-self:center" />
+                    </div>
+                   
+                </div>
+            </div>
 
 
-    }
+            }
 </body>
 
 
