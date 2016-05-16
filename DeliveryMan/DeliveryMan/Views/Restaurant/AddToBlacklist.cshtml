@@ -56,8 +56,8 @@
         <div class="col-md-offset-2 col-md-10">
             <p> Are you sure you want to add this deliveryman to your blacklist?</p>
 
-            <input type="submit" name="command" class="btn btn-default" value="Submit" />
-            <input type="button" value="Cancel" class="btn btn-default"
+            <input type="submit" name="command" class="btn btn-danger" value="Submit" />
+            <input type="button" value="Cancel" class="btn btn-danger"
                        onclick="location.href = '@(Url.Action("ReviewOrder", "Restaurant", new { id = Model.OrderId }))'" />
         </div>
     </div>
