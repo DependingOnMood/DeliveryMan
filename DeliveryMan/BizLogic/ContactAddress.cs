@@ -13,13 +13,13 @@ namespace BizLogic
         {
             StringBuilder builder = new StringBuilder();
             builder.Append(contact.AddressLine1);
-            builder.Append(" ");
+            builder.Append(", ");
             builder.Append(contact.AddressLine2);
-            builder.Append(" ");
+            builder.Append(", ");
             builder.Append(contact.City);
-            builder.Append(" ");
+            builder.Append(", ");
             builder.Append(contact.State);
-            builder.Append(" ");
+            builder.Append(", ");
             builder.Append(contact.ZipCode);
             return builder.ToString();
         }
