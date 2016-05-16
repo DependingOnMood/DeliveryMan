@@ -9,19 +9,30 @@ namespace BizLogic
 {
     public static class ContactAddress
     {
-        public static string getAddress(this Contact contact)
+        public static string getFullAddress(this Contact contact)
         {
-            StringBuilder builder = new StringBuilder();
-            builder.Append(contact.AddressLine1);
-            builder.Append(", ");
-            builder.Append(contact.AddressLine2);
-            builder.Append(", ");
-            builder.Append(contact.City);
-            builder.Append(", ");
-            builder.Append(contact.State);
-            builder.Append(", ");
-            builder.Append(contact.ZipCode);
-            return builder.ToString();
+            if (contact.AddressLine2 != null)
+            {
+                return contact.AddressLine1 + ", " + contact.AddressLine2 + ", " + 
+                    contact.City + ", " + contact.State + ", " + contact.ZipCode; ;
+            }
+            else
+            {
+                return contact.AddressLine1 + ", " + contact.City + ", " + 
+                    contact.State + ", " + contact.ZipCode; ;
+            }
+        }
+
+        public static string getPartialAddress(this Contact contact)
+        {
+            if (contact.AddressLine2 != null)
+            {
+                return contact.AddressLine1 + ", " + contact.AddressLine2;
+            }
+            else
+            {
+                return contact.AddressLine1;
+            }
         }
     }
 }

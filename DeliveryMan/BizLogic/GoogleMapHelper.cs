@@ -13,8 +13,11 @@ namespace BizLogic
         //Given address information returns latitude and longitude
         public String getLatandLngByAddr(String addr)
         {
+
             var address = addr;
+            //var address = "110 Riverdrive south";
             var requestUri = string.Format("https://maps.googleapis.com/maps/api/geocode/xml?address={0}&sensor=false&key={1}", Uri.EscapeDataString(address),key);
+
             var request = WebRequest.Create(requestUri);
             var response = request.GetResponse();
             var xdoc = XDocument.Load(response.GetResponseStream());
@@ -43,7 +46,11 @@ namespace BizLogic
 
             Console.WriteLine(result.FirstAttribute);
             string addr = result.Element("formatted_address").ToString();
+            //  var lat = locationElement.Element("lat");
+            //var lng = locationElement.Element("lng");
             String[] res1 = addr.ToString().Split('<');
+            //String[] res2 = lng.ToString().Split('<');
+            //String _lat = res1[1].Substring(4);
             String res = res1[1].Substring(18);
             return res;
         }
