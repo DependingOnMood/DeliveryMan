@@ -97,7 +97,7 @@
 
         @if (Model.Status == DataLayer.Status.DELIVERED)
         {
-            <input type="button" value="Edit" class="btn btn-danger"
+            <input type="button" value="Show review" class="btn btn-danger"
                    onclick="location.href = '@(Url.Action("ReviewOrder", "Restaurant", new { id = Model.Id }))'" />
         }
 
