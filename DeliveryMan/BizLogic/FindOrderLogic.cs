@@ -10,13 +10,20 @@ namespace BizLogic
     public class FindOrderLogic
     {
         public Boolean selectOrderByDistance(double distance, double res) {
-            if (res <= distance)
+            if (distance < 3.01)
             {
-                return true;
+                if (res <= distance)
+                {
+                    return true;
+                }
+                else {
+                    return false;
+                }
             }
             else {
-                return false;
+                return true;
             }
+         
             //need database connection
         }
 
