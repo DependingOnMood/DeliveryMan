@@ -6,12 +6,27 @@
 
 <h2>@ViewBag.Title.</h2>
 
-<h4>View your blacklist! Remove people from this list if you want 
-    them to see any orders you post in the future</h4>
+<h4>
+    View your blacklist! Remove people from this list if you want
+    them to see any orders you post in the future
+</h4>
 <hr />
 
-<input type="button" value="Back to Orders" class="btn btn-danger"
-       onclick="location.href = '@(Url.Action("Orders", "Restaurant"))'" />
+@if (ViewBag.orderId != null)
+{
+    <input type="button" value="Back to Review" class="btn btn-danger"
+           onclick="location.href = '@(Url.Action("ReviewOrder", "Restaurant", new { id = ViewBag.orderId }))'" />
+}
+else if (TempData["orderId"] != null)
+{
+    <input type="button" value="Back to Review" class="btn btn-danger"
+           onclick="location.href = '@(Url.Action("ReviewOrder", "Restaurant", new { id = TempData["orderId"] }))'" />
+}
+else
+{
+    <input type="button" value="Back to Manage" class="btn btn-danger"
+           onclick="location.href = '@(Url.Action("Index", "Manage"))'" />
+}
 
 @foreach (var item in Model)
 {
@@ -32,10 +47,11 @@
                     @Html.DisplayFor(modelItem => item.Rating)
                 </dd>
 
+                <dd>
+                    <input type="button" value="Remove" class="btn btn-danger"
+                           onclick="location.href = '@(Url.Action("DeleteFromBlacklist", "Restaurant", new { id = item.DeliverymanId }))'" />
+                </dd>
             </dl>
-
-            <input type="button" value="Remove" class="btn btn-danger"
-                   onclick="location.href = '@(Url.Action("DeleteFromBlacklist", "Restaurant", new { id = item.DeliverymanId }))'" />
-        </div>      
+        </div>
     </div>
 }

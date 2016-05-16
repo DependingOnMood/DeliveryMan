@@ -51,7 +51,7 @@
         </tr>
         @foreach (var item in Model.pendingOrders.ToList())
         {
-            string destination = item.Contact.AddressToString();
+            string destination = item.Contact.AddressToStringSimple();
             <tr>
                 <td></td>
                 <td>
@@ -89,7 +89,7 @@
         </tr>
         @foreach (var item in Model.inProgressOrders.ToList())
         {
-            string destination = item.Contact.AddressToString();
+            string destination = item.Contact.AddressToStringSimple();
             <tr>
                 <td></td>
                 <td>
@@ -112,8 +112,6 @@
                            onclick="location.href = '@(Url.Action("OrderDetails", "Deliveryman", new { id = item.Id }))'" />
                     <input type="button" value="Complete" class="btn btn-danger"
                            onclick="location.href = '@(Url.Action("CompleteOrder", "Deliveryman", new { id = item.Id }))'" />
-                    @*@Html.ActionLink("Details", "OrderDetails", new { id = item.Id })
-                    @Html.ActionLink("Complete", "CompleteOrder", new { id = item.Id })*@
                 </td>
             </tr>
         }
@@ -129,7 +127,7 @@
         </tr>
         @foreach (var item in Model.deliveredOrders.ToList())
         {
-            string destination = item.Contact.AddressToString();
+            string destination = item.Contact.AddressToStringSimple();
             <tr>
                 <td></td>
                 <td>
@@ -150,7 +148,6 @@
                 <td>
                     <input type="button" value="Details" class="btn btn-danger"
                            onclick="location.href = '@(Url.Action("OrderDetails", "Deliveryman", new { id = item.Id }))'" />
-                    @*@Html.ActionLink("Details", "OrderDetails", new { id = item.Id })*@
                 </td>
             </tr>
         }
