@@ -72,14 +72,14 @@
         <div class="form-group">
             @Html.Label("Distance", new { @class = "col-md-2 control-label" })
             <div class="radio-inline">
-                @Html.RadioButtonFor(m => m.distance, 1.0) < 1 mile
+                @Html.RadioButtonFor(m => m.distance, 1.0) less than 1 mile
             
             </div>
             <div class="radio-inline">
-                @Html.RadioButtonFor(m => m.distance, 3.0) < 3 miles
+                @Html.RadioButtonFor(m => m.distance, 3.0) less than  3 miles
             </div>
             <div class="radio-inline">
-                @Html.RadioButtonFor(m => m.distance, 3.01) > 3 miles
+                @Html.RadioButtonFor(m => m.distance, 3.01) show all
             </div>
             <div>@Html.ValidationMessageFor(m => m.distance, "", new { @class = "text-danger" })</div>
      

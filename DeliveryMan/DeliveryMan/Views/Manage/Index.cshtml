@@ -10,16 +10,20 @@
     <h4>Change your account settings</h4>
     <hr />
     <dl class="dl-horizontal">
+
+        <dd>
+            <img src="~/Content/UserIcon/@ViewBag.IconUrl?id=1" style="width: 150px; height:150px">
+        </dd>
         <dd>
 
             @if (Model.HasPassword)
             {
-                <input type="button" value="Change My Password" class="btn btn-danger"
+                <input type="button" value="Change My Password" class="btn btn-danger" style="margin-top:20px; width :15em"
                        onclick="location.href = '@(Url.Action("ChangePassword", "Manage"))'" />
             }
             else
             {
-                <input type="button" value="Create A Password" class="btn btn-danger"
+                <input type="button" value="Create A Password" class="btn btn-danger" style=" width :15em"
                        onclick="location.href = '@(Url.Action("SetPassword", "Manage"))'" />
             }
             
@@ -29,12 +33,12 @@
 
             @if (ViewBag.UserType == 0 )
             {
-                <input type="button" value="Change My Profile" class="btn btn-danger"
+                <input type="button" value="Change My Profile" class="btn btn-danger" style="width :15em"
                        onclick="location.href = '@(Url.Action("ChangeDeliverymanUserInfo", "Deliveryman"))'" />
             }
             else if (ViewBag.UserType == 1)
             {
-                <input type="button" value="Change My Profile" class="btn btn-danger"
+                <input type="button" value="Change My Profile" class="btn btn-danger" style="width :15em"
                        onclick="location.href = '@(Url.Action("ChangeRestaurantUserInfo", "Restaurant"))'" />
             }
 
@@ -43,7 +47,7 @@
             <br />
             @if (ViewBag.UserType == 1)
             {
-                <input type="button" value="My Black List" class="btn btn-danger"
+                <input type="button" value="My Black List" class="btn btn-danger" style="width :15em"
                        onclick="location.href = '@(Url.Action("BlackListView", "Restaurant"))'" />
             }
 

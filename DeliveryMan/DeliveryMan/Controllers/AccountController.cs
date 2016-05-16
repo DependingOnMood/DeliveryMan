@@ -185,8 +185,12 @@ namespace DeliveryMan.Controllers
                 {
                      fileUrl = HttpContext.Server.MapPath("~/Content/UserIcon/")
                                                          + model.Email + ".png";
-                    Bitmap b = (Bitmap)Bitmap.FromStream(file.InputStream);
-                    b.Save(fileUrl, ImageFormat.Png);
+            
+                        Bitmap b = (Bitmap)Bitmap.FromStream(file.InputStream);
+                               b.Save(fileUrl, ImageFormat.Png);
+               
+                
+                 
                     
                 }
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
