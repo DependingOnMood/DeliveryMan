@@ -74,8 +74,6 @@
                            onclick="location.href = '@(Url.Action("OrderDetails", "Deliveryman", new { id = item.Id }))'" />
                     <input type="button" value="Cancel" class="btn btn-danger"
                            onclick="location.href = '@(Url.Action("CancelPickup", "Deliveryman", new { id = item.Id }))'" />
-                    @*@Html.ActionLink("Details", "OrderDetails", new { id = item.Id })
-                    @Html.ActionLink("Cancel", "CancelPickup", new { id = item.Id })*@
                 </td>
             </tr>
         }
