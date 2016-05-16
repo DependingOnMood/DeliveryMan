@@ -20,5 +20,7 @@ namespace DeliveryMan.Models
 
         [Display(Name = "Sample review")]
         public string ReviewText { get; set; }
+
+        public string IconUrl { get; set; }
     }
 }

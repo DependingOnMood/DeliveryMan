@@ -61,6 +61,7 @@ namespace DeliveryMan.Controllers
                 rankingVMs[i].DeliverymanName = curDeliveryman.FirstName + " " + curDeliveryman.LastName;
                 rankingVMs[i].TotalOrders = curDeliveryman.TotalDeliveryCount;
                 rankingVMs[i].Rating = curDeliveryman.Rating;
+                rankingVMs[i].IconUrl = curDeliveryman.IconImageUrl;
 
                 Review DmanReviewAvg = (from r in db.reviews
                                         where r.Order.Deliveryman.Id == curDeliveryman.Id

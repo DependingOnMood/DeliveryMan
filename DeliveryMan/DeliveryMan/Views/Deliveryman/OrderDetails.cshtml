@@ -1,5 +1,5 @@
 ﻿@model DataLayer.Order
-
+@using BizLogic
 <!DOCTYPE html>
 <html>
 <head>
@@ -130,7 +130,7 @@
         <input type="button" value="My Orders" class="btn btn-danger"
                onclick="location.href = '@(Url.Action("MyOrders", "Deliveryman"))'" />
         <input type="button" value="Direction" class="btn btn-danger"
-               onclick="location.href = '@(Url.Action("Direction", "Deliveryman", new { s1 = Model.Restaurant.Contact.AddressToString(), s2 = Model.Contact.AddressToString() }))'" />
+               onclick="location.href = '@(Url.Action("Direction", "Deliveryman", new { s1 = Model.Restaurant.Contact.getFullAddress(), s2 = Model.Contact.getFullAddress() }))'" />
     </p>
 </body>
 </html>

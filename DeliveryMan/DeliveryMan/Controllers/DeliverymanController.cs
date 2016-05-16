@@ -467,7 +467,7 @@ namespace DeliveryMan.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult ChangeDeliverymanUserInfo([Bind(Include = "FirstName, LastName, AddressLine1, AddressLine2, City, State, ZipCode, file")]
-            ChangeDeliverymanInfoModel model)
+            ChangeDeliverymanInfoModel model, HttpPostedFileBase file)
         {
             if (User.Identity.IsAuthenticated)
             {
@@ -486,7 +486,21 @@ namespace DeliveryMan.Controllers
             {
                 throw new Exception("Error");
             }
+            String fileUrl = "";
+            if (model.file != null)
+            {
+                fileUrl = HttpContext.Server.MapPath("~/Content/UserIcon/")
+                                                    + User.Identity.Name + ".png";
 
+
+                Bitmap b = (Bitmap)Bitmap.FromStream(file.InputStream);
+                if (System.IO.File.Exists(fileUrl))
+                {
+                    System.IO.File.Delete(fileUrl);
+                }
+                b.Save(fileUrl, ImageFormat.Png);
+
+            }
 
 
             del.FirstName = model.FirstName;
@@ -497,6 +511,7 @@ namespace DeliveryMan.Controllers
             del.Contact.City = model.City;
             del.Contact.State = model.State;
             del.Contact.ZipCode = model.ZipCode;
+            del.IconImageUrl = User.Identity.Name+".png";
             db.SaveChanges();
 
             return RedirectToAction("Index", "Manage");

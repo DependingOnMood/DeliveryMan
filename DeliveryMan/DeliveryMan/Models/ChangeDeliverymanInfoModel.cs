@@ -29,7 +29,6 @@ namespace DeliveryMan.Models
         [DataType(DataType.PostalCode)]
         public string ZipCode { get; set; }
 
-
         public HttpPostedFileBase file { get; set; }
     }
 }

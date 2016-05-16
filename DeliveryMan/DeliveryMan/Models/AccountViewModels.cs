@@ -114,9 +114,6 @@ namespace DeliveryMan.Models
         [DataType(DataType.PostalCode)]
         public string AddressZipCode { get; set; }
         public HttpPostedFileBase file { get; set; }
-
-
-
     }
 
     public class ResetPasswordViewModel
