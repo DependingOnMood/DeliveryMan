@@ -4,7 +4,7 @@
 }
 
 @model DataLayer.Order
-
+@using BizLogic
 <!DOCTYPE html>
 <html>
 <head>
@@ -64,7 +64,7 @@
                 <div class="col-md-offset-2 col-md-10">
                     <input type="submit" value="Accept it" class="btn btn-danger" />
                     <input type="button" value="Direction" class="btn btn-danger"
-                           onclick="location.href = '@(Url.Action("Direction", "Deliveryman", new { s1 = Model.Restaurant.Contact.AddressToString(), s2 = Model.Contact.AddressToString() }))'" />
+                           onclick="location.href = '@(Url.Action("Direction", "Deliveryman", new { s1 = Model.Restaurant.Contact.getFullAddress(), s2 = Model.Contact.getFullAddress() }))'" />
                 </div>
 
             </div>
