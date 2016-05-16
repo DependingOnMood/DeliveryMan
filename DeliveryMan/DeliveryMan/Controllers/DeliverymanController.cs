@@ -157,7 +157,7 @@ namespace DeliveryMan.Controllers
                 throw new Exception("Error");
             }
             ViewBag.ifSuccessed = 0;
-
+            TempData["returnUrlForD"] = "/AcceptOrder/"+id;
             return View(res);
         }
 
@@ -200,7 +200,7 @@ namespace DeliveryMan.Controllers
             return RedirectToAction("MyOrders");
         }
 
-        // GET: Deliveryman/OrderDetails/5
+        // GET: Deliveryman/OrderDetails/
         public ActionResult OrderDetails(int? id)
         {
             if (User.Identity.IsAuthenticated)
@@ -225,7 +225,7 @@ namespace DeliveryMan.Controllers
             {
                 throw new Exception("Error");
             }
-
+            TempData["returnUrlForD"] = "/OrderDetails/" + id;
             return View(order);
         }
 
@@ -395,8 +395,7 @@ namespace DeliveryMan.Controllers
         //Get
         public ActionResult Direction(String s1, String s2)
         {
-            //ViewBag.source = "110 riverdrive south 07310";
-            //ViewBag.desti = "55 riverdrive south 07310";
+
 
             if (User.Identity.IsAuthenticated)
             {
