@@ -140,19 +140,23 @@ namespace DeliveryMan.Controllers
                     throw new Exception("NotADeliveryman");
                 }
             }
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             var res = (from o in db.orders
                        where o.Id == id
                        where o.Status == Status.WAITING
                        select o).FirstOrDefault();
+
             if (res == null)
             {
                 throw new Exception("Error");
             }
             ViewBag.ifSuccessed = 0;
+
             return View(res);
         }
 

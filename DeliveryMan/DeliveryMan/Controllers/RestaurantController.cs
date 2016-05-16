@@ -143,11 +143,14 @@ namespace DeliveryMan.Controllers
                     contact.Longitude = Decimal.Parse(latAndLong.Split(' ')[1]);
                 }
             }
+
             db.SaveChanges();
+
             helper = new GoogleMapHelper();
             string loc1 = res.Contact.getAddress();
             string loc2 = totalAddress;
             double distance = CreateOrderLogic.getRealDistance(loc1, loc2);
+
             Order order = new Order()
             {
                 RestaurantId = res.Id,
@@ -160,8 +163,11 @@ namespace DeliveryMan.Controllers
                 DeliveryFee = CreateOrderLogic.computePrice(distance, model.OrderFee),
                 ETA = CreateOrderLogic.getETA(loc1, loc2),
             };
+
             db.orders.Add(order);
+
             db.SaveChanges();
+
             return RedirectToAction("Orders");
         }
 
@@ -251,7 +257,9 @@ namespace DeliveryMan.Controllers
             }
 
             order.Status = Status.INPROGRESS;
+
             db.SaveChanges();
+
             return RedirectToAction("Orders");
         }
 
@@ -266,6 +274,7 @@ namespace DeliveryMan.Controllers
                     throw new Exception("NotARestaurant");
                 }
             }
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -394,17 +403,21 @@ namespace DeliveryMan.Controllers
                     throw new Exception("NotARestaurant");
                 }
             }
+
             Restaurant res = (from r in db.restaurants
                               where r.Contact.Email.Equals(User.Identity.Name)
                               select r).FirstOrDefault();
+
             if (res == null)
             {
                 throw new Exception("Error");
             }
+
             Order order = (from o in db.orders
                            where o.RestaurantId == res.Id
                            where o.Id == id
                            select o).FirstOrDefault();
+
             CancelOrderViewModel cancelOrderVM = new CancelOrderViewModel()
             {
                 OrderId = order.Id,
@@ -416,6 +429,7 @@ namespace DeliveryMan.Controllers
                 DeliveryFee = order.DeliveryFee,
                 CancellationFee = Decimal.Parse(order.cancellationFee().ToString("F")),
             };
+
             return View(cancelOrderVM);
         }
 
@@ -433,17 +447,21 @@ namespace DeliveryMan.Controllers
                     throw new Exception("NotARestaurant");
                 }
             }
+
             Restaurant res = (from r in db.restaurants
                               where r.Contact.Email.Equals(User.Identity.Name)
                               select r).FirstOrDefault();
+
             if (res == null)
             {
                 throw new Exception("Error");
             }
+
             Order order = (from o in db.orders
                            where o.RestaurantId == res.Id
                            where o.Id == model.OrderId
                            select o).FirstOrDefault();
+
             if (order == null)
             {
                 throw new Exception("Error");
@@ -468,12 +486,14 @@ namespace DeliveryMan.Controllers
                     order.Deliveryman.Balance += model.CancellationFee;
                     db.orders.Remove(order);
                     db.SaveChanges();
+
                     return RedirectToAction("Orders");
                 }
             }
             else
             {
                 ModelState.AddModelError("OrderStatus", "A Delivered Order can not be cancelled");
+
                 return View("CancelOrder", model);
             }
         }
@@ -507,6 +527,7 @@ namespace DeliveryMan.Controllers
                 DeliveredTime = orderDetails.DeliveredTime,
                 IconUrl = orderDetails.Deliveryman.IconImageUrl,
             };
+
             var blacklist = (from b in db.blacklists
                              where b.Restaurant.Contact.Email == User.Identity.Name
                              where b.DeliverymanId == orderDetails.DeliverymanId
@@ -567,6 +588,7 @@ namespace DeliveryMan.Controllers
                 deliveryman.Ranking = newReview.calculateScore();
 
                 db.reviews.Add(newReview);
+
                 db.SaveChanges();
 
                 return RedirectToAction("Orders");
