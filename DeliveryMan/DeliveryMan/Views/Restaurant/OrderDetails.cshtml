@@ -88,7 +88,7 @@
             </dd>
         </dl>
     </div>
-    <p>
+    <div class="col-md-offset-1 col-md-10">
         @if (Model.Status == DataLayer.Status.WAITING)
         {
             <input type="button" value="Edit" class="btn btn-danger"
@@ -105,6 +105,6 @@
                onclick="location.href = '@(Url.Action("Orders", "Restaurant"))'" />
 
 
-    </p>
+    </div>
 </body>
 </html>
