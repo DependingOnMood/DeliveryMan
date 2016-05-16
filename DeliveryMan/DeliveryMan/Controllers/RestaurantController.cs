@@ -615,6 +615,7 @@ namespace DeliveryMan.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 ViewBag.UserType = GetRole();
+
                 if (GetRole() != 1)
                 {
                     throw new Exception("NotARestaurant");
@@ -624,16 +625,19 @@ namespace DeliveryMan.Controllers
             Restaurant res = (from r in db.restaurants
                               where r.Contact.Email.Equals(User.Identity.Name)
                               select r).FirstOrDefault();
+
             if (res == null)
             {
                 throw new Exception("Error");
             }
+
             IEnumerable<Order> orders = (from o in db.orders
                                          where o.RestaurantId == res.Id
                                          where o.Status == Status.DELIVERED
                                          orderby o.PlacedTime descending
                                          select o).ToList<Order>();
             List<RestaurantOrdersHistoryViewModel> models = new List<RestaurantOrdersHistoryViewModel>();
+
             foreach (Order o in orders)
             {
                 RestaurantOrdersHistoryViewModel model = new RestaurantOrdersHistoryViewModel()
