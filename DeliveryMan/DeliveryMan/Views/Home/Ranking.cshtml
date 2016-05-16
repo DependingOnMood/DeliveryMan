@@ -15,19 +15,26 @@
     {
         <div class="form-group">
             <div class="col-md-10">
+
                 <dl class="dl-horizontal">
                     <dt>
-                        @Html.DisplayNameFor(model => model.Rank)
+                        @Html.Label("Icon")
                     </dt>
                     <dd>
-                        @Html.DisplayFor(modelItem => item.Rank)
+                        <img src="~/Content/UserIcon/@item.IconUrl" style="width: 150px; height:150px">
                     </dd>
-
                     <dt>
                         @Html.DisplayNameFor(model => model.DeliverymanName)
                     </dt>
                     <dd>
                         @Html.DisplayFor(modelItem => item.DeliverymanName)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Rank)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(modelItem => item.Rank)
                     </dd>
 
                     <dt>

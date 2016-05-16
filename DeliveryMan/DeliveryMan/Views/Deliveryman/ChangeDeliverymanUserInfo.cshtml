@@ -8,7 +8,7 @@
     <title>ChangeDeliverymanUserInfo</title>
 </head>
 <body>
-    @using (Html.BeginForm("ChangeDeliverymanUserInfo", "Deliveryman", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    @using (Html.BeginForm("ChangeDeliverymanUserInfo", "Deliveryman", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", role = "form" }))
     {
         @Html.AntiForgeryToken()
         
@@ -72,20 +72,18 @@
                     @Html.ValidationMessageFor(model => model.ZipCode, "", new { @class = "text-danger" })
                 </div>
             </div>
-
             <fieldset class="form-group">
                 <div class="editor-label">
                     @Html.Label("Icon Image", new { @class = "col-md-2 control-label" })
                 </div>
                 <div class="col-md-10">
                     <div class="editor-field">
-                        <input id="ImagePath" title="Upload a product image"
+                        <input id="ImagePath" title="Upload a icon image"
                                type="file" name="file" class="btn btn-danger" />
-
                     </div>
                 </div>
-
             </fieldset>
+
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
                     <input type="submit" value="Save" class="btn btn-danger" />

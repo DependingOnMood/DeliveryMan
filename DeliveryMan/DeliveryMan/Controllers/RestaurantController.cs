@@ -97,7 +97,7 @@ namespace DeliveryMan.Controllers
                 }
                 catch (Exception e)
                 {
-                    ModelState.AddModelError("Addressline1", "Pleas input a valid address!");
+                    ModelState.AddModelError("Addressline1", "Please input a valid address!");
                     return View("CreateOrder", model);
                 }
 
