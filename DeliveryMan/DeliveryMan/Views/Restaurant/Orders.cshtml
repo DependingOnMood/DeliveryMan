@@ -66,20 +66,20 @@
             string destination = item.Contact.AddressToString();
             <tr>
                 <td></td>
-                <td >
+                <td style="vertical-align : middle">
                     @Html.DisplayFor(modelItem => item.Note)
                 </td>
-                <td  >
+                <td style="vertical-align : middle" >
                     @destination
                 </td>
                 <td></td>
-                <td  >
+                <td style="vertical-align : middle" >
                     @Html.DisplayFor(model => item.Status)
                 </td>
-                <td  >
+                <td  style="vertical-align : middle">
                     @Html.DisplayFor(modelItem => item.ETA)
                 </td>
-                <td>
+                <td style="vertical-align : middle">
                     @Html.DisplayFor(modelItem => item.DeliveryFee)
                 </td>
                 <td>
@@ -111,13 +111,13 @@
             string destination = item.Contact.AddressToString();
             <tr>
                 <td></td>
-                <td>
+                <td style="vertical-align : middle">
                     @Html.DisplayFor(modelItem => item.Note)
                 </td>
-                <td>
+                <td style="vertical-align : middle">
                     @destination
                 </td>
-                <td>
+                <td style="vertical-align : middle">
                     @{
                         if (item.Deliveryman != null)
                         {
@@ -126,13 +126,13 @@
                         }
                     }
                 </td>
-                <td>
+                <td style="vertical-align : middle">
                     @Html.DisplayFor(model => item.Status)
                 </td>
-                <td>
+                <td style="vertical-align : middle">
                     @Html.DisplayFor(modelItem => item.ETA)
                 </td>
-                <td>
+                <td style="vertical-align : middle">
                     @Html.DisplayFor(modelItem => item.DeliveryFee)
                 </td>
                 <td>
@@ -164,26 +164,26 @@
             string destination = item.Contact.AddressToString();
             <tr>
                 <td></td>
-                <td>
+                <td style="vertical-align : middle">
                     @Html.DisplayFor(modelItem => item.Note)
                 </td>
-                <td>
+                <td style="vertical-align : middle">
                     @destination
                 </td>
-                <td>
+                <td style="vertical-align : middle">
                     @if (item.Deliveryman != null)
                     {
                         string res = item.Deliveryman.getName();
                         <a href="@(Url.Action("DeliverymanDetails", "Restaurant", new { Id = item.Id }))">@res</a>
                     }
                 </td>
-                <td>
+                <td style="vertical-align : middle">
                     @Html.DisplayFor(model => item.Status)
                 </td>
-                <td>
+                <td style="vertical-align : middle">
                     @Html.DisplayFor(modelItem => item.ETA)
                 </td>
-                <td>
+                <td style="vertical-align : middle">
                     @Html.DisplayFor(modelItem => item.DeliveryFee)
                 </td>
                 <td>
