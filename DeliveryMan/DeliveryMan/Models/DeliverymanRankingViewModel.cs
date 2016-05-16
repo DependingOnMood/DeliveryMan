@@ -6,7 +6,7 @@ namespace DeliveryMan.Models
 {
     public class DeliverymanRankingViewModel
     {
-        [Display(Name = "Rank")]
+        [Display(Name = "Rank score")]
         public int Rank { get; set; }
 
         [Display(Name = "Deliveryman Name")]
@@ -18,7 +18,7 @@ namespace DeliveryMan.Models
         [Display(Name = "Average Rating")]
         public decimal Rating { get; set; }
 
-        [Display(Name = "Sample reviews")]
+        [Display(Name = "Sample review")]
         public string ReviewText { get; set; }
     }
 }

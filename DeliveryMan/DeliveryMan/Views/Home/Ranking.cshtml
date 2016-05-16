@@ -43,16 +43,15 @@
                     <dd>
                         @Html.DisplayFor(modelItem => item.Rating)
                     </dd>
-                </dl>
-            </div>
-        </div>
 
-        <div class="form-group">
-            <div class="col-md-10">
-                @Html.LabelFor(modelItem => item.ReviewText, new { @class = "col-md-2 control-label" })
-                <div class="col-md-10">
-                    @Html.TextAreaFor(modelItem => item.ReviewText, new { @readonly = "readonly" })
-                </div>
+                    <dt>
+                        @Html.LabelFor(modelItem => item.ReviewText)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(modelItem => item.ReviewText)
+                    </dd>
+
+                </dl>
             </div>
         </div>
     }
