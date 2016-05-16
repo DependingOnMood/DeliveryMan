@@ -15,7 +15,7 @@ namespace BizLogic
 
             var address = addr;
             //var address = "110 Riverdrive south";
-            var requestUri = string.Format("http://maps.googleapis.com/maps/api/geocode/xml?address={0}&sensor=false&key=AIzaSyBO2qhZdQnzPwjEUbD5UWdyB6zKp_8tWCI", Uri.EscapeDataString(address));
+            var requestUri = string.Format("http://maps.googleapis.com/maps/api/geocode/xml?address={0}&sensor=false&key=AIzaSyCiofbUn9ZUO1vYlMHMtw4oEPppaqbTvtE", Uri.EscapeDataString(address));
 
             var request = WebRequest.Create(requestUri);
             var response = request.GetResponse();
