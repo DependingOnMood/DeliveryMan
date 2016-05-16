@@ -10,6 +10,7 @@ using BizLogic;
 using DeliveryMan.Models;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Web;
 
 namespace DeliveryMan.Controllers
 {
@@ -1008,7 +1009,7 @@ namespace DeliveryMan.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult ChangeRestaurantUserInfo([Bind(Include = "Name, PhoneNumber, AddressLine1, AddressLine2, City, State, ZipCode, file")]
-            ChangeRestaurantInfoModel model)
+            ChangeRestaurantInfoModel model, HttpPostedFileBase file)
         {
             if (User.Identity.IsAuthenticated)
             {
@@ -1026,6 +1027,25 @@ namespace DeliveryMan.Controllers
             {
                 throw new Exception("Error");
             }
+            String fileUrl = "";
+            if (model.file != null)
+            {
+                fileUrl = HttpContext.Server.MapPath("~/Content/UserIcon/")
+                                                    + User.Identity.Name + ".png";
+
+
+                Bitmap b = (Bitmap)Bitmap.FromStream(file.InputStream);
+                if (System.IO.File.Exists(fileUrl))
+                {
+                    System.IO.File.Delete(fileUrl);
+                }
+                fileUrl = HttpContext.Server.MapPath("~/Content/UserIcon/")
+                                                    + User.Identity.Name + "new" + ".png";
+                b.Save(fileUrl, ImageFormat.Png);
+
+            }
+
+
 
             res.Name = model.Name;
 
@@ -1034,14 +1054,7 @@ namespace DeliveryMan.Controllers
             res.Contact.City = model.City;
             res.Contact.State = model.State;
             res.Contact.ZipCode = model.ZipCode;
-            if (model.file != null)
-            {
-                String fileUrl = HttpContext.Server.MapPath("~/Content/UserIcon/")
-                                                    + res.Contact.Email + ".png";
-                Bitmap b = (Bitmap)Bitmap.FromStream(model.file.InputStream);
-                b.Save(fileUrl, ImageFormat.Png);
-                res.IconImageUrl = res.Contact.Email + ".png";
-            }
+           res.IconImageUrl = User.Identity.Name + "new" + ".png";
             db.SaveChanges();
             return RedirectToAction("Index", "Manage");
         }
