@@ -94,7 +94,7 @@ namespace DeliveryMan.Controllers
             {
                 foreach (Order o in q.ToList())
                 {
-                    Contact c = o.Contact;
+                    Contact c = o.Restaurant.Contact;
                     String addr2 = c.getFullAddress();
                     double dis = 0;
 
